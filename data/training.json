@@ -1,0 +1,598 @@
+{
+  "hinweis": "Kalorien werden über MET-Werte gewichtsabhängig gerechnet: kcal_netto = (MET - 1) * 1,05 * Gewicht_kg * Minuten / 60. Netto heißt: der Grundumsatz während der Einheit ist bereits abgezogen. Fitnessuhren zeigen brutto und überschätzen beim Gehen zusätzlich um 20–30 % — deshalb gilt diese Tabelle, nicht die Uhr.",
+  "metWerte": {
+    "laufband5": {
+      "label": "Laufband 5 km/h (Tipptempo)",
+      "met": 3.5
+    },
+    "laufband6": {
+      "label": "Laufband 6 km/h",
+      "met": 4.5
+    },
+    "gehen": {
+      "label": "Gehen / Spaziergang",
+      "met": 3.5
+    },
+    "laufLocker": {
+      "label": "Laufen locker (7:00/km)",
+      "met": 8.3
+    },
+    "laufDauer": {
+      "label": "Laufen Dauerlauf (6:30/km)",
+      "met": 9.3
+    },
+    "laufZuegig": {
+      "label": "Laufen zügig (5:45/km)",
+      "met": 10.8
+    },
+    "intervall": {
+      "label": "Intervalltraining",
+      "met": 11.5
+    },
+    "kraft": {
+      "label": "Krafttraining",
+      "met": 3.5
+    }
+  },
+  "phasen": [
+    {
+      "id": "p1",
+      "name": "Phase 1 — Anlauf",
+      "wochen": "Woche 1–2",
+      "zeitraum": "2 Wochen",
+      "defizitZiel": 600,
+      "beschreibung": "Bewusst zu wenig. Der Sinn dieser zwei Wochen ist nicht der Kalorienverbrauch, sondern dass die Termine im Kalender stehen und die Umgebung umgebaut ist. Wenn sich das Volumen zu klein anfühlt, ist es richtig dosiert.",
+      "tage": [
+        {
+          "tag": "Mo",
+          "ort": "Homeoffice",
+          "einheiten": [
+            {
+              "typ": "laufband5",
+              "min": 90
+            }
+          ]
+        },
+        {
+          "tag": "Di",
+          "ort": "Büro",
+          "einheiten": [
+            {
+              "typ": "laufDauer",
+              "min": 45,
+              "notiz": "mit Laufpartner, 17:00"
+            }
+          ]
+        },
+        {
+          "tag": "Mi",
+          "ort": "Büro",
+          "einheiten": [
+            {
+              "typ": "gehen",
+              "min": 60
+            }
+          ]
+        },
+        {
+          "tag": "Do",
+          "ort": "Büro",
+          "einheiten": [
+            {
+              "typ": "laufLocker",
+              "min": 40,
+              "notiz": "Telefonlauf"
+            }
+          ]
+        },
+        {
+          "tag": "Fr",
+          "ort": "Homeoffice",
+          "einheiten": [
+            {
+              "typ": "laufband5",
+              "min": 90
+            },
+            {
+              "typ": "kraft",
+              "min": 30,
+              "notiz": "Kraft A"
+            }
+          ]
+        },
+        {
+          "tag": "Sa",
+          "ort": "—",
+          "einheiten": [
+            {
+              "typ": "laufDauer",
+              "min": 60,
+              "notiz": "langer Lauf"
+            }
+          ]
+        },
+        {
+          "tag": "So",
+          "ort": "—",
+          "einheiten": [
+            {
+              "typ": "gehen",
+              "min": 60,
+              "notiz": "nach dem Meal Prep"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "p2",
+      "name": "Phase 2 — Aufbau",
+      "wochen": "Woche 3–4",
+      "zeitraum": "2 Wochen",
+      "defizitZiel": 800,
+      "beschreibung": "Laufband auf 2 Stunden, Läufe etwas länger. Achte in dieser Phase auf Waden und Achillessehnen — das ist der Bereich, der bei Gehvolumen zuerst reklamiert.",
+      "tage": [
+        {
+          "tag": "Mo",
+          "ort": "Homeoffice",
+          "einheiten": [
+            {
+              "typ": "laufband5",
+              "min": 120
+            }
+          ]
+        },
+        {
+          "tag": "Di",
+          "ort": "Büro",
+          "einheiten": [
+            {
+              "typ": "laufDauer",
+              "min": 50,
+              "notiz": "mit Laufpartner, 17:00"
+            }
+          ]
+        },
+        {
+          "tag": "Mi",
+          "ort": "Büro",
+          "einheiten": [
+            {
+              "typ": "gehen",
+              "min": 60
+            }
+          ]
+        },
+        {
+          "tag": "Do",
+          "ort": "Büro",
+          "einheiten": [
+            {
+              "typ": "laufLocker",
+              "min": 45,
+              "notiz": "Telefonlauf"
+            }
+          ]
+        },
+        {
+          "tag": "Fr",
+          "ort": "Homeoffice",
+          "einheiten": [
+            {
+              "typ": "laufband5",
+              "min": 120
+            },
+            {
+              "typ": "kraft",
+              "min": 30,
+              "notiz": "Kraft B"
+            }
+          ]
+        },
+        {
+          "tag": "Sa",
+          "ort": "—",
+          "einheiten": [
+            {
+              "typ": "laufDauer",
+              "min": 75,
+              "notiz": "langer Lauf"
+            }
+          ]
+        },
+        {
+          "tag": "So",
+          "ort": "—",
+          "einheiten": [
+            {
+              "typ": "gehen",
+              "min": 60
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "p3",
+      "name": "Phase 3 — Vollphase",
+      "wochen": "Woche 5–16",
+      "zeitraum": "ca. 12 Wochen",
+      "defizitZiel": 1000,
+      "beschreibung": "Das volle Programm: 3 Stunden Laufband an beiden Homeoffice-Tagen, drei Läufe, zwei Krafteinheiten. Diese Phase läuft bis zum Zielgewicht. Keine Intervalle — im tiefen Defizit regenerierst du sie nicht.",
+      "tage": [
+        {
+          "tag": "Mo",
+          "ort": "Homeoffice",
+          "einheiten": [
+            {
+              "typ": "laufband5",
+              "min": 180
+            },
+            {
+              "typ": "kraft",
+              "min": 30,
+              "notiz": "Kraft A"
+            }
+          ]
+        },
+        {
+          "tag": "Di",
+          "ort": "Büro",
+          "einheiten": [
+            {
+              "typ": "laufDauer",
+              "min": 60,
+              "notiz": "mit Laufpartner, 17:00"
+            }
+          ]
+        },
+        {
+          "tag": "Mi",
+          "ort": "Büro",
+          "einheiten": [
+            {
+              "typ": "gehen",
+              "min": 60
+            }
+          ]
+        },
+        {
+          "tag": "Do",
+          "ort": "Büro",
+          "einheiten": [
+            {
+              "typ": "laufLocker",
+              "min": 45,
+              "notiz": "Telefonlauf"
+            }
+          ]
+        },
+        {
+          "tag": "Fr",
+          "ort": "Homeoffice",
+          "einheiten": [
+            {
+              "typ": "laufband5",
+              "min": 180
+            },
+            {
+              "typ": "kraft",
+              "min": 30,
+              "notiz": "Kraft B"
+            }
+          ]
+        },
+        {
+          "tag": "Sa",
+          "ort": "—",
+          "einheiten": [
+            {
+              "typ": "laufDauer",
+              "min": 90,
+              "notiz": "langer Lauf"
+            }
+          ]
+        },
+        {
+          "tag": "So",
+          "ort": "—",
+          "einheiten": [
+            {
+              "typ": "gehen",
+              "min": 60
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "p4",
+      "name": "Phase 4 — Erhaltung und Halbmarathon-Aufbau",
+      "wochen": "Januar – März",
+      "zeitraum": "ca. 3 Monate",
+      "defizitZiel": 250,
+      "beschreibung": "Zielgewicht ist erreicht. Jetzt kommt Energie zurück ins System und damit Intensität ins Training. Laufband runter auf 2 Stunden, dafür eine echte Tempoeinheit pro Woche. Zielwettkampf: Halbmarathon am Ende dieser Phase.",
+      "tage": [
+        {
+          "tag": "Mo",
+          "ort": "Homeoffice",
+          "einheiten": [
+            {
+              "typ": "laufband5",
+              "min": 120
+            },
+            {
+              "typ": "kraft",
+              "min": 30,
+              "notiz": "Kraft A"
+            }
+          ]
+        },
+        {
+          "tag": "Di",
+          "ort": "Büro",
+          "einheiten": [
+            {
+              "typ": "intervall",
+              "min": 50,
+              "notiz": "6× 800 m zügig, 400 m Trab dazwischen — mit Laufpartner"
+            }
+          ]
+        },
+        {
+          "tag": "Mi",
+          "ort": "Büro",
+          "einheiten": [
+            {
+              "typ": "gehen",
+              "min": 45
+            }
+          ]
+        },
+        {
+          "tag": "Do",
+          "ort": "Büro",
+          "einheiten": [
+            {
+              "typ": "laufLocker",
+              "min": 45,
+              "notiz": "Telefonlauf, bewusst locker"
+            }
+          ]
+        },
+        {
+          "tag": "Fr",
+          "ort": "Homeoffice",
+          "einheiten": [
+            {
+              "typ": "laufband5",
+              "min": 120
+            },
+            {
+              "typ": "kraft",
+              "min": 30,
+              "notiz": "Kraft B"
+            }
+          ]
+        },
+        {
+          "tag": "Sa",
+          "ort": "—",
+          "einheiten": [
+            {
+              "typ": "laufDauer",
+              "min": 110,
+              "notiz": "langer Lauf, alle 3 Wochen 15 Min länger"
+            }
+          ]
+        },
+        {
+          "tag": "So",
+          "ort": "—",
+          "einheiten": [
+            {
+              "typ": "gehen",
+              "min": 60
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "p5",
+      "name": "Phase 5 — Feinschliff",
+      "wochen": "April – Mai",
+      "zeitraum": "ca. 8 Wochen",
+      "defizitZiel": 400,
+      "beschreibung": "Nach dem Wettkampf: die letzten Kilos langsam über etwa acht Wochen (~0,6 kg/Woche). Intensität raus, Volumen moderat, Kraft bleibt — in dieser Phase entscheidet sich, wie du im T-Shirt aussiehst, nicht wie schnell du läufst. Letzte Woche vor dem Zieltermin: Umfang halbieren, kein Defizit, keine Experimente beim Essen.",
+      "tage": [
+        {
+          "tag": "Mo",
+          "ort": "Homeoffice",
+          "einheiten": [
+            {
+              "typ": "laufband5",
+              "min": 150
+            },
+            {
+              "typ": "kraft",
+              "min": 30,
+              "notiz": "Kraft A"
+            }
+          ]
+        },
+        {
+          "tag": "Di",
+          "ort": "Büro",
+          "einheiten": [
+            {
+              "typ": "laufDauer",
+              "min": 55,
+              "notiz": "mit Laufpartner"
+            }
+          ]
+        },
+        {
+          "tag": "Mi",
+          "ort": "Büro",
+          "einheiten": [
+            {
+              "typ": "gehen",
+              "min": 60
+            }
+          ]
+        },
+        {
+          "tag": "Do",
+          "ort": "Büro",
+          "einheiten": [
+            {
+              "typ": "laufLocker",
+              "min": 45,
+              "notiz": "Telefonlauf"
+            }
+          ]
+        },
+        {
+          "tag": "Fr",
+          "ort": "Homeoffice",
+          "einheiten": [
+            {
+              "typ": "laufband5",
+              "min": 150
+            },
+            {
+              "typ": "kraft",
+              "min": 30,
+              "notiz": "Kraft B"
+            }
+          ]
+        },
+        {
+          "tag": "Sa",
+          "ort": "—",
+          "einheiten": [
+            {
+              "typ": "laufDauer",
+              "min": 80
+            }
+          ]
+        },
+        {
+          "tag": "So",
+          "ort": "—",
+          "einheiten": [
+            {
+              "typ": "gehen",
+              "min": 60
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "kraftplan": {
+    "equipment": "Verstellbare Kurzhanteln (je 2–20 kg) und ein Set Widerstandsbänder mit Türanker, zusammen ca. 100–150 €. Stellplatz: neben dem Laufband, sichtbar — nicht im Schrank.",
+    "prinzip": "Zwei Einheiten pro Woche, je 30 Minuten, direkt im Anschluss ans Laufband an den Homeoffice-Tagen. Progression: Wenn du die obere Wiederholungszahl in allen Sätzen schaffst, beim nächsten Mal 2 kg mehr. Im Defizit ist Gewicht halten bereits ein Erfolg — der Zweck ist Muskelschutz, nicht Muskelaufbau.",
+    "einheiten": [
+      {
+        "id": "A",
+        "name": "Kraft A — Druck und Beine",
+        "uebungen": [
+          {
+            "name": "Goblet Squat",
+            "saetze": "3",
+            "wdh": "8–12",
+            "hinweis": "Kurzhantel senkrecht vor der Brust. Fersen bleiben am Boden, Knie zeigen nach außen."
+          },
+          {
+            "name": "Kurzhantel-Bankdrücken am Boden",
+            "saetze": "3",
+            "wdh": "8–12",
+            "hinweis": "Floor Press: Oberarme berühren kurz den Boden. Schont die Schulter und braucht keine Bank."
+          },
+          {
+            "name": "Rumänisches Kreuzheben",
+            "saetze": "3",
+            "wdh": "10–12",
+            "hinweis": "Hantel nah am Bein, Rücken gerade, Bewegung kommt aus der Hüfte. Die wichtigste Übung gegen Rückenprobleme vom Sitzen."
+          },
+          {
+            "name": "Schulterdrücken stehend",
+            "saetze": "3",
+            "wdh": "8–12",
+            "hinweis": "Bauch fest, kein Hohlkreuz."
+          },
+          {
+            "name": "Unterarmstütz (Plank)",
+            "saetze": "3",
+            "wdh": "30–60 Sek",
+            "hinweis": "Gesäß anspannen, Hüfte nicht durchhängen lassen."
+          }
+        ]
+      },
+      {
+        "id": "B",
+        "name": "Kraft B — Zug und Rumpf",
+        "uebungen": [
+          {
+            "name": "Latzug mit Band (Türanker oben)",
+            "saetze": "3",
+            "wdh": "10–15",
+            "hinweis": "Schulterblätter zuerst nach unten ziehen, dann die Arme. Das ist die Übung für den Rücken, der im T-Shirt zählt."
+          },
+          {
+            "name": "Kurzhantel-Rudern einarmig",
+            "saetze": "3",
+            "wdh": "10–12 je Seite",
+            "hinweis": "Freie Hand auf einem Stuhl abstützen, Rücken parallel zum Boden."
+          },
+          {
+            "name": "Bulgarian Split Squat",
+            "saetze": "3",
+            "wdh": "8–10 je Seite",
+            "hinweis": "Hinteres Bein erhöht auf Stuhl oder Sofa. Hart, aber der beste Einbeinschutz für Läufer."
+          },
+          {
+            "name": "Face Pull mit Band",
+            "saetze": "3",
+            "wdh": "15–20",
+            "hinweis": "Band auf Gesichtshöhe, zu den Ohren ziehen. Gegenspieler zum Bildschirmnacken."
+          },
+          {
+            "name": "Wadenheben einbeinig",
+            "saetze": "3",
+            "wdh": "15–20 je Seite",
+            "hinweis": "Direkt gegen Achillesprobleme bei steigendem Gehvolumen. Nicht weglassen."
+          }
+        ]
+      }
+    ]
+  },
+  "regeln": [
+    {
+      "titel": "Plateau-Regel",
+      "text": "Erst wenn sich der 7-Tage-Schnitt 14 Tage lang nicht bewegt, ist es ein Plateau. Dann genau EINE Stellschraube um 150 kcal drehen — entweder weniger essen oder mehr Sport, nicht beides. Zwei Wochen abwarten, dann erneut bewerten. Wer drei Dinge gleichzeitig ändert, weiß hinterher nicht, was gewirkt hat."
+    },
+    {
+      "titel": "Waage-Regel",
+      "text": "Täglich wiegen, morgens nach dem Aufstehen, aber nur den 7-Tage-Schnitt bewerten. Nach dem Refeed-Tag stehen 1–2 kg mehr auf der Waage — das ist Wasser und Darminhalt, kein Fett. Wer darauf reagiert, dreht am falschen Rad."
+    },
+    {
+      "titel": "Protein-nach-16-Uhr-Regel",
+      "text": "Das Essensfenster läuft bis 20:00, aber nach 16:00 gibt es nur noch geplantes Protein: das Abendessen aus dem Plan, sonst nichts. Die Anti-Nasch-Funktion des Fensters bleibt damit erhalten, die Regeneration nach den Abendläufen kommt dazu."
+    },
+    {
+      "titel": "Refeed-Regel",
+      "text": "Ein Tag pro Woche auf Erhaltungsniveau statt im Defizit — üppig, aber nicht im Überschuss. Am besten auf den Samstag mit dem langen Lauf legen. Der Tag ist eingeplant, nicht erlaubt: Er steht im Wochenplan wie jede andere Einheit."
+    },
+    {
+      "titel": "Rückfallregel",
+      "text": "Du wirst diese Regeln brechen. Entscheidend ist, was danach passiert: nächste Mahlzeit einfach normal weiter. Kein Ausgleichen, kein Auslassen, kein Strafprogramm, kein Kommentar an dich selbst. Wer nach einem Ausrutscher aufgibt, verliert nicht wegen der Currywurst, sondern wegen der Scham danach."
+    },
+    {
+      "titel": "Schlaf-Regel",
+      "text": "22:00 endet das Abendtelefonat, 22:30 Bett, 06:00 auf. Zu wenig Schlaf macht Heißhunger messbar stärker — bei diesem Defizit ist das kein Nebenschauplatz."
+    }
+  ]
+}
