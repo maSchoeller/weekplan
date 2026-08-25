@@ -87,13 +87,18 @@
       <h2>Deine Werte</h2>
       <p class="hint">Diese Zahlen liegen ausschließlich in diesem Browser (localStorage). Sie werden nirgendwo hochgeladen und stehen nicht im öffentlichen Code.</p>
       <div class="formgrid">
-        <label>Gewicht (kg)<input type="number" id="f-gewicht" step="0.1" min="40" max="250"></label>
-        <label>Zielgewicht (kg)<input type="number" id="f-ziel" step="0.5" min="40" max="250"></label>
+        <label>Gewicht (kg)<input type="text" inputmode="decimal" id="f-gewicht" placeholder="z. B. 97,4"></label>
+        <label>Zielgewicht (kg)<input type="text" inputmode="decimal" id="f-ziel" placeholder="z. B. 85"></label>
         <label>Größe (cm)<input type="number" id="f-groesse" step="1" min="120" max="230"></label>
         <label>Alter (Jahre)<input type="number" id="f-alter" step="1" min="14" max="100"></label>
         <label>Zieltermin<input type="date" id="f-zieltermin"></label>
-        <label>Proteinfaktor (g pro kg Zielgewicht)<input type="number" id="f-protein" step="0.1" min="1" max="3"></label>
+        <label>Proteinfaktor (g pro kg Zielgewicht)<input type="text" inputmode="decimal" id="f-protein" placeholder="z. B. 2,0"></label>
+        <label>Tempo (kg pro Woche)<input type="text" inputmode="decimal" id="f-tempo" placeholder="aus Phase, z. B. 0,9"></label>
       </div>
+      <div class="bar" style="margin-top:12px">
+        <button class="btn" id="tempoReset">Tempo aus der Phase übernehmen</button>
+      </div>
+      <div id="tempoHinweis"></div>
     </div>
 
     <div class="card">
@@ -105,7 +110,7 @@
       <h2>Gewichtsverlauf</h2>
       <div class="bar">
         <input type="date" id="w-datum">
-        <input type="number" id="w-kg" step="0.1" placeholder="kg" min="40" max="250">
+        <input type="text" inputmode="decimal" id="w-kg" placeholder="kg, z. B. 97,4">
         <button class="btn btn-primary" id="w-add">Eintragen</button>
       </div>
       <div id="plateauHinweis"></div>

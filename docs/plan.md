@@ -59,6 +59,27 @@ Refeed-Tag      = Gesamtumsatz
 Protein täglich = Faktor × Zielgewicht        (Faktor 1,8–2,2)
 ```
 
+### Tempo statt Defizit vorgeben
+
+Tempo und Defizit sind dieselbe Größe in zwei Einheiten, verbunden über den Energiegehalt
+von Körperfett (~7.700 kcal pro kg):
+
+```
+Tagesdefizit = Tempo_kg_pro_Woche × 7.700 / 7
+Tempo        = Tagesdefizit × 7 / 7.700
+```
+
+Normalerweise gibt die Phase das Defizit vor und das Tempo folgt daraus. Wird im Tab **Ich**
+ein eigenes Tempo eingetragen, dreht sich die Rechnung um — der Phasenwert wird
+überschrieben, bis das Feld wieder geleert wird.
+
+Wichtig dabei: **Dasselbe Tempo bedeutet in verschiedenen Phasen unterschiedlich viel
+Verzicht am Teller**, weil das Sportvolumen unterschiedlich ist. 0,9 kg pro Woche heißt in
+Phase 1 (wenig Sport) deutlich weniger essen als in Phase 3.
+
+Die Anwendung warnt, sobald die resultierende Zielaufnahme unter den Grundumsatz fällt, und
+nennt das höchste bei diesem Sportvolumen noch vertretbare Tempo.
+
 Der Faktor `7/6` ist der Kern der Refeed-Logik: Ein Tag pro Woche läuft ohne Defizit.
 Damit die **Wochenbilanz** trotzdem sieben Tagesdefizite ergibt, tragen die übrigen sechs
 Tage je ein Siebtel mehr. Ein Cheat Day, der nicht eingepreist wird, kostet je nach

@@ -17,7 +17,8 @@ gewichtsabhängiger Verbrauchsrechnung.
   skalierbar über die Portionsanzahl.
 - **Training** — Fünf Phasen mit Wochenplan, Verbrauchstabelle beim aktuellen Gewicht,
   Kraftplan A/B und Regelwerk.
-- **Ich** — Gewicht, Zielgewicht, Größe, Alter, Zieltermin, Proteinfaktor. Daraus
+- **Ich** — Gewicht, Zielgewicht, Größe, Alter, Zieltermin, Proteinfaktor und wahlweise ein
+  eigenes Tempo in kg pro Woche, das das Defizit der Phase überschreibt. Daraus
   Grundumsatz, Zielaufnahme, Countdown, Gewichtsverlauf mit 7-Tage-Schnitt und
   Plateau-Erkennung.
 

@@ -35,8 +35,12 @@ const PROFIL_DEFAULT = {
   zieltermin: '',
   proteinFaktor: 2.0,
   phase: 'p1',
+  tempo: null,         // kg pro Woche; null = Defizit kommt aus der Phase
   eigene: false        // true, sobald der Nutzer eigene Werte gespeichert hat
 };
+
+// Energiegehalt von 1 kg Körperfett. Bindeglied zwischen Defizit und Tempo.
+const KCAL_PRO_KG = 7700;
 
 const LS = 'weekplan.v1';
 
@@ -122,7 +126,15 @@ function bilanz() {
   const sport = phaseSport(phase, p.gewicht);
   const sportSchnitt = sport.woche / 7;
   const gesamt = alltagsumsatz(p) + sportSchnitt;
-  const defizit = phase ? phase.defizitZiel : 0;
+
+  // Tempo und Defizit sind dieselbe Größe in zwei Einheiten. Normalerweise gibt die
+  // Phase das Defizit vor und das Tempo folgt daraus. Ist ein eigenes Tempo gesetzt,
+  // dreht sich die Rechnung um: Tagesdefizit = kg pro Woche × 7.700 / 7.
+  const phasenDefizit = phase ? phase.defizitZiel : 0;
+  const eigenesTempo = typeof p.tempo === 'number' && p.tempo > 0;
+  const defizit = eigenesTempo
+    ? Math.round(p.tempo * KCAL_PRO_KG / 7)
+    : phasenDefizit;
 
   // Der Refeed-Tag läuft ohne Defizit. Damit die Wochenbilanz trotzdem
   // 7 × Tagesdefizit ergibt, tragen die übrigen 6 Tage je ein Siebtel mehr.
@@ -136,11 +148,14 @@ function bilanz() {
     sportSchnitt: Math.round(sportSchnitt),
     gesamt: Math.round(gesamt),
     defizit,
+    phasenDefizit,
+    eigenesTempo,
     normal: Math.round(gesamt - defizit6),
     refeed: Math.round(gesamt),
     protein: Math.round(p.proteinFaktor * p.ziel),
     wochendefizit: Math.round(defizit * 7),
-    kgProWoche: (defizit * 7 / 7700)
+    kgProWoche: (defizit * 7 / KCAL_PRO_KG),
+    phasenTempo: (phasenDefizit * 7 / KCAL_PRO_KG)
   };
 }
 
@@ -172,6 +187,21 @@ function gramm(g) {
 
 function zahl(n) {
   return Math.round(n).toLocaleString('de-DE');
+}
+
+/* Zahleneingabe aus einem Textfeld. Akzeptiert "97,4" genauso wie "97.4" —
+ * ein <input type="number"> verwirft das Komma stillschweigend, und beim
+ * täglichen Wiegen ist die Kommazahl der Normalfall. null bei Unsinn. */
+function zahlAus(roh) {
+  const s = String(roh == null ? '' : roh).trim().replace(',', '.');
+  if (s === '') return null;
+  const v = parseFloat(s);
+  return isNaN(v) ? null : v;
+}
+
+/* Umgekehrte Richtung: Zahl so ins Feld schreiben, wie sie hier gelesen wird. */
+function feldWert(n) {
+  return typeof n === 'number' ? n.toLocaleString('de-DE', { maximumFractionDigits: 2 }) : '';
 }
 
 function el(tag, cls, text) {
@@ -517,7 +547,8 @@ function renderTraining() {
     ['Zeitraum', phase.zeitraum, phase.wochen],
     ['Sport pro Woche', zahl(b.sport.woche), 'kcal netto'],
     ['Sport pro Tag', zahl(b.sportSchnitt), 'kcal im Schnitt'],
-    ['Defizitziel', zahl(phase.defizitZiel), 'kcal pro Tag']
+    ['Defizit' + (b.eigenesTempo ? ' (eigenes Tempo)' : ''), zahl(b.defizit),
+      `kcal pro Tag · ${b.kgProWoche.toLocaleString('de-DE', { maximumFractionDigits: 2 })} kg/Woche`]
   ].forEach(([k, v, u]) => {
     const c = el('div', 'kpi');
     c.append(el('div', 'k', k), el('div', 'v', v), el('div', 'u', u));
@@ -611,14 +642,29 @@ function renderTraining() {
 
 function renderIch() {
   const p = state.profil;
-  $('#f-gewicht').value = p.gewicht;
-  $('#f-ziel').value = p.ziel;
+  $('#f-gewicht').value = feldWert(p.gewicht);
+  $('#f-ziel').value = feldWert(p.ziel);
   $('#f-groesse').value = p.groesse;
   $('#f-alter').value = p.alter;
   $('#f-zieltermin').value = p.zieltermin || '';
-  $('#f-protein').value = p.proteinFaktor;
+  $('#f-protein').value = feldWert(p.proteinFaktor);
 
   const b = bilanz();
+  $('#f-tempo').value = b.eigenesTempo ? feldWert(p.tempo) : '';
+
+  // Tempo und Defizit sind dasselbe in zwei Einheiten — hier steht, welche
+  // Richtung gerade gilt und was das für die Kalorien bedeutet.
+  const th = $('#tempoHinweis');
+  th.innerHTML = '';
+  th.append(el('p', 'hint', b.eigenesTempo
+    ? `Eigenes Tempo aktiv: ${b.kgProWoche.toLocaleString('de-DE', { maximumFractionDigits: 2 })} kg pro Woche ` +
+      `entsprechen ${zahl(b.defizit)} kcal Defizit pro Tag. Der Phasenwert wäre ` +
+      `${b.phasenTempo.toLocaleString('de-DE', { maximumFractionDigits: 2 })} kg (${zahl(b.phasenDefizit)} kcal).`
+    : `Tempo kommt aus „${b.phase ? b.phase.name : '—'}": ` +
+      `${zahl(b.phasenDefizit)} kcal Defizit pro Tag entsprechen ` +
+      `${b.phasenTempo.toLocaleString('de-DE', { maximumFractionDigits: 2 })} kg pro Woche. ` +
+      `Trag oben einen eigenen Wert ein, um das zu überschreiben.`));
+
   const ziel = $('#rechnung');
   ziel.innerHTML = '';
 
@@ -637,7 +683,9 @@ function renderIch() {
     ['Normaltag essen', zahl(b.normal), 'kcal'],
     ['Refeed-Tag essen', zahl(b.refeed), 'kcal'],
     ['Protein täglich', b.protein, 'g'],
-    ['Tempo', b.kgProWoche.toLocaleString('de-DE', { maximumFractionDigits: 2 }), 'kg pro Woche']
+    ['Tempo' + (b.eigenesTempo ? ' (eigenes)' : ''),
+      b.kgProWoche.toLocaleString('de-DE', { maximumFractionDigits: 2 }), 'kg pro Woche'],
+    ['Defizit', zahl(b.defizit), 'kcal pro Tag']
   ].forEach(([k, v, u]) => {
     const c = el('div', 'kpi');
     c.append(el('div', 'k', k), el('div', 'v', v), el('div', 'u', u));
@@ -646,10 +694,16 @@ function renderIch() {
   ziel.append(kpis);
 
   if (b.normal < b.grundumsatz) {
+    // Höchstes Tempo, bei dem die Aufnahme noch genau auf dem Grundumsatz landet:
+    // normal = gesamt − defizit × 7/6, gleichgesetzt mit dem Grundumsatz.
+    const maxDefizit = (b.gesamt - b.grundumsatz) * 6 / 7;
+    const maxTempo = Math.max(0, maxDefizit * 7 / KCAL_PRO_KG);
     ziel.append(el('div', 'notice warn',
       `Achtung: Die Zielaufnahme von ${zahl(b.normal)} kcal liegt unter deinem Grundumsatz von ` +
-      `${zahl(b.grundumsatz)} kcal. Das ist über Wochen nicht tragfähig — reduziere das Defizitziel ` +
-      `der Phase oder erhöhe das Sportvolumen.`));
+      `${zahl(b.grundumsatz)} kcal. Das ist über Wochen nicht tragfähig. ` +
+      `Bei deinem aktuellen Sportvolumen wären maximal ` +
+      `${maxTempo.toLocaleString('de-DE', { maximumFractionDigits: 2 })} kg pro Woche vertretbar — ` +
+      `senke das Tempo oder erhöhe das Sportvolumen.`));
   }
 
   const rest = p.gewicht - p.ziel;
@@ -831,23 +885,43 @@ function initTraining() {
 }
 
 function initIch() {
+  // Die Textfelder bringen keine eigene Bereichsprüfung mit, deshalb hier Grenzen.
   const felder = [
-    ['#f-gewicht', 'gewicht', parseFloat],
-    ['#f-ziel', 'ziel', parseFloat],
-    ['#f-groesse', 'groesse', parseFloat],
-    ['#f-alter', 'alter', parseInt],
-    ['#f-protein', 'proteinFaktor', parseFloat]
+    ['#f-gewicht', 'gewicht',        30, 300],
+    ['#f-ziel',    'ziel',           30, 300],
+    ['#f-groesse', 'groesse',       120, 230],
+    ['#f-alter',   'alter',          14, 100],
+    ['#f-protein', 'proteinFaktor',   1,   3]
   ];
-  felder.forEach(([sel, key, konv]) => {
+  felder.forEach(([sel, key, min, max]) => {
     $(sel).addEventListener('change', () => {
-      const v = konv($(sel).value);
-      if (!isNaN(v) && v > 0) {
-        state.profil[key] = v;
-        state.profil.eigene = true;
-        speichern(); renderAlles(); renderIch();
-      }
+      const v = zahlAus($(sel).value);
+      if (v === null) { renderIch(); return; }   // Unsinn: alten Wert zurückschreiben
+      state.profil[key] = Math.min(max, Math.max(min, v));
+      state.profil.eigene = true;
+      speichern(); renderAlles(); renderIch();
     });
   });
+
+  // Tempo überschreibt das Defizit der Phase. Leeres Feld heißt: wieder der Phase folgen.
+  $('#f-tempo').addEventListener('change', () => {
+    const roh = $('#f-tempo').value.trim();
+    if (roh === '') {
+      state.profil.tempo = null;
+    } else {
+      const v = zahlAus(roh);
+      if (v === null || v <= 0) { renderIch(); return; }
+      state.profil.tempo = Math.min(1.5, Math.max(0.1, v));
+      state.profil.eigene = true;
+    }
+    speichern(); renderAlles(); renderIch();
+  });
+
+  $('#tempoReset').addEventListener('click', () => {
+    state.profil.tempo = null;
+    speichern(); renderAlles(); renderIch();
+  });
+
   $('#f-zieltermin').addEventListener('change', () => {
     state.profil.zieltermin = $('#f-zieltermin').value;
     state.profil.eigene = true;
@@ -857,8 +931,8 @@ function initIch() {
   $('#w-datum').valueAsDate = new Date();
   $('#w-add').addEventListener('click', () => {
     const datum = $('#w-datum').value;
-    const kg = parseFloat($('#w-kg').value);
-    if (!datum || isNaN(kg) || kg <= 0) return;
+    const kg = zahlAus($('#w-kg').value);
+    if (!datum || kg === null || kg <= 0) return;
     const i = state.verlauf.findIndex(e => e.datum === datum);
     if (i >= 0) state.verlauf[i].kg = kg;
     else state.verlauf.push({ datum, kg });
