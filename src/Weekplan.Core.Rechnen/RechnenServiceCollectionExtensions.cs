@@ -7,5 +7,5 @@ namespace Weekplan.Core.Rechnen;
 public static class RechnenServiceCollectionExtensions
 {
     public static IServiceCollection AddRechnen(this IServiceCollection services)
-        => services.AddSingleton<IGrundumsatzRechner, MifflinStJeorRechner>();
+        => services.AddSingleton<IRechner, Rechner>();
 }

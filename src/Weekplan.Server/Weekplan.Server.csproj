@@ -3,6 +3,10 @@
   <ItemGroup>
     <ProjectReference Include="..\Weekplan.Core.Rechnen\Weekplan.Core.Rechnen.csproj" />
     <ProjectReference Include="..\Weekplan.Core.Rechnen.Contracts\Weekplan.Core.Rechnen.Contracts.csproj" />
+    <ProjectReference Include="..\Weekplan.Core.Anmeldung\Weekplan.Core.Anmeldung.csproj" />
+    <ProjectReference Include="..\Weekplan.Core.Anmeldung.Contracts\Weekplan.Core.Anmeldung.Contracts.csproj" />
+    <ProjectReference Include="..\Weekplan.Core.Tagebuch\Weekplan.Core.Tagebuch.csproj" />
+    <ProjectReference Include="..\Weekplan.Core.Tagebuch.Contracts\Weekplan.Core.Tagebuch.Contracts.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
