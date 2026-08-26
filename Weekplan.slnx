@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Weekplan.Client/Weekplan.Client.csproj" />
+    <Project Path="src/Weekplan.Core.Rechnen.Contracts/Weekplan.Core.Rechnen.Contracts.csproj" />
+    <Project Path="src/Weekplan.Core.Rechnen/Weekplan.Core.Rechnen.csproj" />
+    <Project Path="src/Weekplan.Server/Weekplan.Server.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Weekplan.Core.Tests/Weekplan.Core.Tests.csproj" />
+  </Folder>
+</Solution>
