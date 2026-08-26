@@ -8,12 +8,21 @@ $root = $PSScriptRoot
 $serverUrl = 'http://localhost:5080'
 $clientUrl = 'http://localhost:5180'
 
+# Erst bauen, dann starten. Zwei gleichzeitige `dotnet run` bauen dieselben
+# gemeinsamen Projekte und sperren sich gegenseitig aus der obj-Ablage aus.
+Write-Host 'Baue ...'
+dotnet build (Join-Path $root 'Weekplan.slnx') --nologo --verbosity quiet
+if ($LASTEXITCODE -ne 0) {
+    Write-Host 'Build fehlgeschlagen — es wird nichts gestartet.'
+    exit $LASTEXITCODE
+}
+
 $processes = @()
 try {
     $processes += Start-Process dotnet -PassThru -NoNewWindow `
-        -ArgumentList 'run', '--project', (Join-Path $root 'src/Weekplan.Server')
+        -ArgumentList 'run', '--no-build', '--project', (Join-Path $root 'src/Weekplan.Server')
     $processes += Start-Process dotnet -PassThru -NoNewWindow `
-        -ArgumentList 'run', '--project', (Join-Path $root 'src/Weekplan.Client')
+        -ArgumentList 'run', '--no-build', '--project', (Join-Path $root 'src/Weekplan.Client')
 
     Write-Host ''
     Write-Host "Server  $serverUrl/health"

@@ -41,9 +41,9 @@ public static class Woche
     public static IReadOnlyList<Wochentag> Tage { get; } =
     [
         new("Mo", "Montag", "Homeoffice"),
-        new("Di", "Dienstag", "Buero"),
-        new("Mi", "Mittwoch", "Buero"),
-        new("Do", "Donnerstag", "Buero"),
+        new("Di", "Dienstag", "Büro"),
+        new("Mi", "Mittwoch", "Büro"),
+        new("Do", "Donnerstag", "Büro"),
         new("Fr", "Freitag", "Homeoffice"),
         new("Sa", "Samstag", "—"),
         new("So", "Sonntag", "—")
@@ -51,7 +51,7 @@ public static class Woche
 
     public static IReadOnlyList<Mahlzeit> Mahlzeiten { get; } =
     [
-        new("fruehstueck", "Fruehstueck", 0.32),
+        new("fruehstueck", "Frühstück", 0.32),
         new("mittag", "Mittag", 0.38),
         new("abend", "Abend", 0.30)
     ];
