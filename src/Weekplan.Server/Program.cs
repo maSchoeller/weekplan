@@ -1,4 +1,9 @@
+using System.Threading.RateLimiting;
+using Microsoft.AspNetCore.RateLimiting;
+using Weekplan.Core.Anmeldung;
 using Weekplan.Core.Rechnen;
+using Weekplan.Core.Tagebuch;
+using Weekplan.Server;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,13 +17,36 @@ builder.Services.AddCors(options => options.AddPolicy(ClientPolicy, policy => po
     .AllowAnyMethod()));
 
 builder.Services.AddRechnen();
+builder.Services.AddAnmeldung(builder.Configuration["Anmeldung:Schluessel"]
+    ?? throw new InvalidOperationException(
+        "Anmeldung:Schluessel fehlt. Ohne Signaturschluessel darf der Server nicht starten."));
+builder.Services.AddTagebuchInDateien(builder.Configuration["Tagebuch:Ordner"]
+    ?? Path.Combine(builder.Environment.ContentRootPath, "daten"));
+
+// Die Adresse ist oeffentlich, also darf niemand Passwoerter durchprobieren.
+builder.Services.AddRateLimiter(options =>
+{
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+    options.AddFixedWindowLimiter(Endpunkte.AnmeldeGrenze, grenze =>
+    {
+        grenze.PermitLimit = 10;
+        grenze.Window = TimeSpan.FromMinutes(1);
+        grenze.QueueLimit = 0;
+    });
+});
 
 var app = builder.Build();
 
 app.UseCors(ClientPolicy);
+app.UseRateLimiter();
 
 app.MapGet("/health", () => Results.Ok(new HealthAntwort("ok", "weekplan-server")));
+app.MapAnmeldung();
+app.MapTagebuch();
 
 app.Run();
 
 internal sealed record HealthAntwort(string Status, string Dienst);
+
+// Damit die Integrationstests den Server hochfahren koennen.
+public partial class Program;

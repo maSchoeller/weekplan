@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Weekplan.Core.Rechnen.Contracts\Weekplan.Core.Rechnen.Contracts.csproj" />
+    <ProjectReference Include="..\Weekplan.Core.Tagebuch.Contracts\Weekplan.Core.Tagebuch.Contracts.csproj" />
   </ItemGroup>
 
 </Project>
