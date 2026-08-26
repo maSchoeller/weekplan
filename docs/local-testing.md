@@ -44,30 +44,34 @@ Chrome ausweichen.
 
 ### Was die Browser-Werkzeuge hier koennen — und was nicht
 
-Nachgemessen am 2026-08-26, mit Kontrollproben:
+Nachgemessen am 2026-08-26 mit Kontrollproben, in **beiden** Browsern:
 
 | | eingebauter Bereich | installiertes Chrome |
 |---|---|---|
-| Screenshot | **nein** (keine Bilder) | ja |
+| Screenshot | **nein** (kompositiert keine Bilder) | ja |
 | Text und Baum lesen | ja | ja |
-| JavaScript ausfuehren | ja (nur synchron) | ja |
-| Klick auf `@onclick` | **nein** | ja |
-| Formular absenden per Klick | **nein** | **nein** |
-| Enter/Leertaste aktivieren | **nein** | **nein** |
-| Fenstergroesse setzen | ja | ja |
+| JavaScript ausfuehren | ja, nur synchron (kein `requestAnimationFrame`) | ja, auch `await` |
+| Klick auf einen Knopf | **nein** | ja |
+| Formular per Klick absenden | **nein** | ja |
+| Enter/Leertaste aktivieren | **nein** | ja |
+| Fensterbreite aendern | ja (Viewport-Emulation) | **nein** (Fenster bleibt, wie es ist) |
 
-Zwei Kontrollproben stuetzen das: ein frisch erzeugter, leerer `<button>` blieb
-bei Enter und Leertaste in **beiden** Browsern stumm, und derselbe Knopf, der
-auf einen Werkzeugklick nicht reagierte, loeste per `element.click()` sofort aus.
-Das Werkzeug fuehrt die **Standardaktion** des Browsers nicht aus.
+Die Kontrollprobe ist jeweils dieselbe: einen leeren `<button>` erzeugen,
+fokussieren, Enter und Leertaste druecken, Klicks zaehlen. Im eingebauten
+Bereich kamen **null** Aktivierungen, in Chrome **zwei**.
 
-**Folge fuer den Smoketest:** Bedienung im eingebauten Bereich ueber
-`javascript_tool` ausloesen — `element.click()` fuer Knoepfe,
-`form.requestSubmit()` fuer Formulare, und Eingaben ueber den nativen
+**Folge fuer den Smoketest:** Bedienung und Zeitmessung gehoeren ins
+installierte Chrome. Ist es nicht verbunden, taugt der eingebaute Bereich noch
+zum Lesen und Vermessen — Bedienung dann ueber `javascript_tool`
+(`element.click()`, `form.requestSubmit()`, Eingaben ueber den nativen
 `value`-Setter plus `new Event('input',{bubbles:true})`, sonst merkt Blazor die
-Aenderung nicht. Niemals rot melden, nur weil ein synthetischer Klick oder
-Tastendruck nichts bewirkt hat. Und `requestAnimationFrame` laeuft im
-verborgenen Bereich nicht — Zeitmessungen brauchen das sichtbare Chrome.
+Aenderung nicht). Und dort niemals rot melden, nur weil ein synthetischer Klick
+nichts bewirkt hat.
+
+**Handybreite** kommt vom eingebauten Bereich: Chrome laesst sein Fenster hier
+nicht verkleinern (dasselbe Verhalten wie im Schwesterprojekt weddination),
+der eingebaute Bereich emuliert dagegen sauber 375 px. Also: Bedienung und
+Screenshots in Chrome, Schmalmessung im eingebauten Bereich.
 
 Jeder Bildschirm wird bei **375 px** und bei Desktopbreite angesehen und gegen
 `design-system.md` geprueft: Abstaende aus der Skala, nichts ueberlappt, nichts

@@ -60,9 +60,9 @@ Neu, und ueber den Lauf hinaus:
 - 2026-08-26 Kein Passwort-Ruecksetzweg, keine Geraeteverwaltung, kein Ablauf des
   Merkmals — alles drei so gewaehlt. **Ausloeser:** wenn der Gewichtsverlauf
   wieder unersetzlich wird, oder ein Geraet unversperrt verloren geht.
-- 2026-08-26 Kriterium „zwei Sekunden beim Gewicht" ist **nicht gemessen**.
-  Der Mechanismus traegt es (die Eingabe wartet nicht auf den Server), die Zahl
-  fehlt. **Ausloeser:** naechster Lauf mit sichtbarem Chrome.
+- 2026-08-26 **Erledigt am selben Tag:** Kriterium „zwei Sekunden beim Gewicht"
+  ist gemessen — 51 ms beim ersten Mal, danach 7 bis 14 ms von der Eingabe bis
+  zur sichtbaren Quittung, im verbundenen Chrome ueber fuenf Durchlaeufe.
 - 2026-08-26 Einkaufsliste ohne Netz ist **nicht gebaut** — Schnitt B, samt der
   Frage, wie zwei Geraete denselben Posten gegensaetzlich haken.
   **Ausloeser:** der naechste Einkauf mit schlechtem Empfang.
