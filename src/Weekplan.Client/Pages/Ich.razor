@@ -1,0 +1,243 @@
+@page "/ich"
+@inject Zustand Z
+
+<PageTitle>weekplan — Ich</PageTitle>
+
+<h1>Ich</h1>
+
+@* Der Moment, an dem der Umbau gemessen wird: Zahl von der Waage, Enter, fertig.
+   Deshalb steht dieses Feld ganz oben und nicht unten beim Verlauf. *@
+<section class="heute">
+    <h2>Gewicht heute</h2>
+    <form @onsubmit="Eintragen" @onsubmit:preventDefault>
+        <input id="heute" type="text" inputmode="decimal" autocomplete="off"
+               placeholder="z. B. 84,3" aria-label="Gewicht in Kilogramm"
+               @bind="_heute" @bind:event="oninput" />
+        <button type="submit" class="haupt" disabled="@(Zahl.Aus(_heute) is null)">Eintragen</button>
+    </form>
+    @if (_zuletzt is not null)
+    {
+        <p class="quittung" role="status">
+            <span class="zeichen" aria-hidden="true">✓</span> @_zuletzt
+        </p>
+    }
+</section>
+
+<section class="block">
+    <h2>Deine Werte</h2>
+    <p class="hinweis">
+        Diese Zahlen liegen in deinem Konto auf dem Server und sind nur nach Anmeldung
+        erreichbar. Im öffentlichen Code steht keine davon.
+    </p>
+
+    <div class="felder">
+        <div>
+            <label for="gewicht">Gewicht (kg)</label>
+            <input id="gewicht" type="text" inputmode="decimal" value="@Zahl.Feld(Z.Profil.GewichtKg)"
+                   @onchange="e => Setzen(e, (p, w) => p with { GewichtKg = w })" />
+        </div>
+        <div>
+            <label for="ziel">Zielgewicht (kg)</label>
+            <input id="ziel" type="text" inputmode="decimal" value="@Zahl.Feld(Z.Profil.ZielKg)"
+                   @onchange="e => Setzen(e, (p, w) => p with { ZielKg = w })" />
+        </div>
+        <div>
+            <label for="groesse">Größe (cm)</label>
+            <input id="groesse" type="text" inputmode="decimal" value="@Zahl.Feld(Z.Profil.GroesseCm)"
+                   @onchange="e => Setzen(e, (p, w) => p with { GroesseCm = w })" />
+        </div>
+        <div>
+            <label for="alter">Alter (Jahre)</label>
+            <input id="alter" type="text" inputmode="numeric" value="@Z.Profil.Alter"
+                   @onchange="e => Setzen(e, (p, w) => p with { Alter = (int)w })" />
+        </div>
+        <div>
+            <label for="termin">Zieltermin</label>
+            <input id="termin" type="date" value="@Z.Profil.Zieltermin?.ToString("yyyy-MM-dd")"
+                   @onchange="TerminSetzen" />
+        </div>
+        <div>
+            <label for="protein">Proteinfaktor (g pro kg Zielgewicht)</label>
+            <input id="protein" type="text" inputmode="decimal" value="@Zahl.Feld(Z.Profil.ProteinFaktor)"
+                   @onchange="e => Setzen(e, (p, w) => p with { ProteinFaktor = w })" />
+        </div>
+        <div>
+            <label for="tempo">Tempo (kg pro Woche)</label>
+            <input id="tempo" type="text" inputmode="decimal"
+                   placeholder="@($"aus Phase, z. B. {Zahl.Tempo(_bilanz.PhasenTempo)}")"
+                   value="@Zahl.Feld(Z.Profil.TempoKgProWoche)"
+                   @onchange="TempoSetzen" />
+        </div>
+    </div>
+
+    <button class="neben" @onclick="TempoAusPhase">Tempo aus der Phase übernehmen</button>
+
+    <p class="meta">
+        @if (_bilanz.EigenesTempo)
+        {
+            <text>
+                Eigenes Tempo: @Zahl.Tempo(_bilanz.KgProWoche) kg pro Woche überschreibt das
+                Defizit der Phase (@Zahl.Kcal(_bilanz.PhasenDefizit) kcal).
+            </text>
+        }
+        else
+        {
+            <text>
+                Tempo kommt aus „@_phase.Name": @Zahl.Kcal(_bilanz.PhasenDefizit) kcal Defizit pro Tag
+                entsprechen @Zahl.Tempo(_bilanz.KgProWoche) kg pro Woche. Trag oben einen eigenen
+                Wert ein, um das zu überschreiben.
+            </text>
+        }
+    </p>
+</section>
+
+<section class="block">
+    <h2>Rechnung</h2>
+    <dl class="rechnung">
+        <div><dt>Grundumsatz</dt><dd>@Zahl.Kcal(_bilanz.Grundumsatz) kcal</dd></div>
+        <div><dt>Alltag ohne Sport</dt><dd>@Zahl.Kcal(_bilanz.Alltag) kcal</dd></div>
+        <div><dt>Sport im Schnitt</dt><dd>@Zahl.Kcal(_bilanz.SportSchnitt) kcal</dd></div>
+        <div><dt>Gesamtumsatz</dt><dd>@Zahl.Kcal(_bilanz.Gesamt) kcal</dd></div>
+        <div class="wichtig"><dt>Normaltag</dt><dd>@Zahl.Kcal(_bilanz.Normal) kcal</dd></div>
+        <div class="wichtig"><dt>Refeed-Tag</dt><dd>@Zahl.Kcal(_bilanz.Refeed) kcal</dd></div>
+        <div><dt>Protein täglich</dt><dd>@_bilanz.Protein g</dd></div>
+        <div><dt>Wochendefizit</dt><dd>@Zahl.Kcal(_bilanz.Wochendefizit) kcal</dd></div>
+    </dl>
+
+    @if (Z.Profil.Zieltermin is { } termin)
+    {
+        var tage = termin.DayNumber - DateOnly.FromDateTime(DateTime.Today).DayNumber;
+        var noch = Z.Profil.GewichtKg - Z.Profil.ZielKg;
+        <p class="meta">
+            Noch @Zahl.Kg(noch) kg bis zum Ziel.
+            @if (tage > 0)
+            {
+                <text>
+                    Bis zum @termin.ToString("dd.MM.yyyy") sind es @tage Tage — nötig wären
+                    @Zahl.Tempo(noch / (tage / 7.0)) kg pro Woche.
+                </text>
+            }
+            else
+            {
+                <text>Der Zieltermin liegt in der Vergangenheit.</text>
+            }
+        </p>
+    }
+</section>
+
+<section class="block">
+    <h2>Verlauf</h2>
+
+    @if (Z.Profil.Verlauf.Count == 0)
+    {
+        <p class="leer">Noch kein Gewicht eingetragen. Trag oben deine erste Zahl ein.</p>
+    }
+    else
+    {
+        @if (_plateau is not null)
+        {
+            <p class="plateau">
+                <span class="zeichen" aria-hidden="true">!</span> @_plateau
+            </p>
+        }
+
+        <div class="tabellenhuelle">
+            <table>
+                <thead>
+                    <tr>
+                        <th scope="col">Datum</th>
+                        <th scope="col" class="zahl">kg</th>
+                        <th scope="col" class="zahl">7-Tage-Schnitt</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (var i = Z.Profil.Verlauf.Count - 1; i >= 0; i--)
+                    {
+                        var eintrag = Z.Profil.Verlauf[i];
+                        var schnitt = Z.Schnitt7(i);
+                        <tr>
+                            <th scope="row">@eintrag.Datum.ToString("dd.MM.yyyy")</th>
+                            <td class="zahl">@Zahl.Feld(eintrag.Kg)</td>
+                            <td class="zahl">@(schnitt is null ? "—" : Zahl.Feld(Math.Round(schnitt.Value, 2)))</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</section>
+
+@code {
+    private Bilanz _bilanz = null!;
+    private PhasenAnzeige _phase = null!;
+    private string _heute = string.Empty;
+    private string? _zuletzt;
+    private string? _plateau;
+
+    protected override void OnParametersSet()
+    {
+        _bilanz = Z.Bilanz();
+        _phase = Z.AktivePhase();
+        _plateau = PlateauHinweis();
+    }
+
+    private void Eintragen()
+    {
+        if (Zahl.Aus(_heute) is not { } kg) return;
+
+        var heute = DateOnly.FromDateTime(DateTime.Today);
+        Z.GewichtEintragen(heute, kg);
+        _zuletzt = $"{Zahl.Feld(kg)} kg für den {heute:dd.MM.yyyy} eingetragen.";
+        _heute = string.Empty;
+        OnParametersSet();
+    }
+
+    private void Setzen(ChangeEventArgs e, Func<ProfilStand, double, ProfilStand> aenderung)
+    {
+        if (Zahl.Aus(e.Value?.ToString()) is not { } wert) return;
+        Z.ProfilSetzen(p => aenderung(p, wert));
+        OnParametersSet();
+    }
+
+    private void TerminSetzen(ChangeEventArgs e)
+    {
+        var roh = e.Value?.ToString();
+        var termin = DateOnly.TryParse(roh, out var wert) ? wert : (DateOnly?)null;
+        Z.ProfilSetzen(p => p with { Zieltermin = termin });
+        OnParametersSet();
+    }
+
+    private void TempoSetzen(ChangeEventArgs e)
+    {
+        var tempo = Zahl.Aus(e.Value?.ToString());
+        Z.ProfilSetzen(p => p with { TempoKgProWoche = tempo is > 0 ? tempo : null });
+        OnParametersSet();
+    }
+
+    private void TempoAusPhase()
+    {
+        Z.ProfilSetzen(p => p with { TempoKgProWoche = null });
+        OnParametersSet();
+    }
+
+    /// <summary>
+    /// Plateau: der 7-Tage-Schnitt heute gegen den Schnitt vor 14 Eintraegen.
+    /// Erst wenn sich da fast nichts bewegt, ist es eines — Tagesschwankungen
+    /// sind kein Plateau.
+    /// </summary>
+    private string? PlateauHinweis()
+    {
+        var verlauf = Z.Profil.Verlauf;
+        if (verlauf.Count < 15) return null;
+
+        var jetzt = Z.Schnitt7(verlauf.Count - 1);
+        var davor = Z.Schnitt7(verlauf.Count - 15);
+        if (jetzt is null || davor is null) return null;
+
+        var bewegung = davor.Value - jetzt.Value;
+        return bewegung < 0.3
+            ? $"Plateau: Der 7-Tage-Schnitt hat sich in 14 Tagen nur um {Zahl.Feld(Math.Round(bewegung, 2))} kg bewegt. "
+              + "Genau eine Stellschraube um 150 kcal drehen — nicht zwei."
+            : null;
+    }
+}

@@ -1,5 +1,120 @@
 @inherits LayoutComponentBase
+@implements IDisposable
+@inject Sitzung Sitzung
+@inject Zustand Zustand
+@inject WeekplanApi Api
 
-<main>
-    @Body
-</main>
+@if (!_sitzungGeprueft)
+{
+    <p class="boot">Wird geladen …</p>
+}
+else if (!Sitzung.Angemeldet)
+{
+    <Anmelden />
+}
+else if (_ladefehler is not null)
+{
+    <main class="huelle">
+        <section class="karte fehler">
+            <h1>Die Daten konnten nicht geladen werden</h1>
+            <p>@_ladefehler</p>
+            <button class="haupt" @onclick="LadenAsync">Erneut versuchen</button>
+        </section>
+    </main>
+}
+else if (!Zustand.Geladen)
+{
+    <p class="boot">Wird geladen …</p>
+}
+else
+{
+    <header class="topbar">
+        <div class="huelle topbar-innen">
+            <span class="marke">weekplan</span>
+            <span class="lage">
+                <strong>@Zahl.Kcal(_bilanz.Normal)</strong> kcal
+                · <strong>@_bilanz.Protein</strong> g Protein
+                · noch <strong>@Zahl.Kg(Zustand.Profil.GewichtKg - Zustand.Profil.ZielKg)</strong> kg
+            </span>
+        </div>
+    </header>
+
+    <nav class="reiter" aria-label="Bereiche">
+        <div class="huelle reiter-innen">
+            <NavLink href="" Match="NavLinkMatch.All">Woche</NavLink>
+            <NavLink href="einkauf">Einkauf</NavLink>
+            <NavLink href="rezepte">Rezepte</NavLink>
+            <NavLink href="training">Training</NavLink>
+            <NavLink href="ich">Ich</NavLink>
+        </div>
+    </nav>
+
+    @if (Zustand.Lage is Speicherlage.Fehler)
+    {
+        <div class="streifen" role="status">
+            <div class="huelle streifen-innen">
+                <span><strong>Nicht gespeichert.</strong> Die Zahlen stehen hier, aber noch nicht auf dem Server.</span>
+                <button @onclick="Zustand.ErneutVersuchenAsync">Erneut versuchen</button>
+            </div>
+        </div>
+    }
+
+    <main class="huelle">
+        @Body
+    </main>
+}
+
+@code {
+    private bool _sitzungGeprueft;
+    private string? _ladefehler;
+    private Bilanz _bilanz = null!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Sitzung.Geaendert += AufSitzung;
+        Zustand.Geaendert += AufZustand;
+
+        await Sitzung.WiederherstellenAsync();
+        _sitzungGeprueft = true;
+
+        if (Sitzung.Angemeldet) await LadenAsync();
+    }
+
+    private async Task LadenAsync()
+    {
+        _ladefehler = null;
+        try
+        {
+            await Zustand.LadenAsync();
+            _bilanz = Zustand.Bilanz();
+        }
+        catch (NichtAngemeldetException)
+        {
+            // Das Merkmal gilt nicht mehr — etwa nach einem Schluesselwechsel.
+            await Sitzung.AbmeldenAsync();
+        }
+        catch (Exception fehler)
+        {
+            _ladefehler = fehler.Message;
+        }
+        StateHasChanged();
+    }
+
+    private void AufSitzung() => _ = InvokeAsync(async () =>
+    {
+        if (Sitzung.Angemeldet && !Zustand.Geladen) await LadenAsync();
+        StateHasChanged();
+    });
+
+    private void AufZustand() => _ = InvokeAsync(() =>
+    {
+        if (Zustand.Geladen) _bilanz = Zustand.Bilanz();
+        StateHasChanged();
+    });
+
+    public void Dispose()
+    {
+        Sitzung.Geaendert -= AufSitzung;
+        Zustand.Geaendert -= AufZustand;
+    }
+}

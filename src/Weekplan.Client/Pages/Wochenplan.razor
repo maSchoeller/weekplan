@@ -1,0 +1,137 @@
+@page "/"
+@inject Zustand Z
+
+<PageTitle>weekplan — Woche</PageTitle>
+
+<h1 class="verborgen">Woche</h1>
+
+<div class="leiste">
+    <button class="haupt" @onclick="Z.WocheFuellen">Woche automatisch füllen</button>
+    <button class="neben" @onclick="Z.WocheLeeren">Woche leeren</button>
+
+    <label for="refeed">Refeed-Tag</label>
+    <select id="refeed" value="@Z.Woche.RefeedTag" @onchange="RefeedSetzen">
+        @foreach (var tag in Woche.Tage)
+        {
+            <option value="@tag.Kuerzel">@tag.Name</option>
+        }
+    </select>
+</div>
+
+<p class="hinweis">
+    Ziel an Normaltagen: @Zahl.Kcal(_bilanz.Normal) kcal und @_bilanz.Protein g Protein.
+    Am Refeed-Tag (@Z.Woche.RefeedTag): @Zahl.Kcal(_bilanz.Refeed) kcal.
+    Grün bedeutet: innerhalb von 100 kcal am Ziel und Protein erreicht.
+</p>
+
+<div class="tage">
+    @foreach (var tag in Woche.Tage)
+    {
+        var summe = Z.Tagessumme(tag.Kuerzel);
+        var ziel = Z.TagesZiel(tag.Kuerzel);
+        var amZiel = Math.Abs(summe.Kcal - ziel) <= 100 && summe.Protein >= _bilanz.Protein;
+
+        <section class="tag @(tag.Kuerzel == Z.Woche.RefeedTag ? "refeed" : null)">
+            <header>
+                <h2>@tag.Name @(tag.Kuerzel == Z.Woche.RefeedTag ? "· Refeed" : null)</h2>
+                <span class="ort">@tag.Ort</span>
+            </header>
+
+            <p class="summe @(amZiel ? "erreicht" : null)">
+                <strong>@Zahl.Kcal(summe.Kcal)</strong> / @Zahl.Kcal(ziel) kcal
+                · <strong>@summe.Protein</strong> / @_bilanz.Protein g Protein
+            </p>
+
+            @foreach (var mahlzeit in Woche.Mahlzeiten)
+            {
+                var eintraege = Z.Geplant(tag.Kuerzel, mahlzeit.Schluessel);
+
+                <div class="mahlzeit">
+                    <h3>@mahlzeit.Beschriftung</h3>
+
+                    @for (var stelle = 0; stelle < eintraege.Count; stelle++)
+                    {
+                        var i = stelle;
+                        var eintrag = eintraege[i];
+                        var rezept = Z.RezeptMit(eintrag.RezeptId);
+
+                        <div class="gericht">
+                            <span class="name">@(rezept?.Name ?? eintrag.RezeptId)</span>
+                            <input type="number" min="1" max="9" inputmode="numeric"
+                                   aria-label="Portionen"
+                                   value="@eintrag.Portionen"
+                                   @onchange="e => Portionen(tag.Kuerzel, mahlzeit.Schluessel, i, e.Value?.ToString())" />
+                            <button class="weg" title="Entfernen"
+                                    @onclick="() => Z.GerichtEntfernen(tag.Kuerzel, mahlzeit.Schluessel, i)">
+                                Entfernen
+                            </button>
+                        </div>
+
+                        @if (rezept is not null)
+                        {
+                            <p class="werte">
+                                @Zahl.Kcal(rezept.Kcal * eintrag.Portionen) kcal
+                                · @(rezept.Protein * eintrag.Portionen) g Protein
+                            </p>
+                        }
+                    }
+
+                    <select value=""
+                            @onchange="e => Legen(tag.Kuerzel, mahlzeit.Schluessel, e.Value?.ToString())">
+                        <option value="">+ Gericht wählen</option>
+                        @foreach (var rezept in Z.Rezepte.Where(r => r.Kategorie == mahlzeit.Schluessel))
+                        {
+                            <option value="@rezept.Id">@rezept.Name (@Zahl.Kcal(rezept.Kcal) kcal)</option>
+                        }
+                    </select>
+                </div>
+            }
+
+            @if (_sportProTag.TryGetValue(tag.Kuerzel, out var sport) && sport.Kcal > 0)
+            {
+                <p class="sport">
+                    Training: @string.Join(", ", sport.Einheiten.Select(EinheitText)) — @Zahl.Kcal(sport.Kcal) kcal
+                </p>
+            }
+        </section>
+    }
+</div>
+
+@code {
+    private Bilanz _bilanz = null!;
+    private Dictionary<string, TagesVerbrauch> _sportProTag = [];
+
+    protected override void OnParametersSet()
+    {
+        _bilanz = Z.Bilanz();
+        _sportProTag = _bilanz.Sport.ProTag.ToDictionary(t => t.Tag);
+    }
+
+    private string EinheitText(Einheit einheit)
+    {
+        var label = Z.Stamm.Training.MetWerte.TryGetValue(einheit.Typ, out var met) ? met.Label : einheit.Typ;
+        return $"{label} {einheit.Minuten} min";
+    }
+
+    private void RefeedSetzen(ChangeEventArgs e)
+    {
+        var tag = e.Value?.ToString();
+        if (string.IsNullOrEmpty(tag)) return;
+        Z.RefeedTagSetzen(tag);
+        OnParametersSet();
+    }
+
+    private void Legen(string tag, string mahlzeit, string? rezeptId)
+    {
+        if (string.IsNullOrEmpty(rezeptId)) return;
+        Z.GerichtLegen(tag, mahlzeit, rezeptId);
+        OnParametersSet();
+    }
+
+    private void Portionen(string tag, string mahlzeit, int stelle, string? roh)
+    {
+        if (Zahl.Aus(roh) is not { } wert) return;
+        Z.PortionenSetzen(tag, mahlzeit, stelle, (int)wert);
+        OnParametersSet();
+    }
+}

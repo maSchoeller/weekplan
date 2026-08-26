@@ -21,3 +21,21 @@
   harmlos; wird zur Falle, sobald das gebuendelte Speichern per Vergleich
   entscheidet, ob sich etwas geaendert hat. **Ausloeser:** die erste Stelle, die
   zwei Staende vergleicht, statt einfach zu schreiben.
+- 2026-08-26 Der Client referenziert die Umsetzungsprojekte `Core.Rechnen` und
+  `Core.Wochenplanung`, nicht nur deren Contracts — das Preset sagt, nur der Host
+  duerfe das. Begruendung: die Rechnung laeuft im Browser, sonst kostet jede
+  Portionsaenderung einen Serverruf und die zwei Sekunden beim Gewicht sind weg.
+  Der Client ist hier also selbst ein Host. **Ausloeser:** wenn eine Rechnung
+  Daten braucht, die nur der Server hat — dann wandert sie zurueck.
+- 2026-08-26 `<Anmelden />` wurde als HTML-Element gerendert statt als Komponente,
+  weil `Weekplan.Client.Pages` in `_Imports.razor` fehlte — der Build blieb gruen,
+  die Seite blieb leer. Unbekannte Kleinbuchstaben-Tags sind fuer Razor gueltiges
+  Markup. Behoben; hier festgehalten, weil kein Test dieser Art es faengt.
+- 2026-08-26 Kriterium 7 („zwei Sekunden") ist **nicht gemessen**. Die Eingabe
+  wirkt optimistisch, also ohne auf den Server zu warten — das ist der Mechanismus,
+  der es traegt — aber die Zeit selbst konnte hier nicht sauber genommen werden:
+  `requestAnimationFrame` laeuft im verborgenen Browser-Bereich nicht, und das
+  installierte Chrome war nicht verbunden. **Ausloeser:** naechster Lauf mit
+  sichtbarem Chrome, oder ein Messpunkt in der App.
+- 2026-08-26 Kriterium 4 (Einkaufsliste ohne Netz) ist **nicht erfuellt** — es ist
+  Schnitt B und war fuer diesen Lauf ausdruecklich ausgeklammert.

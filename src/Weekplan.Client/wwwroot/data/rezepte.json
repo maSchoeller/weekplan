@@ -1,0 +1,1506 @@
+{
+  "hinweis": "Alle Grammangaben pro Portion. kcal und Protein sind pro Portion gerechnet.",
+  "abteilungen": [
+    "Obst & Gemüse",
+    "Kühlregal",
+    "Fisch",
+    "Trockenware",
+    "Konserven",
+    "Tiefkühl",
+    "Backwaren",
+    "Öl & Gewürze"
+  ],
+  "rezepte": [
+    {
+      "id": "chili-sin-carne",
+      "name": "Chili sin Carne",
+      "kategorie": "mittag",
+      "zeitMin": 40,
+      "kalt": true,
+      "kcal": 829,
+      "protein": 52,
+      "zutaten": [
+        {
+          "name": "Kidneybohnen (Dose, abgetropft)",
+          "g": 150,
+          "abt": "Konserven"
+        },
+        {
+          "name": "Schwarze Bohnen (Dose, abgetropft)",
+          "g": 80,
+          "abt": "Konserven"
+        },
+        {
+          "name": "Mais (Dose, abgetropft)",
+          "g": 40,
+          "abt": "Konserven"
+        },
+        {
+          "name": "Passierte Tomaten",
+          "g": 180,
+          "abt": "Konserven"
+        },
+        {
+          "name": "Zwiebel",
+          "g": 70,
+          "abt": "Obst & Gemüse"
+        },
+        {
+          "name": "Karotte",
+          "g": 60,
+          "abt": "Obst & Gemüse"
+        },
+        {
+          "name": "Räuchertofu",
+          "g": 100,
+          "abt": "Kühlregal"
+        },
+        {
+          "name": "Olivenöl",
+          "g": 6,
+          "abt": "Öl & Gewürze",
+          "vorrat": true
+        },
+        {
+          "name": "Basmatireis (trocken)",
+          "g": 45,
+          "abt": "Trockenware"
+        },
+        {
+          "name": "Magerquark",
+          "g": 80,
+          "abt": "Kühlregal"
+        },
+        {
+          "name": "Kreuzkümmel, Paprikapulver, Chili, Oregano",
+          "g": 4,
+          "abt": "Öl & Gewürze",
+          "vorrat": true
+        }
+      ],
+      "schritte": [
+        "Zwiebel und Karotte fein würfeln. Räuchertofu mit den Händen grob zerbröseln – das ergibt die Hackstruktur.",
+        "Öl in einem großen Topf erhitzen, Zwiebel und Karotte 5 Minuten anbraten, bis die Zwiebel glasig ist.",
+        "Tofubrösel dazu und 3 Minuten scharf mitbraten, bis sie Farbe nehmen. Erst dann die Gewürze zugeben und 30 Sekunden mitrösten – das holt deutlich mehr Aroma heraus als Würzen in der Flüssigkeit.",
+        "Passierte Tomaten, Bohnen und Mais zugeben, salzen und bei kleiner Hitze 20 Minuten köcheln lassen.",
+        "Reis parallel nach Packungsangabe garen.",
+        "Chili abschmecken. Reis in die Meal-Prep-Box, Chili darauf. Der Magerquark kommt erst beim Essen obendrauf, sonst wird er beim Aufwärmen körnig."
+      ]
+    },
+    {
+      "id": "linsen-dal",
+      "name": "Linsen-Dal mit Reis",
+      "kategorie": "mittag",
+      "zeitMin": 30,
+      "kalt": false,
+      "kcal": 843,
+      "protein": 51,
+      "zutaten": [
+        {
+          "name": "Rote Linsen (trocken)",
+          "g": 110,
+          "abt": "Trockenware"
+        },
+        {
+          "name": "Kokosmilch",
+          "g": 50,
+          "abt": "Konserven"
+        },
+        {
+          "name": "Passierte Tomaten",
+          "g": 100,
+          "abt": "Konserven"
+        },
+        {
+          "name": "Zwiebel",
+          "g": 70,
+          "abt": "Obst & Gemüse"
+        },
+        {
+          "name": "Knoblauch",
+          "g": 6,
+          "abt": "Obst & Gemüse"
+        },
+        {
+          "name": "Ingwer (frisch)",
+          "g": 8,
+          "abt": "Obst & Gemüse"
+        },
+        {
+          "name": "Rapsöl",
+          "g": 6,
+          "abt": "Öl & Gewürze",
+          "vorrat": true
+        },
+        {
+          "name": "Basmatireis (trocken)",
+          "g": 35,
+          "abt": "Trockenware"
+        },
+        {
+          "name": "Blattspinat (TK)",
+          "g": 100,
+          "abt": "Tiefkühl"
+        },
+        {
+          "name": "Magerquark",
+          "g": 125,
+          "abt": "Kühlregal"
+        },
+        {
+          "name": "Kurkuma, Garam Masala, Kreuzkümmel, Senfsamen",
+          "g": 4,
+          "abt": "Öl & Gewürze",
+          "vorrat": true
+        }
+      ],
+      "schritte": [
+        "Linsen in einem Sieb kalt abspülen, bis das Wasser klar läuft.",
+        "Zwiebel, Knoblauch und Ingwer fein hacken. Öl erhitzen, Senfsamen hineingeben und warten, bis sie hörbar springen – das ist der Startschuss für alles Weitere.",
+        "Zwiebel, Knoblauch, Ingwer zugeben, 4 Minuten braten. Restliche Gewürze 30 Sekunden mitrösten.",
+        "Linsen, passierte Tomaten und 400 ml Wasser zugeben, aufkochen, dann 15 Minuten bei kleiner Hitze köcheln. Gelegentlich umrühren, rote Linsen setzen gern an.",
+        "Spinat und Kokosmilch unterrühren, weitere 3 Minuten ziehen lassen, kräftig salzen.",
+        "Reis parallel garen. Magerquark erst auf dem Teller unterrühren – er macht das Dal cremig und bringt 15 g Protein, ohne dass du es schmeckst."
+      ]
+    },
+    {
+      "id": "kichererbsen-curry",
+      "name": "Kichererbsen-Curry",
+      "kategorie": "mittag",
+      "zeitMin": 30,
+      "kalt": false,
+      "kcal": 870,
+      "protein": 53,
+      "zutaten": [
+        {
+          "name": "Kichererbsen (Dose, abgetropft)",
+          "g": 250,
+          "abt": "Konserven"
+        },
+        {
+          "name": "Kokosmilch",
+          "g": 45,
+          "abt": "Konserven"
+        },
+        {
+          "name": "Passierte Tomaten",
+          "g": 150,
+          "abt": "Konserven"
+        },
+        {
+          "name": "Zwiebel",
+          "g": 70,
+          "abt": "Obst & Gemüse"
+        },
+        {
+          "name": "Räuchertofu",
+          "g": 80,
+          "abt": "Kühlregal"
+        },
+        {
+          "name": "Rapsöl",
+          "g": 6,
+          "abt": "Öl & Gewürze",
+          "vorrat": true
+        },
+        {
+          "name": "Basmatireis (trocken)",
+          "g": 35,
+          "abt": "Trockenware"
+        },
+        {
+          "name": "Blattspinat (TK)",
+          "g": 100,
+          "abt": "Tiefkühl"
+        },
+        {
+          "name": "Skyr",
+          "g": 100,
+          "abt": "Kühlregal"
+        },
+        {
+          "name": "Currypulver, Kurkuma, Kreuzkümmel",
+          "g": 5,
+          "abt": "Öl & Gewürze",
+          "vorrat": true
+        }
+      ],
+      "schritte": [
+        "Räuchertofu in 1 cm Würfel schneiden, in Öl rundum knusprig braten, herausnehmen und beiseitestellen. Er weicht sonst in der Sauce auf.",
+        "Zwiebel würfeln, im selben Topf 4 Minuten anbraten, Gewürze 30 Sekunden mitrösten.",
+        "Passierte Tomaten und Kichererbsen zugeben, 12 Minuten köcheln.",
+        "Spinat und Kokosmilch unterrühren, 3 Minuten ziehen lassen, salzen.",
+        "Tofu zurück in den Topf. Reis parallel garen.",
+        "Skyr erst beim Essen dazu."
+      ]
+    },
+    {
+      "id": "linsen-bolognese",
+      "name": "Linsen-Bolognese",
+      "kategorie": "mittag",
+      "zeitMin": 45,
+      "kalt": false,
+      "kcal": 867,
+      "protein": 51,
+      "zutaten": [
+        {
+          "name": "Tellerlinsen (trocken)",
+          "g": 85,
+          "abt": "Trockenware"
+        },
+        {
+          "name": "Passierte Tomaten",
+          "g": 200,
+          "abt": "Konserven"
+        },
+        {
+          "name": "Zwiebel",
+          "g": 60,
+          "abt": "Obst & Gemüse"
+        },
+        {
+          "name": "Karotte",
+          "g": 60,
+          "abt": "Obst & Gemüse"
+        },
+        {
+          "name": "Staudensellerie",
+          "g": 40,
+          "abt": "Obst & Gemüse"
+        },
+        {
+          "name": "Olivenöl",
+          "g": 8,
+          "abt": "Öl & Gewürze",
+          "vorrat": true
+        },
+        {
+          "name": "Vollkornnudeln (trocken)",
+          "g": 70,
+          "abt": "Trockenware"
+        },
+        {
+          "name": "Parmesan",
+          "g": 20,
+          "abt": "Kühlregal"
+        },
+        {
+          "name": "Magerquark",
+          "g": 80,
+          "abt": "Kühlregal"
+        },
+        {
+          "name": "Tomatenmark",
+          "g": 15,
+          "abt": "Konserven"
+        },
+        {
+          "name": "Oregano, Thymian, Lorbeer",
+          "g": 3,
+          "abt": "Öl & Gewürze",
+          "vorrat": true
+        }
+      ],
+      "schritte": [
+        "Zwiebel, Karotte und Sellerie sehr fein würfeln – je feiner, desto mehr erinnert das Ergebnis an eine klassische Bolognese.",
+        "In Olivenöl 8 Minuten bei mittlerer Hitze schmoren, nicht bräunen. Tomatenmark zugeben und 2 Minuten mitrösten, bis es dunkel wird.",
+        "Linsen, passierte Tomaten, Kräuter und 300 ml Wasser zugeben. 30 Minuten bei kleiner Hitze köcheln, bis die Linsen weich sind und die Sauce dick ist.",
+        "Nudeln parallel al dente kochen.",
+        "Magerquark vom Herd genommen unterrühren – bei Hitze flockt er aus. Er ersetzt die Sahne und bringt 10 g Protein.",
+        "Mit Parmesan servieren."
+      ]
+    },
+    {
+      "id": "ofengemuese-feta",
+      "name": "Ofengemüse mit Feta und Süßkartoffel",
+      "kategorie": "mittag",
+      "zeitMin": 40,
+      "kalt": true,
+      "kcal": 895,
+      "protein": 50,
+      "zutaten": [
+        {
+          "name": "Süßkartoffel",
+          "g": 170,
+          "abt": "Obst & Gemüse"
+        },
+        {
+          "name": "Brokkoli",
+          "g": 150,
+          "abt": "Obst & Gemüse"
+        },
+        {
+          "name": "Rote Zwiebel",
+          "g": 80,
+          "abt": "Obst & Gemüse"
+        },
+        {
+          "name": "Kirschtomaten",
+          "g": 100,
+          "abt": "Obst & Gemüse"
+        },
+        {
+          "name": "Feta",
+          "g": 100,
+          "abt": "Kühlregal"
+        },
+        {
+          "name": "Kichererbsen (Dose, abgetropft)",
+          "g": 200,
+          "abt": "Konserven"
+        },
+        {
+          "name": "Olivenöl",
+          "g": 8,
+          "abt": "Öl & Gewürze",
+          "vorrat": true
+        },
+        {
+          "name": "Skyr",
+          "g": 120,
+          "abt": "Kühlregal"
+        },
+        {
+          "name": "Oregano, Paprikapulver, Knoblauchpulver",
+          "g": 4,
+          "abt": "Öl & Gewürze",
+          "vorrat": true
+        }
+      ],
+      "schritte": [
+        "Ofen auf 200 °C Umluft vorheizen.",
+        "Süßkartoffel in 2 cm Würfel, Brokkoli in Röschen, Zwiebel in Spalten schneiden. Alles mit den abgetropften Kichererbsen, Öl und Gewürzen auf einem Blech mischen.",
+        "25 Minuten backen. Die Kichererbsen werden dabei außen knusprig – das ist der eigentliche Trick an diesem Gericht.",
+        "Kirschtomaten und den in Würfel geschnittenen Feta zugeben, weitere 10 Minuten backen.",
+        "Skyr mit Salz, Zitrone und etwas Wasser zu einem Dip verrühren und dazu servieren.",
+        "Funktioniert auch kalt – eine gute Wahl für Bürotage, an denen die Mikrowelle besetzt ist."
+      ]
+    },
+    {
+      "id": "shakshuka",
+      "name": "Shakshuka mit Ei",
+      "kategorie": "mittag",
+      "zeitMin": 25,
+      "kalt": false,
+      "kcal": 886,
+      "protein": 50,
+      "zutaten": [
+        {
+          "name": "Eier",
+          "g": 180,
+          "abt": "Kühlregal",
+          "stk": 3
+        },
+        {
+          "name": "Passierte Tomaten",
+          "g": 250,
+          "abt": "Konserven"
+        },
+        {
+          "name": "Zwiebel",
+          "g": 80,
+          "abt": "Obst & Gemüse"
+        },
+        {
+          "name": "Kichererbsen (Dose, abgetropft)",
+          "g": 150,
+          "abt": "Konserven"
+        },
+        {
+          "name": "Feta",
+          "g": 50,
+          "abt": "Kühlregal"
+        },
+        {
+          "name": "Olivenöl",
+          "g": 8,
+          "abt": "Öl & Gewürze",
+          "vorrat": true
+        },
+        {
+          "name": "Vollkornbrot",
+          "g": 60,
+          "abt": "Backwaren"
+        },
+        {
+          "name": "Kreuzkümmel, Paprikapulver, Chiliflocken",
+          "g": 4,
+          "abt": "Öl & Gewürze",
+          "vorrat": true
+        }
+      ],
+      "schritte": [
+        "Zwiebel würfeln, in Olivenöl 5 Minuten anbraten. Gewürze 30 Sekunden mitrösten.",
+        "Passierte Tomaten und Kichererbsen zugeben, 10 Minuten offen einkochen, bis die Sauce dick ist. Zu flüssig bedeutet später verlaufene Eier.",
+        "Mit einem Löffel drei Mulden formen, je ein Ei hineingleiten lassen.",
+        "Deckel drauf, 6–8 Minuten bei kleiner Hitze garen, bis das Eiweiß fest und das Eigelb noch weich ist.",
+        "Feta darüberbröseln, mit Vollkornbrot servieren.",
+        "Zum Vorbereiten: Sauce separat kochen, Eier erst frisch dazu – aufgewärmte Eier werden gummiartig."
+      ]
+    },
+    {
+      "id": "erdnuss-curry-tofu",
+      "name": "Erdnuss-Curry mit Tofu",
+      "kategorie": "mittag",
+      "zeitMin": 30,
+      "kalt": false,
+      "kcal": 893,
+      "protein": 52,
+      "zutaten": [
+        {
+          "name": "Tofu natur",
+          "g": 200,
+          "abt": "Kühlregal"
+        },
+        {
+          "name": "Erdnussmus (ohne Zucker)",
+          "g": 30,
+          "abt": "Trockenware"
+        },
+        {
+          "name": "Kokosmilch",
+          "g": 50,
+          "abt": "Konserven"
+        },
+        {
+          "name": "Passierte Tomaten",
+          "g": 100,
+          "abt": "Konserven"
+        },
+        {
+          "name": "Zwiebel",
+          "g": 60,
+          "abt": "Obst & Gemüse"
+        },
+        {
+          "name": "Brokkoli",
+          "g": 150,
+          "abt": "Obst & Gemüse"
+        },
+        {
+          "name": "Basmatireis (trocken)",
+          "g": 45,
+          "abt": "Trockenware"
+        },
+        {
+          "name": "Sojasauce",
+          "g": 10,
+          "abt": "Öl & Gewürze",
+          "vorrat": true
+        },
+        {
+          "name": "Rapsöl",
+          "g": 6,
+          "abt": "Öl & Gewürze",
+          "vorrat": true
+        },
+        {
+          "name": "Ingwer (frisch)",
+          "g": 6,
+          "abt": "Obst & Gemüse"
+        },
+        {
+          "name": "Knoblauch",
+          "g": 5,
+          "abt": "Obst & Gemüse"
+        },
+        {
+          "name": "Limette",
+          "g": 4,
+          "abt": "Obst & Gemüse"
+        }
+      ],
+      "schritte": [
+        "Tofu zwischen zwei Lagen Küchenpapier 10 Minuten mit etwas Schwerem beschweren. Das ausgepresste Wasser ist der Unterschied zwischen knusprig und labberig.",
+        "In Würfel schneiden, in Öl rundum goldbraun braten, herausnehmen.",
+        "Zwiebel, Ingwer und Knoblauch anbraten, Erdnussmus, passierte Tomaten, Kokosmilch, Sojasauce und 150 ml Wasser zugeben, glatt rühren.",
+        "Brokkoliröschen zugeben, 8 Minuten bei geschlossenem Deckel garen.",
+        "Tofu zurück in die Pfanne, mit Limettensaft abschmecken.",
+        "Reis parallel garen."
+      ]
+    },
+    {
+      "id": "gefuellte-suesskartoffeln",
+      "name": "Gefüllte Süßkartoffeln",
+      "kategorie": "mittag",
+      "zeitMin": 50,
+      "kalt": false,
+      "kcal": 884,
+      "protein": 55,
+      "zutaten": [
+        {
+          "name": "Süßkartoffel",
+          "g": 300,
+          "abt": "Obst & Gemüse"
+        },
+        {
+          "name": "Schwarze Bohnen (Dose, abgetropft)",
+          "g": 150,
+          "abt": "Konserven"
+        },
+        {
+          "name": "Magerquark",
+          "g": 150,
+          "abt": "Kühlregal"
+        },
+        {
+          "name": "Feta",
+          "g": 50,
+          "abt": "Kühlregal"
+        },
+        {
+          "name": "Räuchertofu",
+          "g": 80,
+          "abt": "Kühlregal"
+        },
+        {
+          "name": "Zwiebel",
+          "g": 50,
+          "abt": "Obst & Gemüse"
+        },
+        {
+          "name": "Olivenöl",
+          "g": 8,
+          "abt": "Öl & Gewürze",
+          "vorrat": true
+        },
+        {
+          "name": "Paprikapulver, Kreuzkümmel, Limette",
+          "g": 6,
+          "abt": "Öl & Gewürze",
+          "vorrat": true
+        }
+      ],
+      "schritte": [
+        "Ofen auf 200 °C vorheizen. Süßkartoffeln mehrfach mit der Gabel einstechen und 45 Minuten backen, bis sie weich sind. Das läuft ohne dich – gute Gelegenheit fürs Laufband.",
+        "Zwiebel und zerbröselten Räuchertofu in Öl anbraten, Bohnen und Gewürze zugeben, 5 Minuten mitbraten.",
+        "Süßkartoffeln längs aufschneiden, das Fruchtfleisch etwas auflockern.",
+        "Magerquark mit Limettensaft, Salz und Pfeffer verrühren.",
+        "Bohnenmischung in die Süßkartoffeln füllen, Quarkcreme darauf, Feta darüberbröseln."
+      ]
+    },
+    {
+      "id": "falafel-bowl",
+      "name": "Falafel-Bowl mit Joghurtsauce",
+      "kategorie": "mittag",
+      "zeitMin": 35,
+      "kalt": true,
+      "kcal": 815,
+      "protein": 48,
+      "zutaten": [
+        {
+          "name": "Kichererbsen (trocken, über Nacht eingeweicht)",
+          "g": 100,
+          "abt": "Trockenware"
+        },
+        {
+          "name": "Bulgur (trocken)",
+          "g": 50,
+          "abt": "Trockenware"
+        },
+        {
+          "name": "Skyr",
+          "g": 200,
+          "abt": "Kühlregal"
+        },
+        {
+          "name": "Tomaten",
+          "g": 100,
+          "abt": "Obst & Gemüse"
+        },
+        {
+          "name": "Karotte",
+          "g": 60,
+          "abt": "Obst & Gemüse"
+        },
+        {
+          "name": "Petersilie",
+          "g": 20,
+          "abt": "Obst & Gemüse"
+        },
+        {
+          "name": "Zwiebel",
+          "g": 40,
+          "abt": "Obst & Gemüse"
+        },
+        {
+          "name": "Olivenöl",
+          "g": 8,
+          "abt": "Öl & Gewürze",
+          "vorrat": true
+        },
+        {
+          "name": "Kreuzkümmel, Backpulver, Zitrone, Knoblauch",
+          "g": 8,
+          "abt": "Öl & Gewürze",
+          "vorrat": true
+        }
+      ],
+      "schritte": [
+        "Wichtig: getrocknete Kichererbsen über Nacht einweichen, NICHT aus der Dose nehmen. Dosenkichererbsen zerfallen im Ofen zu Brei – das ist der häufigste Grund, warum selbstgemachte Falafel misslingen.",
+        "Eingeweichte Kichererbsen abtropfen und mit Zwiebel, Petersilie, Knoblauch, Kreuzkümmel, Salz und einer Prise Backpulver im Mixer zu grobem Grieß zerkleinern – nicht zu Püree.",
+        "Masse 20 Minuten kalt stellen, dann zu 6 Bällchen formen und flach drücken.",
+        "Mit Öl bestreichen und bei 200 °C 20 Minuten backen, nach 12 Minuten wenden.",
+        "Bulgur mit der doppelten Menge kochendem Wasser übergießen, 15 Minuten quellen lassen.",
+        "Skyr mit Zitronensaft, Knoblauch und Salz zur Sauce verrühren. Bowl schichten: Bulgur, Tomaten, geraspelte Karotte, Falafel, Sauce.",
+        "Schmeckt kalt genauso gut – idealer Bürotag-Kandidat."
+      ]
+    },
+    {
+      "id": "spinat-ricotta-auflauf",
+      "name": "Spinat-Ricotta-Auflauf",
+      "kategorie": "mittag",
+      "zeitMin": 45,
+      "kalt": false,
+      "kcal": 894,
+      "protein": 66,
+      "zutaten": [
+        {
+          "name": "Blattspinat (TK)",
+          "g": 300,
+          "abt": "Tiefkühl"
+        },
+        {
+          "name": "Ricotta",
+          "g": 150,
+          "abt": "Kühlregal"
+        },
+        {
+          "name": "Magerquark",
+          "g": 100,
+          "abt": "Kühlregal"
+        },
+        {
+          "name": "Eier",
+          "g": 120,
+          "abt": "Kühlregal",
+          "stk": 2
+        },
+        {
+          "name": "Vollkornnudeln (trocken)",
+          "g": 60,
+          "abt": "Trockenware"
+        },
+        {
+          "name": "Parmesan",
+          "g": 20,
+          "abt": "Kühlregal"
+        },
+        {
+          "name": "Zwiebel",
+          "g": 50,
+          "abt": "Obst & Gemüse"
+        },
+        {
+          "name": "Olivenöl",
+          "g": 6,
+          "abt": "Öl & Gewürze",
+          "vorrat": true
+        },
+        {
+          "name": "Muskat, Knoblauch",
+          "g": 5,
+          "abt": "Öl & Gewürze",
+          "vorrat": true
+        }
+      ],
+      "schritte": [
+        "Spinat auftauen und kräftig ausdrücken. Wirklich kräftig – restliches Wasser macht den Auflauf zur Suppe.",
+        "Nudeln 2 Minuten kürzer als angegeben kochen, sie garen im Ofen nach.",
+        "Zwiebel und Knoblauch in Öl anbraten, Spinat kurz mitbraten.",
+        "Ricotta, Magerquark und Eier verquirlen, kräftig mit Salz, Pfeffer und Muskat würzen. Die Masse muss vor dem Backen leicht zu salzig schmecken, der Spinat schluckt viel.",
+        "Alles mischen, in eine Auflaufform geben, Parmesan darüber.",
+        "Bei 180 °C 25 Minuten backen, bis die Oberfläche goldbraun ist.",
+        "Mit 66 g Protein das eiweißreichste Mittagessen im Pool – gut für die Tage nach dem langen Lauf."
+      ]
+    },
+    {
+      "id": "bohnen-gulasch",
+      "name": "Bohnen-Gulasch",
+      "kategorie": "mittag",
+      "zeitMin": 40,
+      "kalt": false,
+      "kcal": 842,
+      "protein": 55,
+      "zutaten": [
+        {
+          "name": "Weiße Bohnen (Dose, abgetropft)",
+          "g": 250,
+          "abt": "Konserven"
+        },
+        {
+          "name": "Kartoffeln",
+          "g": 200,
+          "abt": "Obst & Gemüse"
+        },
+        {
+          "name": "Zwiebel",
+          "g": 100,
+          "abt": "Obst & Gemüse"
+        },
+        {
+          "name": "Passierte Tomaten",
+          "g": 150,
+          "abt": "Konserven"
+        },
+        {
+          "name": "Räuchertofu",
+          "g": 100,
+          "abt": "Kühlregal"
+        },
+        {
+          "name": "Rapsöl",
+          "g": 8,
+          "abt": "Öl & Gewürze",
+          "vorrat": true
+        },
+        {
+          "name": "Magerquark",
+          "g": 100,
+          "abt": "Kühlregal"
+        },
+        {
+          "name": "Paprikapulver edelsüß, Kümmel, Majoran",
+          "g": 6,
+          "abt": "Öl & Gewürze",
+          "vorrat": true
+        }
+      ],
+      "schritte": [
+        "Zwiebeln in Ringe schneiden und in Öl 10 Minuten bei mittlerer Hitze weich schmoren. Diese lange Zwiebelzeit ist beim Gulasch der ganze Geschmack – nicht abkürzen.",
+        "Topf vom Herd nehmen, Paprikapulver einrühren. Paprikapulver verbrennt bei voller Hitze und wird bitter.",
+        "Zurück auf den Herd, passierte Tomaten, Kümmel, Majoran und 300 ml Wasser zugeben.",
+        "Kartoffelwürfel zugeben, 20 Minuten köcheln.",
+        "Gewürfelten Räuchertofu und Bohnen zugeben, 8 Minuten mitziehen lassen, salzen.",
+        "Magerquark erst auf dem Teller unterrühren."
+      ]
+    },
+    {
+      "id": "pilzrisotto",
+      "name": "Pilzrisotto",
+      "kategorie": "mittag",
+      "zeitMin": 35,
+      "kalt": false,
+      "kcal": 846,
+      "protein": 52,
+      "zutaten": [
+        {
+          "name": "Risottoreis",
+          "g": 80,
+          "abt": "Trockenware"
+        },
+        {
+          "name": "Champignons",
+          "g": 250,
+          "abt": "Obst & Gemüse"
+        },
+        {
+          "name": "Zwiebel",
+          "g": 60,
+          "abt": "Obst & Gemüse"
+        },
+        {
+          "name": "Parmesan",
+          "g": 35,
+          "abt": "Kühlregal"
+        },
+        {
+          "name": "Magerquark",
+          "g": 150,
+          "abt": "Kühlregal"
+        },
+        {
+          "name": "Erbsen (TK)",
+          "g": 100,
+          "abt": "Tiefkühl"
+        },
+        {
+          "name": "Walnüsse",
+          "g": 15,
+          "abt": "Trockenware"
+        },
+        {
+          "name": "Olivenöl",
+          "g": 8,
+          "abt": "Öl & Gewürze",
+          "vorrat": true
+        },
+        {
+          "name": "Gemüsebrühe (Pulver)",
+          "g": 8,
+          "abt": "Öl & Gewürze",
+          "vorrat": true
+        }
+      ],
+      "schritte": [
+        "Champignons in dicke Scheiben schneiden und in einer trockenen, sehr heißen Pfanne ohne Öl anbraten, bis sie Farbe haben. Erst dann salzen. Salz am Anfang zieht das Wasser heraus und die Pilze kochen statt zu braten.",
+        "Pilze herausnehmen. Zwiebel in Öl glasig dünsten, Risottoreis 2 Minuten mitrösten.",
+        "Heiße Brühe kellenweise zugeben, immer erst nachgießen, wenn die vorige fast aufgesogen ist. Dauert etwa 18 Minuten.",
+        "Erbsen in den letzten 4 Minuten zugeben.",
+        "Topf vom Herd, Parmesan und Magerquark unterrühren – der Quark ersetzt Butter und Sahne und bringt 18 g Protein. Nur ohne Hitze einrühren, sonst flockt er.",
+        "Pilze zurück, Walnüsse grob gehackt darüber."
+      ]
+    },
+    {
+      "id": "kichererbsen-tikka",
+      "name": "Kichererbsen-Tikka",
+      "kategorie": "mittag",
+      "zeitMin": 35,
+      "kalt": false,
+      "kcal": 830,
+      "protein": 57,
+      "zutaten": [
+        {
+          "name": "Kichererbsen (Dose, abgetropft)",
+          "g": 200,
+          "abt": "Konserven"
+        },
+        {
+          "name": "Räuchertofu",
+          "g": 80,
+          "abt": "Kühlregal"
+        },
+        {
+          "name": "Naturjoghurt 1,5 %",
+          "g": 150,
+          "abt": "Kühlregal"
+        },
+        {
+          "name": "Passierte Tomaten",
+          "g": 150,
+          "abt": "Konserven"
+        },
+        {
+          "name": "Zwiebel",
+          "g": 70,
+          "abt": "Obst & Gemüse"
+        },
+        {
+          "name": "Basmatireis (trocken)",
+          "g": 35,
+          "abt": "Trockenware"
+        },
+        {
+          "name": "Rapsöl",
+          "g": 8,
+          "abt": "Öl & Gewürze",
+          "vorrat": true
+        },
+        {
+          "name": "Skyr",
+          "g": 150,
+          "abt": "Kühlregal"
+        },
+        {
+          "name": "Garam Masala, Paprikapulver, Ingwer, Knoblauch",
+          "g": 10,
+          "abt": "Öl & Gewürze",
+          "vorrat": true
+        }
+      ],
+      "schritte": [
+        "Kichererbsen und gewürfelten Räuchertofu mit dem Naturjoghurt, Ingwer, Knoblauch und der Hälfte der Gewürze mischen und mindestens 20 Minuten marinieren – über Nacht ist besser.",
+        "Marinierte Mischung auf einem Blech bei 220 °C 15 Minuten rösten, bis Röstspuren entstehen. Diese Röstaromen sind der Unterschied zum normalen Curry.",
+        "Parallel Zwiebel in Öl anbraten, restliche Gewürze mitrösten, passierte Tomaten zugeben und 10 Minuten einkochen.",
+        "Geröstete Kichererbsen und Tofu in die Sauce geben, 3 Minuten ziehen lassen.",
+        "Reis parallel garen. Skyr beim Essen dazu."
+      ]
+    },
+    {
+      "id": "beluga-pilz-ragout",
+      "name": "Nudeln mit Beluga-Pilz-Ragout",
+      "kategorie": "mittag",
+      "zeitMin": 40,
+      "kalt": false,
+      "kcal": 819,
+      "protein": 53,
+      "zutaten": [
+        {
+          "name": "Belugalinsen (trocken)",
+          "g": 80,
+          "abt": "Trockenware"
+        },
+        {
+          "name": "Champignons",
+          "g": 200,
+          "abt": "Obst & Gemüse"
+        },
+        {
+          "name": "Vollkornnudeln (trocken)",
+          "g": 70,
+          "abt": "Trockenware"
+        },
+        {
+          "name": "Zwiebel",
+          "g": 60,
+          "abt": "Obst & Gemüse"
+        },
+        {
+          "name": "Passierte Tomaten",
+          "g": 100,
+          "abt": "Konserven"
+        },
+        {
+          "name": "Parmesan",
+          "g": 20,
+          "abt": "Kühlregal"
+        },
+        {
+          "name": "Magerquark",
+          "g": 80,
+          "abt": "Kühlregal"
+        },
+        {
+          "name": "Olivenöl",
+          "g": 8,
+          "abt": "Öl & Gewürze",
+          "vorrat": true
+        },
+        {
+          "name": "Thymian, Lorbeer, Balsamico",
+          "g": 8,
+          "abt": "Öl & Gewürze",
+          "vorrat": true
+        }
+      ],
+      "schritte": [
+        "Belugalinsen in Salzwasser 20 Minuten garen, abgießen. Sie behalten im Gegensatz zu roten Linsen Biss – deshalb passen sie hier.",
+        "Champignons in Scheiben in heißer Pfanne ohne Öl anbraten, bis Farbe da ist, dann salzen und herausnehmen.",
+        "Zwiebel in Öl anbraten, mit einem Schuss Balsamico ablöschen, passierte Tomaten, Thymian und Lorbeer zugeben, 10 Minuten einkochen.",
+        "Linsen und Pilze unterrühren, abschmecken.",
+        "Nudeln al dente kochen, etwas Nudelwasser auffangen und ins Ragout geben – das bindet die Sauce.",
+        "Vom Herd genommen Magerquark unterrühren, mit Parmesan servieren."
+      ]
+    },
+    {
+      "id": "halloumi-bowl",
+      "name": "Halloumi-Bowl mit Bulgur",
+      "kategorie": "mittag",
+      "zeitMin": 25,
+      "kalt": true,
+      "kcal": 850,
+      "protein": 52,
+      "zutaten": [
+        {
+          "name": "Halloumi",
+          "g": 100,
+          "abt": "Kühlregal"
+        },
+        {
+          "name": "Bulgur (trocken)",
+          "g": 60,
+          "abt": "Trockenware"
+        },
+        {
+          "name": "Kichererbsen (Dose, abgetropft)",
+          "g": 120,
+          "abt": "Konserven"
+        },
+        {
+          "name": "Tomaten",
+          "g": 100,
+          "abt": "Obst & Gemüse"
+        },
+        {
+          "name": "Rote Zwiebel",
+          "g": 40,
+          "abt": "Obst & Gemüse"
+        },
+        {
+          "name": "Petersilie",
+          "g": 20,
+          "abt": "Obst & Gemüse"
+        },
+        {
+          "name": "Skyr",
+          "g": 120,
+          "abt": "Kühlregal"
+        },
+        {
+          "name": "Olivenöl",
+          "g": 8,
+          "abt": "Öl & Gewürze",
+          "vorrat": true
+        },
+        {
+          "name": "Zitrone, Minze, Sumach",
+          "g": 10,
+          "abt": "Öl & Gewürze",
+          "vorrat": true
+        }
+      ],
+      "schritte": [
+        "Bulgur mit der doppelten Menge kochendem Wasser übergießen, salzen, 15 Minuten zugedeckt quellen lassen, dann mit der Gabel auflockern.",
+        "Halloumi in 1 cm Scheiben schneiden und in einer trockenen Pfanne von beiden Seiten goldbraun braten. Halloumi braucht kein Öl, er bringt genug eigenes Fett mit.",
+        "Tomaten, rote Zwiebel und Petersilie fein schneiden, mit Olivenöl, Zitronensaft und Sumach zu einem Salat mischen.",
+        "Skyr mit Minze, Zitrone und Salz zum Dip verrühren.",
+        "Bowl schichten: Bulgur, Kichererbsen, Salat, Halloumi, Dip.",
+        "Kalt genauso gut – der Halloumi wird fester, das stört nicht."
+      ]
+    },
+    {
+      "id": "ruehrei-huettenkaese",
+      "name": "Rührei mit Hüttenkäse",
+      "kategorie": "abend",
+      "zeitMin": 8,
+      "kalt": false,
+      "kcal": 648,
+      "protein": 62,
+      "zutaten": [
+        {
+          "name": "Eier",
+          "g": 180,
+          "abt": "Kühlregal",
+          "stk": 3
+        },
+        {
+          "name": "Hüttenkäse",
+          "g": 150,
+          "abt": "Kühlregal"
+        },
+        {
+          "name": "Harzer Käse",
+          "g": 50,
+          "abt": "Kühlregal"
+        },
+        {
+          "name": "Vollkornbrot",
+          "g": 60,
+          "abt": "Backwaren"
+        },
+        {
+          "name": "Butter",
+          "g": 5,
+          "abt": "Kühlregal"
+        },
+        {
+          "name": "Tomaten",
+          "g": 80,
+          "abt": "Obst & Gemüse"
+        },
+        {
+          "name": "Schnittlauch",
+          "g": 10,
+          "abt": "Obst & Gemüse"
+        }
+      ],
+      "schritte": [
+        "Eier mit dem Hüttenkäse verquirlen und salzen. Der Hüttenkäse macht das Rührei cremig und bringt 18 g Protein, ohne dass es nach Quark schmeckt.",
+        "Butter in der Pfanne bei mittlerer Hitze schmelzen – nicht heiß werden lassen. Rührei gehört bei kleiner Hitze gemacht, sonst wird es trocken.",
+        "Eimasse hineingeben und mit dem Spatel langsam von außen nach innen schieben. Vom Herd nehmen, solange es noch leicht glänzt, es gart nach.",
+        "Mit Schnittlauch bestreuen, Harzer und Tomate dazu, Vollkornbrot daneben.",
+        "Braucht 8 Minuten – das Gericht für die Abende, an denen du um 20 Uhr vom Lauf reinkommst."
+      ]
+    },
+    {
+      "id": "quarkcreme-ei",
+      "name": "Herzhafte Quarkcreme mit Ei",
+      "kategorie": "abend",
+      "zeitMin": 10,
+      "kalt": true,
+      "kcal": 630,
+      "protein": 54,
+      "zutaten": [
+        {
+          "name": "Magerquark",
+          "g": 250,
+          "abt": "Kühlregal"
+        },
+        {
+          "name": "Eier",
+          "g": 120,
+          "abt": "Kühlregal",
+          "stk": 2
+        },
+        {
+          "name": "Vollkornbrot",
+          "g": 90,
+          "abt": "Backwaren"
+        },
+        {
+          "name": "Leinöl",
+          "g": 8,
+          "abt": "Öl & Gewürze",
+          "vorrat": true
+        },
+        {
+          "name": "Zwiebel",
+          "g": 30,
+          "abt": "Obst & Gemüse"
+        },
+        {
+          "name": "Radieschen",
+          "g": 60,
+          "abt": "Obst & Gemüse"
+        },
+        {
+          "name": "Schnittlauch",
+          "g": 8,
+          "abt": "Obst & Gemüse"
+        },
+        {
+          "name": "Petersilie",
+          "g": 7,
+          "abt": "Obst & Gemüse"
+        }
+      ],
+      "schritte": [
+        "Eier 8 Minuten kochen, kalt abschrecken, pellen und vierteln.",
+        "Magerquark mit 2 EL Wasser und dem Leinöl glatt rühren – ohne Flüssigkeit bleibt er pappig.",
+        "Fein gehackte Zwiebel und Kräuter unterrühren, kräftig salzen und pfeffern.",
+        "Radieschen in Scheiben schneiden und untermischen.",
+        "Mit den Eivierteln und Vollkornbrot servieren.",
+        "Leinöl statt Butter: gleiche Cremigkeit, aber Omega-3 statt gesättigter Fettsäuren."
+      ]
+    },
+    {
+      "id": "skyr-bowl",
+      "name": "Skyr-Bowl mit Proteinpulver",
+      "kategorie": "abend",
+      "zeitMin": 3,
+      "kalt": true,
+      "kcal": 587,
+      "protein": 62,
+      "zutaten": [
+        {
+          "name": "Skyr",
+          "g": 300,
+          "abt": "Kühlregal"
+        },
+        {
+          "name": "Proteinpulver (Whey)",
+          "g": 25,
+          "abt": "Trockenware"
+        },
+        {
+          "name": "Beeren (TK)",
+          "g": 150,
+          "abt": "Tiefkühl"
+        },
+        {
+          "name": "Walnüsse",
+          "g": 20,
+          "abt": "Trockenware"
+        },
+        {
+          "name": "Haferflocken",
+          "g": 30,
+          "abt": "Trockenware"
+        }
+      ],
+      "schritte": [
+        "Beeren 30 Sekunden in der Mikrowelle antauen oder abends vorher in den Kühlschrank stellen.",
+        "Skyr mit dem Proteinpulver und 3–4 EL Wasser glatt rühren. Ohne Wasser wird die Masse zäh – lieber löffelweise zugeben, bis die Konsistenz stimmt.",
+        "Beeren, Haferflocken und grob gehackte Walnüsse darübergeben.",
+        "3 Minuten, 62 g Protein, kein Kochen. Das ist die Notfallvariante für Abende, an denen gar nichts mehr geht."
+      ]
+    },
+    {
+      "id": "lachspfanne",
+      "name": "Lachspfanne mit Süßkartoffel",
+      "kategorie": "abend",
+      "zeitMin": 15,
+      "kalt": false,
+      "kcal": 718,
+      "protein": 55,
+      "zutaten": [
+        {
+          "name": "Lachsfilet",
+          "g": 180,
+          "abt": "Fisch"
+        },
+        {
+          "name": "Süßkartoffel",
+          "g": 200,
+          "abt": "Obst & Gemüse"
+        },
+        {
+          "name": "Brokkoli",
+          "g": 150,
+          "abt": "Obst & Gemüse"
+        },
+        {
+          "name": "Skyr",
+          "g": 100,
+          "abt": "Kühlregal"
+        },
+        {
+          "name": "Olivenöl",
+          "g": 8,
+          "abt": "Öl & Gewürze",
+          "vorrat": true
+        },
+        {
+          "name": "Zitrone",
+          "g": 8,
+          "abt": "Obst & Gemüse"
+        },
+        {
+          "name": "Dill",
+          "g": 4,
+          "abt": "Obst & Gemüse"
+        },
+        {
+          "name": "Knoblauch",
+          "g": 3,
+          "abt": "Obst & Gemüse"
+        }
+      ],
+      "schritte": [
+        "Süßkartoffel in dünne Scheiben schneiden (5 mm) und in Öl 8 Minuten in der Pfanne braten. Dünn geschnitten geht es ohne Vorkochen.",
+        "Brokkoliröschen dazu, 2 EL Wasser angießen, Deckel drauf, 4 Minuten dämpfen.",
+        "Gemüse an den Rand schieben, Lachs mit der Hautseite nach unten in die Mitte legen. 4 Minuten auf der Haut, 1 Minute auf der Fleischseite – mehr braucht er nicht.",
+        "Skyr mit Dill, Zitrone, Knoblauch und Salz zur Sauce verrühren.",
+        "Ein Fischgericht pro Woche reicht, um die Proteinrechnung deutlich zu entspannen."
+      ]
+    },
+    {
+      "id": "ofen-feta-kichererbsen",
+      "name": "Ofen-Feta mit Kichererbsen",
+      "kategorie": "abend",
+      "zeitMin": 25,
+      "kalt": false,
+      "kcal": 754,
+      "protein": 49,
+      "zutaten": [
+        {
+          "name": "Feta",
+          "g": 100,
+          "abt": "Kühlregal"
+        },
+        {
+          "name": "Kichererbsen (Dose, abgetropft)",
+          "g": 250,
+          "abt": "Konserven"
+        },
+        {
+          "name": "Kirschtomaten",
+          "g": 150,
+          "abt": "Obst & Gemüse"
+        },
+        {
+          "name": "Skyr",
+          "g": 150,
+          "abt": "Kühlregal"
+        },
+        {
+          "name": "Olivenöl",
+          "g": 8,
+          "abt": "Öl & Gewürze",
+          "vorrat": true
+        },
+        {
+          "name": "Knoblauch, Oregano, Chiliflocken",
+          "g": 8,
+          "abt": "Öl & Gewürze",
+          "vorrat": true
+        }
+      ],
+      "schritte": [
+        "Ofen auf 200 °C vorheizen.",
+        "Kichererbsen, Kirschtomaten, Knoblauch, Öl und Gewürze in einer Auflaufform mischen, den Feta am Stück in die Mitte setzen.",
+        "20 Minuten backen. In dieser Zeit machst du nichts – der ideale Slot fürs Duschen nach dem Lauf.",
+        "Feta mit der Gabel zerdrücken und alles vermengen, bis eine cremige Sauce entsteht.",
+        "Skyr daneben oder untergerührt."
+      ]
+    },
+    {
+      "id": "vesper",
+      "name": "Vesper (protein-optimiert)",
+      "kategorie": "abend",
+      "zeitMin": 5,
+      "kalt": true,
+      "kcal": 614,
+      "protein": 59,
+      "zutaten": [
+        {
+          "name": "Eier",
+          "g": 180,
+          "abt": "Kühlregal",
+          "stk": 3
+        },
+        {
+          "name": "Hüttenkäse",
+          "g": 100,
+          "abt": "Kühlregal"
+        },
+        {
+          "name": "Harzer Käse",
+          "g": 60,
+          "abt": "Kühlregal"
+        },
+        {
+          "name": "Vollkornbrot",
+          "g": 60,
+          "abt": "Backwaren"
+        },
+        {
+          "name": "Butter",
+          "g": 5,
+          "abt": "Kühlregal"
+        },
+        {
+          "name": "Tomaten",
+          "g": 50,
+          "abt": "Obst & Gemüse"
+        },
+        {
+          "name": "Radieschen",
+          "g": 50,
+          "abt": "Obst & Gemüse"
+        }
+      ],
+      "schritte": [
+        "Eier 8 Minuten kochen oder als Spiegelei braten.",
+        "Brot dünn mit Butter bestreichen – 5 g reichen für den Geschmack, 30 g kosten 220 kcal ohne jedes Protein.",
+        "Harzer mit Zwiebelringen, etwas Essig, Öl, Salz und Kümmel anmachen und 10 Minuten ziehen lassen. Das nimmt ihm die Schärfe und macht ihn deutlich zugänglicher.",
+        "Hüttenkäse mit Salz, Pfeffer und Schnittlauch aufs Brot.",
+        "Tomate und Radieschen dazu.",
+        "Der Vergleich: Mit 30 g Butter und 60 g Gouda wären das 840 kcal für 43 g Protein. So sind es 614 kcal für 59 g."
+      ]
+    },
+    {
+      "id": "overnight-oats",
+      "name": "Overnight Oats mit Proteinpulver",
+      "kategorie": "fruehstueck",
+      "zeitMin": 5,
+      "kalt": true,
+      "kcal": 739,
+      "protein": 65,
+      "zutaten": [
+        {
+          "name": "Haferflocken",
+          "g": 65,
+          "abt": "Trockenware"
+        },
+        {
+          "name": "Skyr",
+          "g": 200,
+          "abt": "Kühlregal"
+        },
+        {
+          "name": "Milch 1,5 %",
+          "g": 150,
+          "abt": "Kühlregal"
+        },
+        {
+          "name": "Proteinpulver (Whey)",
+          "g": 30,
+          "abt": "Trockenware"
+        },
+        {
+          "name": "Beeren (TK)",
+          "g": 100,
+          "abt": "Tiefkühl"
+        },
+        {
+          "name": "Walnüsse",
+          "g": 15,
+          "abt": "Trockenware"
+        },
+        {
+          "name": "Chiasamen",
+          "g": 10,
+          "abt": "Trockenware"
+        }
+      ],
+      "schritte": [
+        "Haferflocken, Skyr, Milch, Proteinpulver und Chiasamen in ein Schraubglas geben und kräftig durchrühren. Das Proteinpulver muss vor dem Kühlschrank vollständig eingerührt sein, sonst bleiben Klumpen.",
+        "Über Nacht in den Kühlschrank. Hält 5 Tage – sonntags 5 Gläser auf einmal vorbereiten.",
+        "Beeren und Walnüsse erst am Morgen dazu. Beeren färben und wässern über Nacht, Nüsse werden weich.",
+        "Im Glas transportabel: daheim oder im Büro essen, die Entscheidung fällt spontan.",
+        "Das wichtigste Gericht im ganzen Plan – es entscheidet, ob du satt oder nüchtern am Betriebscafé vorbeigehst."
+      ]
+    },
+    {
+      "id": "joghurtschuessel",
+      "name": "Große Joghurtschüssel",
+      "kategorie": "fruehstueck",
+      "zeitMin": 4,
+      "kalt": true,
+      "kcal": 682,
+      "protein": 51,
+      "zutaten": [
+        {
+          "name": "Griechischer Joghurt 2 %",
+          "g": 250,
+          "abt": "Kühlregal"
+        },
+        {
+          "name": "Skyr",
+          "g": 150,
+          "abt": "Kühlregal"
+        },
+        {
+          "name": "Haferflocken",
+          "g": 50,
+          "abt": "Trockenware"
+        },
+        {
+          "name": "Banane",
+          "g": 100,
+          "abt": "Obst & Gemüse"
+        },
+        {
+          "name": "Mandeln",
+          "g": 20,
+          "abt": "Trockenware"
+        }
+      ],
+      "schritte": [
+        "Griechischen Joghurt und Skyr verrühren – die Mischung ist cremiger als Skyr allein und deutlich proteinreicher als Joghurt allein.",
+        "Haferflocken unterrühren und 5 Minuten stehen lassen, damit sie quellen.",
+        "Banane in Scheiben und gehackte Mandeln darüber.",
+        "Optional mit Zimt – nimmt die Süße-Erwartung, ohne Zucker zu brauchen."
+      ]
+    },
+    {
+      "id": "eier-vollkornbrot",
+      "name": "Eier mit Vollkornbrot",
+      "kategorie": "fruehstueck",
+      "zeitMin": 12,
+      "kalt": false,
+      "kcal": 722,
+      "protein": 72,
+      "zutaten": [
+        {
+          "name": "Eier",
+          "g": 180,
+          "abt": "Kühlregal",
+          "stk": 3
+        },
+        {
+          "name": "Vollkornbrot",
+          "g": 90,
+          "abt": "Backwaren"
+        },
+        {
+          "name": "Harzer Käse",
+          "g": 80,
+          "abt": "Kühlregal"
+        },
+        {
+          "name": "Skyr",
+          "g": 150,
+          "abt": "Kühlregal"
+        },
+        {
+          "name": "Butter",
+          "g": 8,
+          "abt": "Kühlregal"
+        },
+        {
+          "name": "Tomaten",
+          "g": 100,
+          "abt": "Obst & Gemüse"
+        }
+      ],
+      "schritte": [
+        "Eier nach Wunsch als Spiegelei, Rührei oder gekocht zubereiten.",
+        "Brot dünn buttern, Harzer und Tomate darauf.",
+        "Skyr separat dazu – bringt nochmal 16 g Protein.",
+        "Mit 72 g Protein das stärkste Frühstück im Pool. Braucht 12 Minuten, also die Variante für Homeoffice-Tage, nicht für Bürotage."
+      ]
+    }
+  ]
+}

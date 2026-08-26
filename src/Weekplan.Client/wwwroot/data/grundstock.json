@@ -1,0 +1,74 @@
+{
+  "hinweis": "Einmaliger Vorratseinkauf, Reichweite ca. 4 Wochen. Geschätzte Kosten 120–160 €. Danach steht auf der Wochenliste nur noch Frischware für 45–60 € — deshalb sind diese Positionen bewusst getrennt.",
+  "gruppen": [
+    {
+      "name": "Trockenware",
+      "artikel": [
+        {"name": "Haferflocken (zart)", "menge": "1.500 g", "reichweite": "4 Wochen"},
+        {"name": "Basmatireis", "menge": "1.000 g", "reichweite": "4 Wochen"},
+        {"name": "Risottoreis (Arborio)", "menge": "500 g", "reichweite": "6 Portionen"},
+        {"name": "Bulgur", "menge": "500 g", "reichweite": "8 Portionen"},
+        {"name": "Vollkornnudeln", "menge": "1.000 g", "reichweite": "14 Portionen"},
+        {"name": "Rote Linsen", "menge": "1.000 g", "reichweite": "9 Portionen"},
+        {"name": "Tellerlinsen", "menge": "500 g", "reichweite": "6 Portionen"},
+        {"name": "Belugalinsen", "menge": "500 g", "reichweite": "6 Portionen"},
+        {"name": "Kichererbsen getrocknet", "menge": "500 g", "reichweite": "5 Falafel-Portionen"},
+        {"name": "Chiasamen", "menge": "250 g", "reichweite": "4 Wochen"},
+        {"name": "Walnüsse", "menge": "500 g", "reichweite": "4 Wochen"},
+        {"name": "Mandeln", "menge": "250 g", "reichweite": "4 Wochen"},
+        {"name": "Erdnussmus (ohne Zuckerzusatz)", "menge": "500 g", "reichweite": "16 Portionen"},
+        {"name": "Proteinpulver Whey (neutral oder Vanille)", "menge": "1.000 g", "reichweite": "ca. 3 Wochen"}
+      ]
+    },
+    {
+      "name": "Konserven",
+      "artikel": [
+        {"name": "Kichererbsen (Dose 400 g)", "menge": "8 Dosen", "reichweite": "Abtropfgewicht je ca. 240 g"},
+        {"name": "Kidneybohnen (Dose 400 g)", "menge": "4 Dosen", "reichweite": "4 Wochen"},
+        {"name": "Schwarze Bohnen (Dose 400 g)", "menge": "4 Dosen", "reichweite": "4 Wochen"},
+        {"name": "Weiße Bohnen (Dose 400 g)", "menge": "3 Dosen", "reichweite": "3 Portionen Gulasch"},
+        {"name": "Mais (Dose 400 g)", "menge": "1 Dose", "reichweite": "nur fürs Chili"},
+        {"name": "Passierte Tomaten (500 g)", "menge": "8 Packungen", "reichweite": "meistgebrauchte Zutat im Pool"},
+        {"name": "Tomatenmark", "menge": "200 g", "reichweite": "4 Wochen"},
+        {"name": "Kokosmilch (400 ml)", "menge": "3 Dosen", "reichweite": "Rest einfrieren, sonst verdirbt er"}
+      ]
+    },
+    {
+      "name": "Öl & Gewürze",
+      "artikel": [
+        {"name": "Olivenöl", "menge": "750 ml", "reichweite": "4 Wochen"},
+        {"name": "Rapsöl", "menge": "500 ml", "reichweite": "4 Wochen"},
+        {"name": "Leinöl (in den Kühlschrank!)", "menge": "250 ml", "reichweite": "wird schnell ranzig"},
+        {"name": "Sojasauce", "menge": "250 ml", "reichweite": "lange"},
+        {"name": "Balsamico", "menge": "250 ml", "reichweite": "lange"},
+        {"name": "Gemüsebrühe (Pulver)", "menge": "1 Glas", "reichweite": "lange"},
+        {"name": "Kreuzkümmel gemahlen", "menge": "50 g", "reichweite": "meistgebrauchtes Gewürz"},
+        {"name": "Paprikapulver edelsüß", "menge": "50 g", "reichweite": "lange"},
+        {"name": "Currypulver", "menge": "50 g", "reichweite": "lange"},
+        {"name": "Garam Masala", "menge": "50 g", "reichweite": "lange"},
+        {"name": "Kurkuma", "menge": "50 g", "reichweite": "lange"},
+        {"name": "Senfsamen", "menge": "50 g", "reichweite": "fürs Dal"},
+        {"name": "Chiliflocken", "menge": "30 g", "reichweite": "lange"},
+        {"name": "Oregano, Thymian, Majoran", "menge": "je 20 g", "reichweite": "lange"},
+        {"name": "Kümmel ganz", "menge": "30 g", "reichweite": "fürs Gulasch"},
+        {"name": "Lorbeerblätter", "menge": "10 g", "reichweite": "lange"},
+        {"name": "Muskatnuss", "menge": "1 Stück", "reichweite": "lange"},
+        {"name": "Sumach", "menge": "50 g", "reichweite": "für die Bowls"},
+        {"name": "Zimt", "menge": "30 g", "reichweite": "fürs Frühstück"},
+        {"name": "Knoblauchpulver", "menge": "50 g", "reichweite": "lange"},
+        {"name": "Backpulver", "menge": "1 Packung", "reichweite": "für die Falafel"},
+        {"name": "Salz, Pfeffer", "menge": "nach Bedarf", "reichweite": "—"}
+      ]
+    },
+    {
+      "name": "Ausstattung (einmalig)",
+      "artikel": [
+        {"name": "Schraubgläser 500 ml (für Overnight Oats)", "menge": "5 Stück", "reichweite": "eine Arbeitswoche"},
+        {"name": "Meal-Prep-Boxen 800 ml, mikrowellenfest", "menge": "6 Stück", "reichweite": "800 ml, weil 900-kcal-Portionen groß sind"},
+        {"name": "Digitale Küchenwaage (auf 1 g genau)", "menge": "1 Stück", "reichweite": "Grundlage für jede Grammangabe hier"},
+        {"name": "Personenwaage", "menge": "1 Stück", "reichweite": "für den 7-Tage-Schnitt"},
+        {"name": "Verstellbare Kurzhanteln + Widerstandsbänder", "menge": "1 Set", "reichweite": "ca. 100–150 €, neben das Laufband stellen"}
+      ]
+    }
+  ]
+}
