@@ -1,0 +1,72 @@
+@inject WeekplanApi Api
+@inject Sitzung Sitzung
+
+<PageTitle>weekplan — Anmelden</PageTitle>
+
+<main class="mitte">
+    <form class="karte" @onsubmit="AnmeldenAsync" @onsubmit:preventDefault>
+        <h1>weekplan</h1>
+
+        <label for="benutzer">Benutzername</label>
+        <input id="benutzer" @bind="_benutzername" @bind:event="oninput"
+               autocomplete="username" autocapitalize="none" spellcheck="false" />
+
+        <label for="passwort">Passwort</label>
+        <input id="passwort" type="password" @bind="_passwort" @bind:event="oninput"
+               autocomplete="current-password" />
+
+        <button type="submit" class="haupt" disabled="@(_sendet || !Vollstaendig)">
+            @(_sendet ? "Meldet an …" : "Anmelden")
+        </button>
+
+        @if (_fehler is not null)
+        {
+            <p class="fehler" role="alert">
+                <span class="zeichen" aria-hidden="true">✕</span> @_fehler
+            </p>
+        }
+    </form>
+</main>
+
+@code {
+    private string _benutzername = string.Empty;
+    private string _passwort = string.Empty;
+    private bool _sendet;
+    private string? _fehler;
+
+    private bool Vollstaendig => _benutzername.Length > 0 && _passwort.Length > 0;
+
+    private async Task AnmeldenAsync()
+    {
+        if (_sendet || !Vollstaendig) return;
+
+        _sendet = true;
+        _fehler = null;
+        try
+        {
+            var merkmal = await Api.AnmeldenAsync(_benutzername, _passwort);
+            if (merkmal is null)
+            {
+                // Nie sagen, welches der beiden falsch war — sonst verraet die
+                // Meldung, welche Benutzernamen es gibt.
+                _fehler = "Benutzername oder Passwort stimmt nicht.";
+                _passwort = string.Empty;
+                return;
+            }
+
+            await Sitzung.AnmeldenAsync(merkmal);
+        }
+        catch (InvalidOperationException zuViele)
+        {
+            _fehler = zuViele.Message;
+        }
+        catch (Exception)
+        {
+            _fehler = "Der Server ist gerade nicht erreichbar.";
+        }
+        finally
+        {
+            _sendet = false;
+        }
+    }
+}

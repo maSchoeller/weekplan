@@ -1,0 +1,161 @@
+h1 {
+  margin: 0 0 var(--sp-2);
+  font-size: 1.5rem;
+  letter-spacing: -.01em;
+}
+
+.hinweis {
+  margin: 0 0 var(--sp-4);
+  max-width: 62ch;
+  color: var(--text-dim);
+  font-size: .9375rem;
+}
+
+.block {
+  margin-bottom: var(--sp-8);
+  padding: var(--sp-4);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+}
+
+.block h2 {
+  margin: 0 0 var(--sp-4);
+  font-size: 1.125rem;
+}
+
+.phasenwahl {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-4);
+}
+
+.phasenwahl label {
+  color: var(--text-dim);
+  font-size: .8125rem;
+}
+
+.phasenwahl select {
+  flex: 1 1 16rem;
+  /* Ohne min-width:0 waechst ein Flex-Element auf die Breite seines
+     laengsten Eintrags — bei 375 px stand die Haelfte ausserhalb. */
+  min-width: 0;
+  min-height: 44px;
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  font: inherit;
+}
+
+.beschreibung {
+  margin: 0 0 var(--sp-3);
+  max-width: 62ch;
+}
+
+.meta {
+  margin: 0;
+  color: var(--text-dim);
+  font-size: .8125rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Breite Tabellen scrollen in ihrem eigenen Behaelter, nie der Seitenkoerper. */
+.tabellenhuelle {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .9375rem;
+}
+
+th, td {
+  padding: var(--sp-3) var(--sp-2);
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+thead th {
+  color: var(--text-dim);
+  font-size: .6875rem;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.zahl {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.karten {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--sp-4);
+}
+
+.einheit {
+  padding: var(--sp-3);
+  background: var(--surface-2);
+  border-radius: var(--radius-control);
+}
+
+.einheit h3 {
+  margin: 0 0 var(--sp-3);
+  font-size: 1rem;
+}
+
+.einheit ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.einheit li {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  padding: var(--sp-2) 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.einheit li:last-child { border-bottom: none; }
+
+.uebung { font-weight: 600; }
+
+.saetze {
+  color: var(--text);
+  font-size: .875rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.tipp {
+  color: var(--text-dim);
+  font-size: .8125rem;
+}
+
+.regeln {
+  margin: 0;
+}
+
+.regeln dt {
+  margin-top: var(--sp-4);
+  font-weight: 650;
+}
+
+.regeln dt:first-child { margin-top: 0; }
+
+.regeln dd {
+  margin: var(--sp-1) 0 0;
+  max-width: 62ch;
+  color: var(--text-dim);
+  font-size: .9375rem;
+}

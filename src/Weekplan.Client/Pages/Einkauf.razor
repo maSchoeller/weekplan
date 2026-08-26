@@ -1,0 +1,89 @@
+@page "/einkauf"
+@inject Zustand Z
+
+<PageTitle>weekplan — Einkauf</PageTitle>
+
+<h1>Einkauf</h1>
+
+<section class="block">
+    <h2>Wochenliste</h2>
+    <p class="hinweis">
+        Frischware aus dem Wochenplan, nach Abteilungen sortiert.
+        @if (_liste.VorratUebersprungen > 0)
+        {
+            <text>
+                @_liste.VorratUebersprungen Positionen sind Vorratsware und stehen im Grundstock,
+                nicht hier.
+            </text>
+        }
+    </p>
+
+    @if (_liste.Posten.Count == 0)
+    {
+        <p class="leer">
+            Noch nichts geplant. Lege im Tab <strong>Woche</strong> Gerichte auf die Tage —
+            die Liste entsteht daraus von selbst.
+        </p>
+    }
+    else
+    {
+        @foreach (var abteilung in _liste.Posten.GroupBy(p => p.Abteilung))
+        {
+            <h3>@abteilung.Key</h3>
+            <ul class="posten">
+                @foreach (var posten in abteilung)
+                {
+                    var schluessel = posten.Name;
+                    <li>
+                        <label>
+                            <input type="checkbox"
+                                   checked="@Z.IstGehakt(Z.Woche.HakenWoche, schluessel)"
+                                   @onchange="e => Z.HakenWoche(schluessel, (bool)(e.Value ?? false))" />
+                            <span class="text">
+                                <span class="name">@posten.Name</span>
+                                <span class="menge">
+                                    @(posten.InStueck ? $"{posten.Stueck:0.#} Stück" : Zahl.Gramm(posten.Gramm))
+                                </span>
+                                <span class="quelle">@string.Join(", ", posten.Quellen)</span>
+                            </span>
+                        </label>
+                    </li>
+                }
+            </ul>
+        }
+    }
+</section>
+
+<section class="block">
+    <h2>Grundstock</h2>
+    <p class="hinweis">@Z.Stamm.Grundstock.Hinweis</p>
+
+    @foreach (var gruppe in Z.Stamm.Grundstock.Gruppen)
+    {
+        <h3>@gruppe.Name</h3>
+        <ul class="posten">
+            @foreach (var artikel in gruppe.Artikel)
+            {
+                var schluessel = artikel.Name;
+                <li>
+                    <label>
+                        <input type="checkbox"
+                               checked="@Z.IstGehakt(Z.Woche.HakenGrundstock, schluessel)"
+                               @onchange="e => Z.HakenGrundstock(schluessel, (bool)(e.Value ?? false))" />
+                        <span class="text">
+                            <span class="name">@artikel.Name</span>
+                            <span class="menge">@artikel.Menge</span>
+                            <span class="quelle">Reichweite @artikel.Reichweite</span>
+                        </span>
+                    </label>
+                </li>
+            }
+        </ul>
+    }
+</section>
+
+@code {
+    private Einkaufsliste _liste = null!;
+
+    protected override void OnParametersSet() => _liste = Z.Einkaufsliste();
+}

@@ -1,5 +1,145 @@
-main {
+.huelle {
   max-width: var(--maxw);
   margin: 0 auto;
-  padding: var(--sp-6) var(--sp-4) var(--sp-12);
+  padding-inline: var(--sp-4);
+}
+
+.topbar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.topbar-innen {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+  min-height: 52px;
+}
+
+.marke {
+  font-weight: 650;
+  letter-spacing: -.01em;
+}
+
+.lage {
+  color: var(--text-dim);
+  font-size: .8125rem;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.lage strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.reiter {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.reiter-innen {
+  display: flex;
+  gap: var(--sp-2);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.reiter-innen::-webkit-scrollbar { display: none; }
+
+.reiter-innen ::deep a {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 var(--sp-3);
+  color: var(--text-dim);
+  text-decoration: none;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+}
+
+.reiter-innen ::deep a:hover { color: var(--text); }
+
+.reiter-innen ::deep a.active {
+  color: var(--text);
+  font-weight: 600;
+  border-bottom-color: var(--accent);
+}
+
+.streifen {
+  background: var(--warn-soft);
+  border-bottom: 1px solid var(--border);
+}
+
+.streifen-innen {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+  padding-block: var(--sp-3);
+}
+
+.streifen-innen button {
+  min-height: 44px;
+  padding: var(--sp-2) var(--sp-4);
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  font: inherit;
+  cursor: pointer;
+}
+
+main.huelle {
+  padding-block: var(--sp-6) var(--sp-12);
+}
+
+.karte.fehler {
+  padding: var(--sp-4);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+}
+
+.karte.fehler h1 {
+  margin: 0 0 var(--sp-2);
+  font-size: 1.25rem;
+}
+
+.karte.fehler p {
+  margin: 0 0 var(--sp-4);
+  color: var(--text-dim);
+}
+
+.haupt {
+  min-height: 44px;
+  padding: var(--sp-2) var(--sp-4);
+  background: var(--accent);
+  color: var(--surface);
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Bei Handybreite muessen alle fuenf Reiter sichtbar sein: "Ich" traegt die
+   Hauptaktion und lag vorher ausserhalb der scrollenden Leiste. */
+@media (max-width: 480px) {
+  .reiter-innen {
+    gap: 0;
+  }
+
+  .reiter-innen ::deep a {
+    flex: 1 1 0;
+    justify-content: center;
+    padding: 0 var(--sp-1);
+    font-size: .9375rem;
+  }
 }

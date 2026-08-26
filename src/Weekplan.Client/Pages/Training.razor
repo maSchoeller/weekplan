@@ -1,0 +1,120 @@
+@page "/training"
+@inject Zustand Z
+
+<PageTitle>weekplan — Training</PageTitle>
+
+<h1>Training</h1>
+<p class="hinweis">@Z.Stamm.Training.Hinweis</p>
+
+<section class="block">
+    <h2>Phase</h2>
+    <div class="phasenwahl">
+        <label for="phase">Aktuelle Phase</label>
+        <select id="phase" value="@Z.Profil.PhaseId"
+                @onchange="e => PhaseSetzen(e.Value?.ToString())">
+            @foreach (var phase in Z.Stamm.Training.Phasen)
+            {
+                <option value="@phase.Id">@phase.Name — @phase.Wochen</option>
+            }
+        </select>
+    </div>
+
+    <p class="beschreibung">@_phase.Beschreibung</p>
+    <p class="meta">
+        Zeitraum @_phase.Zeitraum · Defizitziel @Zahl.Kcal(_phase.DefizitZiel) kcal pro Tag
+        · entspricht @Zahl.Tempo(_bilanz.PhasenTempo) kg pro Woche
+    </p>
+</section>
+
+<section class="block">
+    <h2>Verbrauch bei @Zahl.Kg(Z.Profil.GewichtKg) kg</h2>
+    <p class="hinweis">
+        Netto-Verbrauch, der Grundumsatz während der Einheit ist abgezogen.
+        Wochensumme @Zahl.Kcal(_bilanz.Sport.Woche) kcal, im Schnitt
+        @Zahl.Kcal(_bilanz.SportSchnitt) kcal pro Tag.
+    </p>
+
+    <div class="tabellenhuelle">
+        <table>
+            <thead>
+                <tr>
+                    <th scope="col">Tag</th>
+                    <th scope="col">Ort</th>
+                    <th scope="col">Einheiten</th>
+                    <th scope="col" class="zahl">kcal</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var tag in _bilanz.Sport.ProTag)
+                {
+                    <tr>
+                        <th scope="row">@tag.Tag</th>
+                        <td>@tag.Ort</td>
+                        <td>@string.Join(", ", tag.Einheiten.Select(EinheitText))</td>
+                        <td class="zahl">@Zahl.Kcal(tag.Kcal)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<section class="block">
+    <h2>Kraftplan</h2>
+    <p class="hinweis">@Z.Stamm.Training.Kraftplan.Prinzip</p>
+    <p class="meta">@Z.Stamm.Training.Kraftplan.Equipment</p>
+
+    <div class="karten">
+        @foreach (var einheit in Z.Stamm.Training.Kraftplan.Einheiten)
+        {
+            <article class="einheit">
+                <h3>@einheit.Name</h3>
+                <ul>
+                    @foreach (var uebung in einheit.Uebungen)
+                    {
+                        <li>
+                            <span class="uebung">@uebung.Name</span>
+                            <span class="saetze">@uebung.Saetze × @uebung.Wdh</span>
+                            <span class="tipp">@uebung.Hinweis</span>
+                        </li>
+                    }
+                </ul>
+            </article>
+        }
+    </div>
+</section>
+
+<section class="block">
+    <h2>Regeln</h2>
+    <dl class="regeln">
+        @foreach (var regel in Z.Stamm.Training.Regeln)
+        {
+            <dt>@regel.Titel</dt>
+            <dd>@regel.Text</dd>
+        }
+    </dl>
+</section>
+
+@code {
+    private Bilanz _bilanz = null!;
+    private PhasenAnzeige _phase = null!;
+
+    protected override void OnParametersSet()
+    {
+        _bilanz = Z.Bilanz();
+        _phase = Z.AktivePhase();
+    }
+
+    private string EinheitText(Einheit einheit)
+    {
+        var label = Z.Stamm.Training.MetWerte.TryGetValue(einheit.Typ, out var met) ? met.Label : einheit.Typ;
+        return $"{label} {einheit.Minuten} min";
+    }
+
+    private void PhaseSetzen(string? id)
+    {
+        if (string.IsNullOrEmpty(id)) return;
+        Z.ProfilSetzen(p => p with { PhaseId = id });
+        OnParametersSet();
+    }
+}

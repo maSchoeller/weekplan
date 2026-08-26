@@ -1,0 +1,80 @@
+@page "/rezepte"
+@inject Zustand Z
+
+<PageTitle>weekplan — Rezepte</PageTitle>
+
+<h1>Rezepte</h1>
+<p class="hinweis">
+    @Z.Stamm.Rezepte.Hinweis
+</p>
+
+@foreach (var kategorie in Woche.Mahlzeiten)
+{
+    var rezepte = Z.Rezepte.Where(r => r.Kategorie == kategorie.Schluessel).ToList();
+    if (rezepte.Count == 0) continue;
+
+    <h2>@kategorie.Beschriftung</h2>
+
+    <div class="karten">
+        @foreach (var rezept in rezepte)
+        {
+            var portionen = Portionen(rezept.Id);
+
+            <article class="rezept">
+                <header>
+                    <h3>@rezept.Name</h3>
+                    <span class="meta">
+                        @Zahl.Kcal(rezept.Kcal * portionen) kcal
+                        · @(rezept.Protein * portionen) g Protein
+                        · @rezept.ZeitMin min
+                        @(rezept.Kalt ? "· kalt zu essen" : null)
+                    </span>
+                </header>
+
+                <div class="portionen">
+                    <label for="@($"p-{rezept.Id}")">Portionen</label>
+                    <input id="@($"p-{rezept.Id}")" type="number" min="1" max="9" inputmode="numeric"
+                           value="@portionen"
+                           @onchange="e => PortionenSetzen(rezept.Id, e.Value?.ToString())" />
+                </div>
+
+                <h4>Zutaten</h4>
+                <ul class="zutaten">
+                    @foreach (var zutat in rezept.Zutaten)
+                    {
+                        <li>
+                            <span>@zutat.Name</span>
+                            <span class="menge">
+                                @(zutat.Stk > 0
+                                    ? $"{zutat.Stk * portionen:0.#} Stück"
+                                    : Zahl.Gramm(zutat.G * portionen))
+                            </span>
+                        </li>
+                    }
+                </ul>
+
+                <h4>Zubereitung</h4>
+                <ol class="schritte">
+                    @foreach (var schritt in rezept.Schritte)
+                    {
+                        <li>@schritt</li>
+                    }
+                </ol>
+            </article>
+        }
+    </div>
+}
+
+@code {
+    // Nur Anzeige: die Portionszahl hier gehoert zum Blaettern im Rezept, nicht
+    // zum Wochenplan, und wird deshalb bewusst nicht gespeichert.
+    private readonly Dictionary<string, int> _portionen = [];
+
+    private int Portionen(string id) => _portionen.GetValueOrDefault(id, 1);
+
+    private void PortionenSetzen(string id, string? roh)
+    {
+        if (Zahl.Aus(roh) is not { } wert) return;
+        _portionen[id] = Math.Clamp((int)wert, 1, 9);
+    }
+}
