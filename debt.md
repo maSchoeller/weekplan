@@ -34,3 +34,39 @@ in phase 4, read by the next maintenance run. One dated line per entry.
   hier sonst reihenweise falsch rot melden. **Ausloeser:** das erste
   selbstgebaute Bedienelement mit eigener Tastensteuerung (Dialog, Menue,
   Popover) — dann braucht es einen bUnit- oder Playwright-Test dafuer.
+
+## Lauf 2026-08-26-cloud-migration
+
+Erledigt aus frueheren Laeufen:
+
+- 2026-08-26 **Erledigt:** der Rechenkern ist vollstaendig portiert —
+  Alltagsumsatz, MET-Netto, Phasensport, Bilanz, Tagesziel, 7-Tage-Schnitt und
+  Plateau, mit Tests, die die Zahlen der alten App festhalten.
+- 2026-08-26 **Erledigt:** der Server hat Tests — zehn Integrationstests fahren
+  ihn hoch und pruefen Zugang, Trennung der Nutzer und die Endpunkte.
+
+Neu, und ueber den Lauf hinaus:
+
+- 2026-08-26 Zwei Ablagen hinter einer Naht: Cosmos fuer Azure, Dateien fuer
+  lokal. Nur die Dateiablage ist gebaut und geprueft; Cosmos fehlt noch ganz.
+  **Ausloeser:** sobald ein Cosmos-Konto steht — dann wird die Cosmos-Ablage
+  gegen die echte Ressource gebaut und die Dateiablage auf ihren Nutzen geprueft.
+- 2026-08-26 `ProfilStand` und `WochenStand` sind Records mit Sammlungen — ihr
+  `==` vergleicht per Referenz, nicht per Inhalt. **Ausloeser:** die erste Stelle,
+  die zwei Staende vergleicht, statt einfach zu schreiben.
+- 2026-08-26 Der Client referenziert Umsetzungsprojekte, nicht nur Contracts —
+  bewusst, weil die Rechnung im Browser laufen muss. **Ausloeser:** wenn eine
+  Rechnung Daten braucht, die nur der Server hat.
+- 2026-08-26 Kein Passwort-Ruecksetzweg, keine Geraeteverwaltung, kein Ablauf des
+  Merkmals — alles drei so gewaehlt. **Ausloeser:** wenn der Gewichtsverlauf
+  wieder unersetzlich wird, oder ein Geraet unversperrt verloren geht.
+- 2026-08-26 Kriterium „zwei Sekunden beim Gewicht" ist **nicht gemessen**.
+  Der Mechanismus traegt es (die Eingabe wartet nicht auf den Server), die Zahl
+  fehlt. **Ausloeser:** naechster Lauf mit sichtbarem Chrome.
+- 2026-08-26 Einkaufsliste ohne Netz ist **nicht gebaut** — Schnitt B, samt der
+  Frage, wie zwei Geraete denselben Posten gegensaetzlich haken.
+  **Ausloeser:** der naechste Einkauf mit schlechtem Empfang.
+- 2026-08-26 Die statische App und die neue Form liegen parallel im Repo und
+  koennen auseinanderlaufen. **Ausloeser:** die erste Aenderung an der Rechnung,
+  die nur eine der beiden bekommt — `docs/plan.md` ist bis dahin die gemeinsame
+  Wahrheit.
