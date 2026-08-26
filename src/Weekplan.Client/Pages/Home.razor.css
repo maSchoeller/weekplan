@@ -1,0 +1,63 @@
+h1 {
+  margin: 0 0 var(--sp-2);
+  font-size: 1.75rem;
+  letter-spacing: -.01em;
+}
+
+.lead {
+  margin: 0 0 var(--sp-6);
+  max-width: 62ch;
+  color: var(--text-dim);
+}
+
+.karte {
+  padding: var(--sp-4);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+}
+
+.karte h2 {
+  margin: 0 0 var(--sp-3);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.zeile {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-2);
+  margin: 0 0 var(--sp-3);
+}
+
+.zeichen {
+  flex: 0 0 auto;
+  font-weight: 700;
+}
+
+.zustand-gut { color: var(--accent); }
+.zustand-schlecht { color: var(--bad); }
+.zustand-neutral { color: var(--text-dim); }
+
+.meta {
+  margin: 0 0 var(--sp-4);
+  color: var(--text-dim);
+  font-size: .875rem;
+  overflow-wrap: anywhere;
+}
+
+.haupt {
+  min-height: 44px;
+  padding: var(--sp-2) var(--sp-4);
+  background: var(--accent);
+  color: var(--surface);
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 150ms ease;
+}
+
+.haupt:hover:not(:disabled) { opacity: .9; }
+.haupt:disabled { opacity: .55; cursor: default; }

@@ -1,0 +1,36 @@
+# Debt
+
+Known debt and learnings not yet ripe, kept across runs — appended by the retro
+in phase 4, read by the next maintenance run. One dated line per entry.
+
+- 2026-08-26 Feste Ports 5080/5180 statt dynamischer Vergabe — zwei Worktrees
+  koennen nicht gleichzeitig laufen. **Ausloeser:** sobald parallel an zwei
+  Branches gearbeitet wird, oder sobald der Cosmos-Emulator dazukommt (dann
+  loest Aspire beides auf einmal).
+- 2026-08-26 `css/styles.css` erfuellt die Spacing-Skala aus `design-system.md`
+  nicht: 54 harte px-Werte, `--gap: 14px` liegt neben dem 4er-Raster.
+  **Ausloeser:** wird ohnehin abgeloest, wenn die Zielform die statische App
+  einholt — vorher nur anfassen, wenn ein Lauf diese Datei sowieso oeffnet.
+- 2026-08-26 Vom Rechenkern in `js/app.js` ist nur der Grundumsatz nach .NET
+  portiert. **Ausloeser:** der Migrationslauf holt MET-Netto, Bilanz, Tagesziel
+  und Zutaten-Aggregation nach; bis dahin ist `docs/plan.md` die gemeinsame
+  Wahrheit beider Formen.
+- 2026-08-26 Kein `user-docs/` — bewusste Abweichung vom Bootstrap, die README
+  ist die Nutzerdoku. **Ausloeser:** wenn die README fuer eine Aufgabe zu lang
+  wird, um sie durchzugehen.
+- 2026-08-26 Kein `static-web`-Preset, obwohl der Zuschnitt (Blazor WASM auf SWA
+  Free + Minimal API auf Container Apps + Cosmos Free Tier) generalisierbar
+  aussieht. **Ausloeser:** das zweite Projekt dieser Form — ein Learning wird im
+  zweiten Lauf zur Regel, nicht im ersten.
+- 2026-08-26 Zielform entschieden, aber nicht ausgerollt: keine Azure-Ressourcen,
+  kein Deploy-Workflow, das `Dockerfile` ist ungebaut. **Ausloeser:** der erste
+  Wunsch, die App von einem zweiten Geraet zu erreichen.
+- 2026-08-26 Der Server hat keinen einzigen Test — `/health` ist nur durch den
+  Smoketest gedeckt. **Ausloeser:** der erste Endpunkt mit Logik.
+- 2026-08-26 Die Tastatur-Aktivierung selbstgebauter Bedienelemente ist mit den
+  vorhandenen Browser-Werkzeugen nicht pruefbar — synthetische Tastendruecke
+  loesen die native Aktivierung nicht aus (Kontrollprobe mit leerem `<button>`
+  in beiden Browsern). Die Harness-Regel „Tab/Enter/Esc, jeweils zweimal" wuerde
+  hier sonst reihenweise falsch rot melden. **Ausloeser:** das erste
+  selbstgebaute Bedienelement mit eigener Tastensteuerung (Dialog, Menue,
+  Popover) — dann braucht es einen bUnit- oder Playwright-Test dafuer.

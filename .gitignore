@@ -1,6 +1,30 @@
+# Claude Code worktrees — the harness itself is tracked
+.claude/worktrees/
+
+# Build output
+bin/
+obj/
+artifacts/
+publish/
+dist/
+
+# IDE / tooling
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+
+# Test results
+TestResults/
+coverage/
+
+# Dependencies
 node_modules/
+
+# Local run state
+*.log
+
+# OS
 .DS_Store
 Thumbs.db
-*.log
-.vscode/
-.claude/
