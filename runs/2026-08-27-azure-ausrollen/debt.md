@@ -44,3 +44,14 @@
   gegen die geprueft wird, entsteht erst durch den Merge. Der Deploy-Workflow
   faengt das teilweise ab: er testet, prueft `/health` und den Client, bevor er
   gruen meldet.
+- 2026-08-27 **Aufgedeckt und behoben, hier als Lehre:** `.gitignore` trug
+  `daten/` fuer den Datenordner des Servers und verschluckte damit auch
+  `src/Weekplan.Client/Daten/` — git vergleicht auf Windows ohne Ruecksicht auf
+  Gross- und Kleinschreibung. Zwei Quelldateien lagen nie im Repo, der Client
+  war aus einem frischen Klon nie baubar, und **kein Test hat das gesehen**,
+  weil jeder Testlauf aus dem Arbeitsverzeichnis baut. Erst der erste
+  Deploy-Lauf fiel darauf. Seitdem: Ignoriermuster fuer Ordner tragen einen
+  Pfad (`/src/Weekplan.Server/daten/`), nie bloss einen Namen. Geprueft wird es
+  mit `git archive HEAD | tar -x` in ein leeres Verzeichnis und einem Bau dort.
+  **Ausloeser:** die naechste Zeile in `.gitignore`, die nur aus einem Namen
+  besteht.
