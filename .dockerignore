@@ -1,0 +1,16 @@
+# Der Build-Kontext ist das Repo-Wurzelverzeichnis. Was hier steht, kommt nicht
+# ins Image — vor allem nicht die Bauergebnisse der Entwicklermaschine, die im
+# Container ohnehin nicht passen.
+**/bin/
+**/obj/
+**/.vs/
+.git/
+.github/
+.claude/
+runs/
+docs/
+tests/
+tools/
+daten/
+node_modules/
+*.user

@@ -4,7 +4,9 @@ Wochenplaner für Ernährung und Training: Gerichte auf Tage und Mahlzeiten lege
 Portionen einstellen, Einkaufsliste in Gramm erhalten — plus Trainingsplan mit
 gewichtsabhängiger Verbrauchsrechnung.
 
-**Live:** https://maschoeller.github.io/weekplan
+**Live:**
+- Neue Form (Konto, geräteübergreifend): https://gentle-moss-035769303.7.azurestaticapps.net
+- Alte statische Form: https://maschoeller.github.io/weekplan
 
 ## Was drin ist
 
@@ -25,18 +27,22 @@ gewichtsabhängiger Verbrauchsrechnung.
 ## Zwei Formen, eine im Umbau
 
 weekplan zieht gerade von einer reinen Browserseite auf Client und Server um.
-Beide Formen liegen im Repo:
+Beide Formen laufen, beide liegen im Repo:
 
-- **Live auf GitHub Pages** ist weiterhin die statische Seite (`index.html`,
-  `css/`, `js/`, `data/`). Sie ist unveraendert und funktioniert wie bisher.
-- **Neu und noch nicht ausgerollt** ist die Client/Server-Form unter `src/`:
-  ein Blazor-WebAssembly-Client und eine Minimal API auf .NET 10. Sie loest das
-  Problem, das die statische Form nicht loesen kann — dass Handy und Laptop
-  getrennte Staende haben.
+- **Die statische Seite** (`index.html`, `css/`, `js/`, `data/`) liegt weiter auf
+  GitHub Pages. Sie ist unveraendert und funktioniert wie bisher.
+- **Die Client/Server-Form** unter `src/` ist seit dem 27.08.2026 **in Azure
+  ausgerollt**: ein Blazor-WebAssembly-Client auf Static Web Apps, eine Minimal
+  API auf Container Apps, Daten in Cosmos DB. Sie loest das Problem, das die
+  statische Form nicht loesen kann — dass Handy und Laptop getrennte Staende
+  haben.
 
-Zielform in Azure: Client statisch auf Static Web Apps (Free), Server als
-Container auf Container Apps, Daten in Cosmos DB (Free Tier). Details in
-[foundation.md](foundation.md) und [docs/architecture.md](docs/architecture.md).
+Der Server skaliert auf null, wenn ihn niemand braucht. **Nach einer laengeren
+Pause dauert der erste Aufruf darum ein paar Sekunden**, danach ist er schnell.
+Das ist der Preis dafuer, dass der Betrieb nichts kostet.
+
+Details in [foundation.md](foundation.md) und
+[docs/architecture.md](docs/architecture.md).
 
 ## Datenschutz
 
@@ -69,6 +75,7 @@ src/Weekplan.Core.*   Slices: Rechnen, Anmeldung, Tagebuch, Wochenplanung
 tools/Weekplan.Konto  Legt das eine Konto an — es gibt keine Registrierung
 tests/                xUnit: Rechenkern, Ablage, Endpunkte
 
+.github/workflows/    ci.yml testet jeden Push, deploy.yml rollt main nach Azure
 CLAUDE.md             Der Snowcap-Harness: jede Aenderung laeuft durch die Pipeline
 foundation.md         Stack, Testbefehl, Startbefehl, Smoketest-Methode
 design-system.md      Bindende Tokens, Spacing-Skala, Layout-Regeln
@@ -91,6 +98,16 @@ Beim ersten Mal braucht es ein Konto:
 ```bash
 dotnet run --project tools/Weekplan.Konto -- <benutzername> <passwort>
 ```
+
+Fuer die ausgerollte App wird dasselbe Konto in Cosmos angelegt — dazu vorher die
+Verbindung in die Umgebung setzen (PowerShell):
+
+```powershell
+$env:WEEKPLAN_COSMOS = (az cosmosdb keys list -n cosmos-weekplan-prod -g rg-weekplan-prod --type connection-strings --query "connectionStrings[0].connectionString" -o tsv)
+```
+
+Es gibt bewusst keine Registrierungsseite: das ist der einzige Weg, ein Konto
+anzulegen, und es gibt keinen Weg, ein Passwort zurueckzusetzen.
 
 Die statische Form laedt ihre Daten per `fetch`, ein Doppelklick auf
 `index.html` genuegt also nicht:

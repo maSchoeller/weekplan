@@ -12,5 +12,7 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           global-json-file: global.json
+      # Die Cosmos-Tests brauchen eine echte Verbindung, die hier niemand haben
+      # darf, und laufen darum von Hand — siehe TagebuchInCosmosTests.
       - name: Test
-        run: dotnet test Weekplan.slnx --configuration Release
+        run: dotnet test Weekplan.slnx --configuration Release --filter "Ablage!=Cosmos"

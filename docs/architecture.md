@@ -3,9 +3,10 @@
 Das eine aktuelle Bild des Systems. Phase 2 jedes Laufs schreibt hier fort —
 was hier steht, gilt; was nicht hier steht, existiert nicht.
 
-Stand: 2026-08-26. Das System ist gerade **zwischen zwei Formen**: die
-ausgelieferte App ist noch die statische, das Geruest der Zielform steht, und
-der Umzug ist entworfen (Lauf `2026-08-26-cloud-migration`, Schnitt A).
+Stand: 2026-08-27. Das System ist gerade **zwischen zwei Formen**: die statische
+App liegt weiter auf GitHub Pages, die Zielform ist gebaut (Lauf
+`2026-08-26-cloud-migration`, Schnitt A) und **in Azure ausgerollt** (Lauf
+`2026-08-27-azure-ausrollen`).
 
 ## Ist — die statische App
 
@@ -24,7 +25,7 @@ Die Grenzen dieser Form, und der Grund fuer den Umbau: die Daten haengen am
 einzelnen Browser. Was am Handy eingetragen wird, steht nicht am Laptop, und wer
 den Browserspeicher loescht, verliert alles.
 
-## Ziel — Client, Server, Datenbank
+## Zielform — Client, Server, Datenbank
 
 ```
 Weekplan.Client   Blazor WASM, statisches Artefakt
@@ -33,7 +34,7 @@ Weekplan.Client   Blazor WASM, statisches Artefakt
 Weekplan.Server   Minimal API, Container-Image
       |
       v
-Cosmos DB         noch nicht angebunden
+Cosmos DB         angebunden (CosmosAblage hinter IAblage)
 ```
 
 - **Slices.** Ein Feature ist ein csproj-Paar: `Weekplan.Core.<Feature>` mit der
@@ -52,7 +53,10 @@ Cosmos DB         noch nicht angebunden
 - **Rezepte, Training, Grundstock** bleiben statische Dateien und ziehen mit dem
   Client um (`wwwroot/data/`). Kein Slice, kein Server, keine Datenbank — sie
   sind fuer alle gleich und aendern sich nur durch einen Commit.
-- **Datenhaltung.** Cosmos DB, ein Container, Partitionsschluessel `/nutzerId`,
+- **Datenhaltung.** Zwei Umsetzungen hinter einer Naht (`IAblage`): `DateiAblage`
+  fuer lokal und die Tests, `CosmosAblage` fuer Azure. Welche gilt, entscheidet
+  allein die Anwesenheit von `Tagebuch:Cosmos:Verbindung` — kein Schalter.
+  Cosmos DB, ein Container, Partitionsschluessel `/nutzerId`,
   drei Dokumente je Nutzer: `konto`, `profil`, `woche`. `nutzerId` ist der
   kleingeschriebene Benutzername; bei geschlossener Registrierung kollidiert
   nichts, und ein App-Start liest zwei Dokumente aus einer Partition. Profil und
@@ -81,6 +85,31 @@ Beide Formen liegen gleichzeitig im Repo. Die statische App bleibt unangetastet
 und live, bis die Zielform sie fachlich einholt; erst dann wird sie abgeloest.
 Solange gilt: eine Aenderung an der Rechnung, die beide Formen betrifft, hat
 `docs/plan.md` als gemeinsame Wahrheit — die Formeln stehen dort, nicht im Code.
+
+## Ausgerollt — was in Azure steht
+
+Subscription „Weekplan Production", Ressourcengruppe `rg-weekplan-prod`,
+Region `westeurope`. Erwartete Kosten: 0 EUR.
+
+| Was | Name | Adresse |
+|---|---|---|
+| Client | `weekplan-prod-web` (Static Web App, Free) | https://gentle-moss-035769303.7.azurestaticapps.net |
+| Server | `weekplan-prod-api` (Container App, 0.25 CPU, min 0 / max 1) | https://weekplan-prod-api.redpebble-2b37be10.westeurope.azurecontainerapps.io |
+| Daten | `cosmos-weekplan-prod` (Free Tier), db `weekplan`, Container `tagebuch` | — |
+
+- **Der Weg dorthin** ist `.github/workflows/deploy.yml` und nur der: Push auf
+  `main` testet, baut das Image nach `ghcr.io`, tauscht es in der Container App
+  und laedt den Client in die Static Web App. Die Azure-Anmeldung laeuft ueber
+  OIDC (App Registration `weekplan-deploy`, Federated Credential auf
+  `refs/heads/main`) — **kein Azure-Geheimnis im Repo**.
+- **Geheimnisse.** Anmeldeschluessel und Cosmos-Verbindung liegen als Secrets an
+  der Container App, der Deploytoken der Static Web App als GitHub-Secret. Sonst
+  nirgends.
+- **Der Kaltstart.** `minReplicas: 0` heisst: nach einer Pause weckt der erste
+  Ruf den Server erst auf. Das ist der Preis fuer 0 EUR und bewusst gewaehlt.
+- **Das Konto** entsteht weiterhin nur von Hand, jetzt auch gegen Cosmos:
+  `WEEKPLAN_COSMOS` setzen und `tools/Weekplan.Konto` laufen lassen. Es gibt
+  keine Registrierung, also auch keinen Weg hinein ausser diesem.
 
 ## Offen
 

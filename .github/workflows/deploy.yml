@@ -1,0 +1,90 @@
+name: deploy
+
+# Der einzige Weg nach Azure. Alles, was hier nicht steht, ist nicht ausgerollt.
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+  id-token: write   # fuer die Azure-Anmeldung per OIDC — es gibt kein Azure-Secret
+
+concurrency:
+  group: production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+
+      # Die Cosmos-Tests brauchen eine echte Verbindung und laufen von Hand;
+      # siehe den Kommentar an TagebuchInCosmosTests.
+      - name: Testen
+        run: dotnet test Weekplan.slnx --configuration Release --filter "Ablage!=Cosmos"
+
+      - name: Client veroeffentlichen
+        run: dotnet publish src/Weekplan.Client/Weekplan.Client.csproj -c Release -o artifacts/client
+
+      - name: Imagenamen festlegen
+        shell: bash
+        run: echo "IMAGE=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/weekplan-api:${GITHUB_SHA}" >> "$GITHUB_ENV"
+
+      - name: Bei GHCR anmelden
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Der Image-Bau ist zugleich die Probe auf den Dockerfile. Faellt hier ein
+      # Projekt heraus, bricht das Ausrollen ab — statt still ein Image zu
+      # hinterlassen, das niemand gebaut hat.
+      - name: Server-Image bauen und veroeffentlichen
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: src/Weekplan.Server/Dockerfile
+          push: true
+          tags: ${{ env.IMAGE }}
+
+      - name: Bei Azure anmelden
+        uses: azure/login@v2
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Server aktualisieren
+        run: az containerapp update --resource-group "$RESOURCE_GROUP" --name "$CONTAINER_APP" --image "$IMAGE"
+        env:
+          RESOURCE_GROUP: ${{ vars.AZURE_RESOURCE_GROUP }}
+          CONTAINER_APP: ${{ vars.AZURE_CONTAINER_APP }}
+
+      # Grosszuegig wiederholen: die App skaliert auf null, der erste Ruf weckt
+      # sie erst auf.
+      - name: Server pruefen
+        run: curl --fail --retry 12 --retry-delay 10 --retry-all-errors "${API_URL}/health"
+        env:
+          API_URL: ${{ vars.API_URL }}
+
+      - name: Client veroeffentlichen
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          action: upload
+          app_location: artifacts/client/wwwroot
+          output_location: ""
+          skip_app_build: true
+
+      - name: Client pruefen
+        run: curl --fail --retry 8 --retry-delay 5 --retry-all-errors "$STATIC_WEB_APP_URL"
+        env:
+          STATIC_WEB_APP_URL: ${{ vars.STATIC_WEB_APP_URL }}

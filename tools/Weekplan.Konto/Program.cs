@@ -8,10 +8,18 @@ using Weekplan.Core.Tagebuch.Contracts;
 // anlegen, der die Adresse kennt. Das Konto entsteht hier, von Hand.
 //
 //   dotnet run --project tools/Weekplan.Konto -- <benutzername> <passwort> [ordner]
+//
+// Gegen die ausgerollte App: die Cosmos-Verbindung in WEEKPLAN_COSMOS setzen,
+// dann schreibt das Werkzeug dorthin und der Ordner spielt keine Rolle mehr.
+//
+//   $env:WEEKPLAN_COSMOS = (az cosmosdb keys list -n cosmos-weekplan-prod `
+//       -g rg-weekplan-prod --type connection-strings `
+//       --query "connectionStrings[0].connectionString" -o tsv)
 
 if (args.Length is < 2 or > 3)
 {
     Console.Error.WriteLine("Aufruf: Weekplan.Konto <benutzername> <passwort> [datenordner]");
+    Console.Error.WriteLine("Mit WEEKPLAN_COSMOS in der Umgebung geht es stattdessen nach Cosmos.");
     return 1;
 }
 
@@ -26,8 +34,21 @@ if (passwort.Length < 8)
     return 1;
 }
 
-var dienste = new ServiceCollection()
-    .AddTagebuchInDateien(ordner)
+// Dieselbe Regel wie im Server: liegt eine Cosmos-Verbindung vor, gilt sie.
+var cosmos = Environment.GetEnvironmentVariable("WEEKPLAN_COSMOS");
+var nachCosmos = !string.IsNullOrWhiteSpace(cosmos);
+
+var sammlung = new ServiceCollection();
+if (nachCosmos)
+{
+    sammlung.AddTagebuchInCosmos(cosmos!, "weekplan", "tagebuch");
+}
+else
+{
+    sammlung.AddTagebuchInDateien(ordner);
+}
+
+await using var dienste = sammlung
     // Der Schluessel wird hier nur gebraucht, weil der Slice ihn verlangt; das
     // Werkzeug stellt keine Merkmale aus, es hasht nur.
     .AddAnmeldung("werkzeug-hasht-nur-und-stellt-keine-merkmale-aus")
@@ -47,5 +68,6 @@ catch (InvalidOperationException fehler)
     return 1;
 }
 
-Console.WriteLine($"Konto '{benutzername}' angelegt (Kennung '{nutzerId}') unter {ordner}");
+var wo = nachCosmos ? "in Cosmos (weekplan/tagebuch)" : $"unter {ordner}";
+Console.WriteLine($"Konto '{benutzername}' angelegt (Kennung '{nutzerId}') {wo}");
 return 0;

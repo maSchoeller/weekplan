@@ -1,0 +1,16 @@
+{
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": ["/css/*", "/data/*", "/_framework/*", "/*.{json,css,js,png,svg,ico}"]
+  },
+  "mimeTypes": {
+    ".json": "application/json",
+    ".wasm": "application/wasm",
+    ".dat": "application/octet-stream",
+    ".blat": "application/octet-stream",
+    ".dll": "application/octet-stream"
+  },
+  "globalHeaders": {
+    "cache-control": "no-cache"
+  }
+}

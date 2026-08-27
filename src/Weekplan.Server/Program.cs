@@ -20,8 +20,22 @@ builder.Services.AddRechnen();
 builder.Services.AddAnmeldung(builder.Configuration["Anmeldung:Schluessel"]
     ?? throw new InvalidOperationException(
         "Anmeldung:Schluessel fehlt. Ohne Signaturschluessel darf der Server nicht starten."));
-builder.Services.AddTagebuchInDateien(builder.Configuration["Tagebuch:Ordner"]
-    ?? Path.Combine(builder.Environment.ContentRootPath, "daten"));
+// Wo die Daten liegen, entscheidet die Anwesenheit einer Cosmos-Verbindung —
+// kein Schalter, der auch falsch stehen koennte. In Azure kommt sie als Secret
+// herein; lokal steht sie nirgends, also legt der Server dort auf Dateien ab.
+var cosmos = builder.Configuration["Tagebuch:Cosmos:Verbindung"];
+if (!string.IsNullOrWhiteSpace(cosmos))
+{
+    builder.Services.AddTagebuchInCosmos(
+        cosmos,
+        builder.Configuration["Tagebuch:Cosmos:Datenbank"] ?? "weekplan",
+        builder.Configuration["Tagebuch:Cosmos:Behaelter"] ?? "tagebuch");
+}
+else
+{
+    builder.Services.AddTagebuchInDateien(builder.Configuration["Tagebuch:Ordner"]
+        ?? Path.Combine(builder.Environment.ContentRootPath, "daten"));
+}
 
 // Die Adresse ist oeffentlich, also darf niemand Passwoerter durchprobieren.
 builder.Services.AddRateLimiter(options =>

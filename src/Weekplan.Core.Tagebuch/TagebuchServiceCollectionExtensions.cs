@@ -15,6 +15,21 @@ public static class TagebuchServiceCollectionExtensions
         return services;
     }
 
+    /// <summary>
+    /// Ablage in einem Cosmos-Container: in Azure. Der Container muss es schon
+    /// geben — angelegt wird er beim Ausrollen, nicht beim Starten.
+    /// </summary>
+    public static IServiceCollection AddTagebuchInCosmos(
+        this IServiceCollection services, string verbindung, string datenbank, string behaelter)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(verbindung);
+        ArgumentException.ThrowIfNullOrWhiteSpace(datenbank);
+        ArgumentException.ThrowIfNullOrWhiteSpace(behaelter);
+        services.AddSingleton<IAblage>(_ => new CosmosAblage(verbindung, datenbank, behaelter));
+        services.AddSingleton<ITagebuch, Tagebuch>();
+        return services;
+    }
+
     /// <summary>Die Nutzerkennung zu einem Benutzernamen — dieselbe Regel wie beim Anlegen.</summary>
     public static string NutzerIdVon(string benutzername) => Tagebuch.NutzerId(benutzername);
 }

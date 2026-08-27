@@ -6,11 +6,20 @@
   `src/Weekplan.Core.<Feature>` + `.Contracts`, Tests unter `tests/`.
 - **Client und Server sind getrennte Deployables.** Client statisch auf Azure
   Static Web Apps (Free), Server als Container-Image auf Azure Container Apps
-  (Consumption, scale-to-zero), Daten spaeter in Cosmos DB (Free Tier). Preis:
+  (Consumption, scale-to-zero), Daten in Cosmos DB (Free Tier). Steht seit dem
+  27.08.2026 in der Subscription „Weekplan Production", `rg-weekplan-prod`,
+  westeurope. Preis:
   CORS, und die Anmeldung muss selbst gebaut werden — SWAs eingebaute Auth gilt
   nur fuer `/api` im selben SWA. Server-Adresse im Client:
   `wwwroot/appsettings.json`; erlaubte Herkuenfte im Server: `Cors:Origins`.
-- Testbefehl: `dotnet test Weekplan.slnx`
+- Testbefehl: `dotnet test Weekplan.slnx --filter "Ablage!=Cosmos"`. Ohne den
+  Filter laufen auch die Cosmos-Tests mit, und die brauchen `WEEKPLAN_COSMOS` in
+  der Umgebung — siehe `tests/Weekplan.Core.Tests/TagebuchInCosmosTests.cs`.
+- Ausrollbefehl: keiner. **Ein Push auf `main` rollt aus**
+  (`.github/workflows/deploy.yml`): testen, Image nach `ghcr.io`, Container App
+  aktualisieren, Client in die Static Web App. Von Hand anstossen geht mit
+  `gh workflow run deploy.yml`. Was in Azure steht, listet
+  `docs/architecture.md`.
 - Startbefehl: `./run-local.ps1` — Server `http://localhost:5080`, Client
   `http://localhost:5180`. Feste Ports, also kein paralleler zweiter Worktree
   (steht in `debt.md`).
