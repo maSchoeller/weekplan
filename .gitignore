@@ -28,4 +28,11 @@ node_modules/
 # OS
 .DS_Store
 Thumbs.db
-daten/
+# Der lokale Datenordner des Servers. Bewusst mit Pfad statt bloss `daten/`:
+# git vergleicht auf Windows ohne Ruecksicht auf Gross- und Kleinschreibung, und
+# `daten/` hat `src/Weekplan.Client/Daten/` mitverschluckt. Zwei Quelldateien
+# lagen dadurch nie im Repo, und der Client liess sich aus einem frischen Klon
+# nicht bauen — auf dieser Maschine fiel es nicht auf, weil die Dateien hier
+# liegen.
+/daten/
+/src/Weekplan.Server/daten/
