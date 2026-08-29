@@ -89,3 +89,20 @@
   sichtbar gewesen. `Stammdatenausgabe.Verwerfen()` gab es schon, nur rief es
   niemand. **Lehre:** eine Methode ohne Aufrufer ist kein gebauter Mechanismus.
   Jetzt durch zwei Servertests gedeckt.
+- 2026-08-29 **Abnahmekriterium 7 war zu weit formuliert — meine Schuld, nicht
+  die des Entwurfs.** Es verspricht, dass „Rezepte, Phasen und Einkaufsliste"
+  ohne Netz aus dem Zwischenspeicher stehen. Die Rezepte und Phasen tun das
+  jetzt. Die **Einkaufsliste nicht**: sie wird aus dem Wochenplan gerechnet, und
+  der liegt im Tagebuch auf dem Server, der in diesem Lauf ausdruecklich nicht
+  angefasst wurde. Ohne Netz zeigt die App weiterhin die Fehlerkarte. Das ist
+  dieselbe Luecke wie „Einkaufsliste ohne Netz abhaken" (Schnitt B des
+  Umzugslaufs) und stand in denselben Anforderungen als Nicht-Ziel — die beiden
+  Saetze widersprachen einander. **Ausloeser:** der naechste Einkauf mit
+  schlechtem Empfang; dann braucht es einen Zwischenspeicher fuer Profil und
+  Woche und die Aufloesung, wenn zwei Geraete gegensaetzlich haken.
+- 2026-08-29 Abnahmekriterium 8 war nur halb erfuellt: die Fehlerkarte zeigte
+  „TypeError: Failed to fetch". Der deutsche Satz lag nur im Stammdaten-Weg;
+  Profil und Woche gehen ueber `WeekplanApi` und reichten die Rohmeldung durch.
+  Behoben mit `ServerNichtErreichbarException` an allen drei Stellen (holen,
+  schreiben, anmelden). **Lehre:** eine Meldung ist erst gut, wenn sie auf jedem
+  Weg dorthin gut ist.

@@ -9,7 +9,7 @@ namespace Weekplan.Client.Dienste;
 /// <summary>Der Server war nicht erreichbar und es lag nichts im Browser.</summary>
 public sealed class StammdatenNichtErreichbarException(Exception ursache)
     : Exception("Die Rezepte und Trainingsphasen konnten nicht geladen werden — der Server "
-                + "war nicht erreichbar. Nach einer laengeren Pause dauert der erste Ruf "
+                + "war nicht erreichbar. Nach einer längeren Pause dauert der erste Ruf "
                 + "einige Sekunden.", ursache);
 
 /// <summary>

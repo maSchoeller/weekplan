@@ -8,6 +8,15 @@ namespace Weekplan.Client.Dienste;
 /// <summary>Das Merkmal gilt nicht mehr — der Aufrufer muss zur Anmeldung schicken.</summary>
 public sealed class NichtAngemeldetException() : Exception("Nicht angemeldet.");
 
+/// <summary>
+/// Der Server war nicht erreichbar. Eigener Typ, weil die Meldung des Browsers
+/// („TypeError: Failed to fetch") auf einer Fehlerkarte nichts zu suchen hat —
+/// sie sagt dem Nutzer nicht, was los ist und was er tun kann.
+/// </summary>
+public sealed class ServerNichtErreichbarException(Exception ursache)
+    : Exception("Der Server war nicht erreichbar. Nach einer längeren Pause dauert der erste "
+                + "Ruf einige Sekunden — versuche es gleich noch einmal.", ursache);
+
 public sealed record AnmeldeAnfrage(string Benutzername, string Passwort);
 public sealed record AnmeldeAntwort(string Merkmal);
 
@@ -17,7 +26,15 @@ public sealed class WeekplanApi(HttpClient http, Sitzung sitzung)
     /// <returns>Das Merkmal, oder <c>null</c> wenn Name oder Passwort nicht stimmen.</returns>
     public async Task<string?> AnmeldenAsync(string benutzername, string passwort, CancellationToken ct = default)
     {
-        var antwort = await http.PostAsJsonAsync("anmeldung", new AnmeldeAnfrage(benutzername, passwort), ct);
+        HttpResponseMessage antwort;
+        try
+        {
+            antwort = await http.PostAsJsonAsync("anmeldung", new AnmeldeAnfrage(benutzername, passwort), ct);
+        }
+        catch (HttpRequestException fehler)
+        {
+            throw new ServerNichtErreichbarException(fehler);
+        }
 
         if (antwort.StatusCode is HttpStatusCode.Unauthorized) return null;
         if (antwort.StatusCode is HttpStatusCode.TooManyRequests)
@@ -44,7 +61,7 @@ public sealed class WeekplanApi(HttpClient http, Sitzung sitzung)
     private async Task<T> HolenAsync<T>(string pfad, CancellationToken ct)
     {
         using var anfrage = Mit(HttpMethod.Get, pfad);
-        using var antwort = await http.SendAsync(anfrage, ct);
+        using var antwort = await SendenAsync(anfrage, ct);
         Pruefen(antwort);
         return (await antwort.Content.ReadFromJsonAsync<T>(ct))!;
     }
@@ -53,8 +70,20 @@ public sealed class WeekplanApi(HttpClient http, Sitzung sitzung)
     {
         using var anfrage = Mit(HttpMethod.Put, pfad);
         anfrage.Content = JsonContent.Create(inhalt);
-        using var antwort = await http.SendAsync(anfrage, ct);
+        using var antwort = await SendenAsync(anfrage, ct);
         Pruefen(antwort);
+    }
+
+    private async Task<HttpResponseMessage> SendenAsync(HttpRequestMessage anfrage, CancellationToken ct)
+    {
+        try
+        {
+            return await http.SendAsync(anfrage, ct);
+        }
+        catch (HttpRequestException fehler)
+        {
+            throw new ServerNichtErreichbarException(fehler);
+        }
     }
 
     private HttpRequestMessage Mit(HttpMethod verfahren, string pfad)

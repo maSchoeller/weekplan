@@ -96,8 +96,12 @@ kann. Kein Commit, kein Ausrollen, kein Neuladen von Hand.
    markiert der betroffene Tag das sichtbar mit altem und neuem Wert.
 6. Wird ein geplantes Rezept geloescht, zeigt der Tag seinen Namen mit dem
    Vermerk „entfernt" und einen Weg, den Platz neu zu belegen.
-7. Nach einem Start mit Netz ist die App bei erneutem Start ohne Netz weiter
-   benutzbar — Rezepte, Phasen und Einkaufsliste stehen aus dem Zwischenspeicher.
+7. Nach einem Start mit Netz stehen **Rezepte und Trainingsphasen** aus dem
+   Zwischenspeicher und werden ohne Wartezeit gezeigt, auch beim Kaltstart des
+   Servers. **Berichtigt am 29.08.:** die Einkaufsliste gehoert nicht dazu — sie
+   wird aus dem Wochenplan gerechnet, und der liegt im Tagebuch auf dem Server.
+   Der urspruengliche Satz versprach das mit und widersprach damit dem
+   Nicht-Ziel weiter unten. Ohne Netz zeigt die App weiterhin die Fehlerkarte.
 8. Beim allerersten Start ohne erreichbaren Server zeigt die App eine klare
    Meldung mit einem Weg, es erneut zu versuchen — keine leere, halb
    funktionierende Oberflaeche.
