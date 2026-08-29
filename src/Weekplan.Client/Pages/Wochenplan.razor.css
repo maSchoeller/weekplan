@@ -288,20 +288,27 @@
   cursor: pointer;
 }
 
-.schritt:hover { color: var(--accent); border-color: var(--accent); }
+.schritt:hover:not(:disabled) { color: var(--accent); border-color: var(--accent); }
 
-/* Derselbe Knopf, zwei Kleider. Ohne Gaeste traegt er das leise, gestrichelte
-   „+ Gäste"; sobald welche da sind, wird er das quadratische „+" des Steppers.
-   Ein Element, damit der Tastaturfokus den Wechsel ueberlebt — darum die
-   hoehere Spezifitaet statt einer eigenen Klasse. */
+/* Am Anschlag (0 und 8) wird der Knopf abgeschaltet statt still nichts zu tun —
+   ein Knopf, der auf nichts reagiert, sieht aus wie ein Fehler. */
+.schritt:disabled {
+  color: var(--text-dim);
+  border-style: dotted;
+  opacity: .55;
+  cursor: default;
+}
+
+/* Derselbe Knopf, zwei Kleider. Ohne Gaeste ist der Rahmen gestrichelt und die
+   Farbe leise; sobald welche da sind, wird er der volle „+" des Steppers.
+   **Beschriftung und Masse bleiben gleich** — ein Knopf, der beim Druecken
+   seine Groesse aendert, schiebt sich unter dem Finger weg, und der zweite
+   Tipp geht daneben. Ein Element, damit auch der Tastaturfokus den Wechsel
+   ueberlebt; darum die hoehere Spezifitaet statt einer eigenen Klasse. */
 .schritt.gaeste-an {
-  min-width: 0;
-  padding: 0 var(--sp-2);
   background: transparent;
   color: var(--text-dim);
   border-style: dashed;
-  font-size: .8125rem;
-  white-space: nowrap;
 }
 
 .schritt.gaeste-an:hover {
@@ -319,9 +326,18 @@
 
 .mahlzeit-gaeste .wort {
   flex: 1 1 auto;
+  min-width: 0;
   color: var(--text-dim);
   font-size: .8125rem;
   font-variant-numeric: tabular-nums;
+}
+
+/* Das Knopfpaar haengt am rechten Rand und ruehrt sich nicht, was links auch
+   dazukommt. Alles Wachsende waechst nach innen. */
+.mahlzeit-gaeste .paar {
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: var(--sp-1);
 }
 
 /* Eine Mahlzeit, die vom Tag abweicht, sagt es mit dem Wort „hier" und traegt
@@ -329,6 +345,7 @@
 .mahlzeit-gaeste.eigen .wort { color: var(--text); font-weight: 600; }
 
 .zurueck-an-den-tag {
+  flex: 0 0 auto;
   min-height: 44px;
   padding: 0 var(--sp-2);
   background: transparent;
@@ -351,7 +368,14 @@
   letter-spacing: normal;
 }
 
+/* Der Verweis zur Kochseite ist ein Treffpunkt fuer den Daumen, kein blosser
+   Text: 21 px hoher Zeilenkasten waeren die Haelfte der geforderten 44. Die
+   Zeile ist ohnehin so hoch — das Feld daneben misst 44 —, also kostet es
+   nichts, den Verweis sie ausfuellen zu lassen. */
 .gericht .name a {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
   color: inherit;
   text-decoration-color: var(--border);
   text-underline-offset: 3px;
