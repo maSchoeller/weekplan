@@ -36,7 +36,7 @@ jobs:
       # naechsten Einkauf.
       - name: Stammdaten pruefen
         run: |
-          curl --fail --retry 6 --retry-delay 10 --retry-all-errors             --output stammdaten.json "${API_URL}/stammdaten"
+          curl --fail --retry 6 --retry-delay 10 --retry-all-errors --output stammdaten.json "${API_URL}/stammdaten"
           python3 - <<'PRUEFUNG'
           import json, sys
           daten = json.load(open("stammdaten.json", encoding="utf-8"))

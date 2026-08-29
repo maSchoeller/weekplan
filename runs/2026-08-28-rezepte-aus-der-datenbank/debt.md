@@ -118,3 +118,13 @@
   27.08. Geprueft hat dieselbe Hand, die umgesetzt hat. **Ausloeser:** der
   naechste Lauf ohne diese Einschraenkung; bis dahin ist jeder Smoketest dieses
   Projekts nur so gut wie die Voreingenommenheit dessen, der ihn schreibt.
+- 2026-08-29 Die **Cosmos-Tests des Stammdaten-Slice sind nie gelaufen.** Sie
+  brauchen einen eigenen Behaelter (`WEEKPLAN_STAMMDATEN_BEHAELTER`), damit sie
+  Training, Grundstock und Abteilungen nicht in der Produktion ueberschreiben —
+  und ein dritter Behaelter mit 400 RU/s spraenge den Free Tier von 1000. Was
+  stattdessen geprueft ist: das Erstbefuellungswerkzeug hat gegen die echte
+  Datenbank geschrieben und alle 24 Rezepte Feld fuer Feld zurueckgelesen, also
+  Schreiben, Abfrage ueber die Partition und Lesen. **Ungeprueft bleibt allein
+  `CosmosAblage.LoeschenAsync`** — das wird nach dem Ausrollen ueber den echten
+  MCP-Endpunkt an einem Probe-Rezept nachgeholt. **Ausloeser:** jede weitere
+  Aenderung an `Stammdaten/CosmosAblage.cs`.
