@@ -212,3 +212,28 @@ Neu, und ueber den Lauf hinaus:
 - 2026-08-29 **Dritter Lauf in Folge ohne frische Augen im Smoketest:** die
   Sitzung darf keine Unteragenten starten. Geprueft hat dieselbe Hand, die
   umgesetzt hat. **Ausloeser:** der naechste Lauf ohne diese Einschraenkung.
+- 2026-08-29 **Ein Vorzustand, der an der Reihenfolge zweier Anweisungen haengt,
+  ist keiner.** `Stammdatenlader.Vorheriger` las den alten Stand aus `_geladen`
+  — einem Feld, das erst *nach* dem Start des Hintergrund-Tasks zugewiesen wird.
+  Der Starthinweis blieb dadurch aus, und zwar lautlos. Behoben, indem der
+  abgelegte Stand mitgegeben wird. **Ausloeser:** beim zweiten Vorkommen wird
+  daraus eine Harness-Regel; bis dahin steht sie hier.
+- 2026-08-29 **Zwei Zahlen gegeneinander zu tarieren ist keine Regel, sondern
+  ein Raetsel.** Der geplante Aufschlag fuer „nicht vorkochbar" kaempfte in
+  `AutomatischFuellen` gegen den vorhandenen Aufschlag fuer Wiederholung:
+  darunter zog das Fuellen frische Gerichte in die Woche, darueber kippte es je
+  nach Wochentag. Ein Filter mit Rueckfall traf die Absicht direkt. **Ausloeser:**
+  wenn das naechste Mal eine Bewertungsfunktion um einen Term wachsen soll —
+  erst pruefen, ob eine Auswahl davor es auch tut.
+- 2026-08-29 `abteilungen_schreiben` schreibt Rezepte mit und ist nicht atomar.
+  Bricht es dazwischen ab, stehen Abteilungsliste und Rezepte kurz auseinander.
+  **Ausloeser:** wenn Zutaten unerklaerlich unter „Sonstiges" auftauchen.
+- 2026-08-29 Das Merkmal `prep` ist bei allen 24 Bestandsrezepten `false`, obwohl
+  Chili, Dal und Gulasch drei Tage halten. Kein Migrationsschritt, weil der Pool
+  im Lauf „neuer Gerichte-Pool" ohnehin ersetzt wird. **Ausloeser:** faellt
+  dieser Folgelauf aus, muss es nachgetragen werden.
+- 2026-08-29 Der Starthinweis zur geaenderten Zielaufnahme erscheint nur
+  angemeldet — ohne Gewicht laesst sich keine Zielaufnahme rechnen — und hat
+  keinen automatischen Test, weil es fuer den Client kein Testprojekt gibt.
+  **Ausloeser:** sobald eine zweite Sache im Client eine Zusicherung braucht,
+  lohnt das Testprojekt.

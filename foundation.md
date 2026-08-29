@@ -31,9 +31,12 @@
   `--partition-key-path "/art"` ein `C:/Program Files/Git/art`. Fuer `az` das
   PowerShell-Werkzeug nehmen (oder `MSYS_NO_PATHCONV=1`).
 - Smoketest: Browser gegen den laufenden Client, mobil (375 px) und Desktop.
-  Zuerst der eingebaute Browser-Bereich; rendert er keine Bilder — wie im
-  Schwesterprojekt weddination — auf das installierte Chrome ausweichen.
-  Ablauf in `docs/local-testing.md`.
+  Zuerst der eingebaute Browser-Bereich, Ablauf in `docs/local-testing.md`.
+  **Die Faehigkeitstabelle dort ist ein Messwert mit Datum, keine Tatsache** —
+  am 29.08. stimmten vier von sieben Zeilen nicht mehr. Vor dem Verlassen auf
+  eine Zeile die Stichprobe machen. Kurzfassung: Screenshots und
+  `requestAnimationFrame` gehen nur bei **sichtbarem** Bereich, Klicks nur ueber
+  `ref`, die Tastatur gar nicht — die gehoert ins installierte Chrome.
 - Design-System: `design-system.md` — bindende Tokens, Spacing-Skala,
   Layout-Regeln. Weicht begruendet von `personal-ui-brand` ab (gruen statt
   Kobalt, Dunkelmodus bleibt, Systemschrift statt Webfont).
