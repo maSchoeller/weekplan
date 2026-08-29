@@ -42,9 +42,14 @@ Chrome ausweichen.
 
 Nachgemessen am 2026-08-26 mit Kontrollproben, in **beiden** Browsern:
 
+> **Nachgemessen am 2026-08-29: der eingebaute Bereich kann jetzt Screenshots.**
+> Bei 375 px und bei 1280 px kamen brauchbare Bilder heraus, Dunkelmodus
+> inbegriffen. Die uebrigen Zeilen der Tabelle sind seit dem 26.08. nicht neu
+> geprueft — wer sie braucht, misst nach, statt ihnen zu glauben.
+
 | | eingebauter Bereich | installiertes Chrome |
 |---|---|---|
-| Screenshot | **nein** (kompositiert keine Bilder) | ja |
+| Screenshot | ~~nein~~ **ja** (seit 2026-08-29) | ja |
 | Text und Baum lesen | ja | ja |
 | JavaScript ausfuehren | ja, nur synchron (kein `requestAnimationFrame`) | ja, auch `await` |
 | Klick auf einen Knopf | **nein** | ja |

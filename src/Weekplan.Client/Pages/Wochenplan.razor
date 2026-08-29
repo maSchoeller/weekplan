@@ -118,9 +118,20 @@
                     <select value=""
                             @onchange="e => Legen(tag.Kuerzel, mahlzeit.Schluessel, e.Value?.ToString())">
                         <option value="">+ Gericht wählen</option>
-                        @foreach (var rezept in Z.Rezepte.Where(r => r.Kategorie == mahlzeit.Schluessel))
+                        @* Vorschlagen statt verbieten: die Gerichte der Mahlzeit
+                           stehen oben, alle anderen bleiben erreichbar — sonst
+                           liesse sich „mittags kochen, abends die Box" nicht
+                           abbilden. *@
+                        @foreach (var gruppe in Z.Rezepte
+                            .GroupBy(r => r.Kategorie == mahlzeit.Schluessel)
+                            .OrderByDescending(g => g.Key))
                         {
-                            <option value="@rezept.Id">@rezept.Name (@Zahl.Kcal(rezept.Kcal) kcal)</option>
+                            <optgroup label="@(gruppe.Key ? $"Für {mahlzeit.Beschriftung}" : "Andere Gerichte")">
+                                @foreach (var rezept in gruppe)
+                                {
+                                    <option value="@rezept.Id">@rezept.Name (@Zahl.Kcal(rezept.Kcal) kcal)</option>
+                                }
+                            </optgroup>
                         }
                     </select>
                 </div>

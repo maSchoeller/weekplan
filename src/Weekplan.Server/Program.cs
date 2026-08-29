@@ -67,7 +67,9 @@ var mcpSchluessel = builder.Configuration["Mcp:Schluessel"];
 if (!string.IsNullOrWhiteSpace(mcpSchluessel))
 {
     builder.Services.AddSingleton<Rezeptwerkzeuge>();
-    builder.Services.AddMcpServer().WithHttpTransport().WithTools<Rezeptwerkzeuge>();
+    builder.Services.AddMcpServer().WithHttpTransport()
+        .WithTools<Rezeptwerkzeuge>()
+        .WithTools<Planwerkzeuge>();
 }
 
 // Die Adresse ist oeffentlich, also darf niemand Passwoerter durchprobieren.

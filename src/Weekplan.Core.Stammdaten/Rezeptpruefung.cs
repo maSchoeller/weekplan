@@ -9,7 +9,7 @@ namespace Weekplan.Core.Stammdaten;
 /// alle Regeln — und die Absage zaehlt jeden Verstoss auf, statt beim ersten
 /// abzubrechen: der Aufrufer korrigiert dann einmal statt fuenfmal.
 /// </summary>
-internal static class Pruefung
+internal static class Rezeptpruefung
 {
     private const int AnleitungHoechstens = 20_000;
 
@@ -45,7 +45,7 @@ internal static class Pruefung
             foreach (var zutat in entwurf.Zutaten) klagen.AddRange(Zutat(zutat, abteilungen));
         }
 
-        if (klagen.Count > 0) throw new RezeptUngueltigException(klagen);
+        if (klagen.Count > 0) throw new StammdatenUngueltigException(klagen);
     }
 
     private static IEnumerable<string> Zutat(Zutat zutat, IReadOnlyList<string> abteilungen)
@@ -109,7 +109,7 @@ internal static class Pruefung
 
         if (fertig.Length == 0)
         {
-            throw new RezeptUngueltigException(
+            throw new StammdatenUngueltigException(
                 $"Aus dem Namen '{name}' laesst sich keine Kennung bilden — er braucht Buchstaben oder Ziffern.");
         }
 

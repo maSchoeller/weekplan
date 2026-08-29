@@ -48,8 +48,14 @@ public static class Altbestand
     /// dieselbe Nummerierung, nur ab jetzt in einem Feld, das auch
     /// Zwischenueberschriften und Fliesstext tragen kann.
     /// </summary>
+    /// <remarks>
+    /// <c>Prep</c> steht im Altbestand nicht und wird darum <c>false</c>. Das ist
+    /// fuer einige Gerichte sachlich falsch — das Chili haelt drei Tage —, aber
+    /// der Altbestand wird mit dem Lauf „neuer Gerichte-Pool" ohnehin ersetzt.
+    /// Steht in dessen <c>debt.md</c>.
+    /// </remarks>
     public static Rezept Umwandeln(AltRezept alt) => new(
-        alt.Id, alt.Name, alt.Kategorie, alt.ZeitMin, alt.Kalt, alt.Kcal, alt.Protein,
+        alt.Id, alt.Name, alt.Kategorie, alt.ZeitMin, alt.Kalt, Prep: false, alt.Kcal, alt.Protein,
         alt.Zutaten,
         string.Join("\n", alt.Schritte.Select((schritt, i) => $"{i + 1}. {schritt}")));
 

@@ -90,7 +90,13 @@ internal sealed class Wochenplanung : IWochenplanung
 
             // Das Fruehstueck rotiert fest — es soll bewusst gleichfoermig sein.
             var f = fruehstueck[(i + rotation) % fruehstueck.Count];
-            var beste = Bestes(f, mittag, abend, ziel, bilanz.Protein, benutzt);
+
+            // Der Alltag steht auf zwei sonntags vorgekochten Sorten: werktags
+            // kommt die Box auf den Tisch, am Wochenende wird gekocht.
+            var werktag = tag.Kuerzel is not ("Sa" or "So");
+            var beste = Bestes(
+                f, Vorkochbar(mittag, werktag), Vorkochbar(abend, werktag),
+                ziel, bilanz.Protein, benutzt);
 
             benutzt[beste.Mittag.Id] = benutzt.GetValueOrDefault(beste.Mittag.Id) + 1;
             benutzt[beste.Abend.Id] = benutzt.GetValueOrDefault(beste.Abend.Id) + 1;
@@ -106,6 +112,22 @@ internal sealed class Wochenplanung : IWochenplanung
         }
 
         return woche with { Plan = plan, Rotation = rotation };
+    }
+
+    /// <summary>
+    /// Werktags kommen nur vorkochbare Gerichte in die Auswahl — gibt es keine,
+    /// bleibt die volle. Ein Filter und keine Strafpunkte: gegen den Aufschlag
+    /// fuer Wiederholung tariert, kippte eine Strafe je nach Wochentag mal so
+    /// und mal so, und niemand koennte vorhersagen, was der Knopf tut. Der
+    /// Alltag steht ohnehin auf zwei Sorten fuer je zwei bis drei Tage —
+    /// Wiederholung ist dort der Normalfall, nicht der Makel.
+    /// </summary>
+    private static IReadOnlyList<Rezept> Vorkochbar(IReadOnlyList<Rezept> auswahl, bool werktag)
+    {
+        if (!werktag) return auswahl;
+
+        List<Rezept> vorkochbar = [.. auswahl.Where(r => r.Prep)];
+        return vorkochbar.Count > 0 ? vorkochbar : auswahl;
     }
 
     private static (Rezept Mittag, Rezept Abend, int PortionenF, int PortionenM, int PortionenA) Bestes(

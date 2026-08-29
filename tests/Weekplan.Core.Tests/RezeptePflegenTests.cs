@@ -49,7 +49,7 @@ public sealed class RezeptePflegenTests : IDisposable
         int protein = 52,
         IReadOnlyList<Zutat>? zutaten = null,
         string anleitung = "## Vorbereitung\nZwiebel würfeln.")
-        => new(name, kategorie, zeitMin, Kalt: true, kcal, protein,
+        => new(name, kategorie, zeitMin, Kalt: true, Prep: false, kcal, protein,
                zutaten ?? [new Zutat("Kidneybohnen", 150, "Konserven")], anleitung);
 
     // ── Anlegen ─────────────────────────────────────────
@@ -83,7 +83,7 @@ public sealed class RezeptePflegenTests : IDisposable
     {
         await _quelle.AnlegenAsync(Entwurf());
 
-        var fehler = await Assert.ThrowsAsync<RezeptUngueltigException>(
+        var fehler = await Assert.ThrowsAsync<StammdatenUngueltigException>(
             () => _quelle.AnlegenAsync(Entwurf(anleitung: "Etwas anderes.")));
 
         Assert.Contains("chili-sin-carne", fehler.Message);
@@ -92,7 +92,7 @@ public sealed class RezeptePflegenTests : IDisposable
 
     [Fact]
     public async Task Ein_Name_ohne_brauchbare_Zeichen_wird_abgewiesen()
-        => await Assert.ThrowsAsync<RezeptUngueltigException>(() => _quelle.AnlegenAsync(Entwurf(name: "!!!")));
+        => await Assert.ThrowsAsync<StammdatenUngueltigException>(() => _quelle.AnlegenAsync(Entwurf(name: "!!!")));
 
     // ── Pruefung ────────────────────────────────────────
 
@@ -100,7 +100,7 @@ public sealed class RezeptePflegenTests : IDisposable
     [Fact]
     public async Task Eine_unbekannte_Abteilung_wird_abgewiesen_und_die_Absage_nennt_die_erlaubten()
     {
-        var fehler = await Assert.ThrowsAsync<RezeptUngueltigException>(
+        var fehler = await Assert.ThrowsAsync<StammdatenUngueltigException>(
             () => _quelle.AnlegenAsync(Entwurf(zutaten: [new Zutat("Tofu", 100, "Tiefkühl")])));
 
         Assert.Contains("Tiefkühl", fehler.Message);
@@ -112,7 +112,7 @@ public sealed class RezeptePflegenTests : IDisposable
     [Fact]
     public async Task Eine_unbekannte_Kategorie_wird_abgewiesen_und_die_Absage_nennt_die_erlaubten()
     {
-        var fehler = await Assert.ThrowsAsync<RezeptUngueltigException>(
+        var fehler = await Assert.ThrowsAsync<StammdatenUngueltigException>(
             () => _quelle.AnlegenAsync(Entwurf(kategorie: "nachtisch")));
 
         Assert.Contains("nachtisch", fehler.Message);
@@ -123,15 +123,15 @@ public sealed class RezeptePflegenTests : IDisposable
     [InlineData("")]
     [InlineData("   ")]
     public async Task Ein_Rezept_ohne_Namen_wird_abgewiesen(string name)
-        => await Assert.ThrowsAsync<RezeptUngueltigException>(() => _quelle.AnlegenAsync(Entwurf(name: name)));
+        => await Assert.ThrowsAsync<StammdatenUngueltigException>(() => _quelle.AnlegenAsync(Entwurf(name: name)));
 
     [Fact]
     public async Task Ein_Rezept_ohne_Anleitung_wird_abgewiesen()
-        => await Assert.ThrowsAsync<RezeptUngueltigException>(() => _quelle.AnlegenAsync(Entwurf(anleitung: "  ")));
+        => await Assert.ThrowsAsync<StammdatenUngueltigException>(() => _quelle.AnlegenAsync(Entwurf(anleitung: "  ")));
 
     [Fact]
     public async Task Ein_Rezept_ohne_Zutaten_wird_abgewiesen()
-        => await Assert.ThrowsAsync<RezeptUngueltigException>(() => _quelle.AnlegenAsync(Entwurf(zutaten: [])));
+        => await Assert.ThrowsAsync<StammdatenUngueltigException>(() => _quelle.AnlegenAsync(Entwurf(zutaten: [])));
 
     [Theory]
     [InlineData(0, 52, 40)]
@@ -139,13 +139,13 @@ public sealed class RezeptePflegenTests : IDisposable
     [InlineData(829, 52, 0)]
     [InlineData(-1, 52, 40)]
     public async Task Nullen_und_negative_Zahlen_werden_abgewiesen(int kcal, int protein, int zeit)
-        => await Assert.ThrowsAsync<RezeptUngueltigException>(
+        => await Assert.ThrowsAsync<StammdatenUngueltigException>(
             () => _quelle.AnlegenAsync(Entwurf(kcal: kcal, protein: protein, zeitMin: zeit)));
 
     /// <summary>Eine Zutat ohne Menge waere auf der Einkaufsliste ein Posten ueber nichts.</summary>
     [Fact]
     public async Task Eine_Zutat_ohne_Gramm_und_ohne_Stueck_wird_abgewiesen()
-        => await Assert.ThrowsAsync<RezeptUngueltigException>(
+        => await Assert.ThrowsAsync<StammdatenUngueltigException>(
             () => _quelle.AnlegenAsync(Entwurf(zutaten: [new Zutat("Salz", 0, "Konserven")])));
 
     [Fact]
@@ -159,7 +159,7 @@ public sealed class RezeptePflegenTests : IDisposable
 
     [Fact]
     public async Task Eine_masslos_lange_Anleitung_wird_abgewiesen()
-        => await Assert.ThrowsAsync<RezeptUngueltigException>(
+        => await Assert.ThrowsAsync<StammdatenUngueltigException>(
             () => _quelle.AnlegenAsync(Entwurf(anleitung: new string('x', 20_001))));
 
     /// <summary>
@@ -169,7 +169,7 @@ public sealed class RezeptePflegenTests : IDisposable
     [Fact]
     public async Task Mehrere_Verstoesse_stehen_alle_in_einer_Absage()
     {
-        var fehler = await Assert.ThrowsAsync<RezeptUngueltigException>(
+        var fehler = await Assert.ThrowsAsync<StammdatenUngueltigException>(
             () => _quelle.AnlegenAsync(Entwurf(
                 kategorie: "nachtisch", kcal: 0,
                 zutaten: [new Zutat("Tofu", 100, "Tiefkühl")])));
@@ -198,7 +198,7 @@ public sealed class RezeptePflegenTests : IDisposable
     [Fact]
     public async Task Aendern_eines_unbekannten_Rezepts_wird_abgewiesen()
     {
-        var fehler = await Assert.ThrowsAsync<RezeptUngueltigException>(
+        var fehler = await Assert.ThrowsAsync<StammdatenUngueltigException>(
             () => _quelle.AendernAsync("gibt-es-nicht", Entwurf()));
 
         Assert.Contains("gibt-es-nicht", fehler.Message);
@@ -210,7 +210,7 @@ public sealed class RezeptePflegenTests : IDisposable
     {
         await _quelle.AnlegenAsync(Entwurf());
 
-        await Assert.ThrowsAsync<RezeptUngueltigException>(
+        await Assert.ThrowsAsync<StammdatenUngueltigException>(
             () => _quelle.AendernAsync("chili-sin-carne", Entwurf(kategorie: "nachtisch")));
     }
 

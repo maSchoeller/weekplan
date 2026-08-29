@@ -31,6 +31,14 @@ public sealed class Stammdatenlader(HttpClient server, IJSRuntime js)
     /// <summary>Im Hintergrund ist ein neuer Stand angekommen.</summary>
     public event Action<Stammdatensatz>? Aufgefrischt;
 
+    /// <summary>
+    /// Der Stand, der vor dem letzten Auffrischen galt — <c>null</c> beim
+    /// Kaltstart, wo nichts im Browserspeicher lag. Nur hier liegen alter und
+    /// neuer Stand gleichzeitig vor, und nur damit laesst sich sagen, ob eine
+    /// Planaenderung eine Zahl bewegt hat.
+    /// </summary>
+    public Stammdatensatz? Vorheriger { get; private set; }
+
     public async Task<Stammdatensatz> LadenAsync(CancellationToken ct = default)
     {
         if (_geladen is not null) return _geladen;
@@ -40,7 +48,12 @@ public sealed class Stammdatenlader(HttpClient server, IJSRuntime js)
             // Absichtlich ohne await: die App startet mit dem gespeicherten
             // Stand, das Nachfragen laeuft daneben. Scheitert es, bleibt der
             // gespeicherte Stand stehen — das ist der Fall im Supermarkt.
-            _ = NachfragenAsync(abgelegt.Kennzeichen);
+            //
+            // Der abgelegte Stand wird mitgegeben und nicht spaeter aus
+            // _geladen gelesen: der Zuweisung unten voraus laeuft ein Task,
+            // und wer den Vorgaenger von der Reihenfolge zweier Anweisungen
+            // abhaengig macht, hat ihn irgendwann nicht.
+            _ = NachfragenAsync(abgelegt);
             return _geladen = abgelegt.Satz;
         }
 
@@ -52,13 +65,14 @@ public sealed class Stammdatenlader(HttpClient server, IJSRuntime js)
         return _geladen = frisch.Satz;
     }
 
-    private async Task NachfragenAsync(string? kennzeichen)
+    private async Task NachfragenAsync(Stand vorher)
     {
         try
         {
-            if (await VomServerAsync(kennzeichen, CancellationToken.None) is not { } frisch) return;
+            if (await VomServerAsync(vorher.Kennzeichen, CancellationToken.None) is not { } frisch) return;
 
             await InDenSpeicherAsync(frisch);
+            Vorheriger = vorher.Satz;
             _geladen = frisch.Satz;
             Aufgefrischt?.Invoke(frisch.Satz);
         }

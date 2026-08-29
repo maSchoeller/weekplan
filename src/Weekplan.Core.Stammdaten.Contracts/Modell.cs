@@ -22,6 +22,7 @@ public sealed record Rezept(
     string Kategorie,
     int ZeitMin,
     bool Kalt,
+    bool Prep,
     int Kcal,
     int Protein,
     IReadOnlyList<Zutat> Zutaten,

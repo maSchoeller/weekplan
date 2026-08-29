@@ -25,7 +25,7 @@ public abstract class StammdatenVertrag
     private static readonly string[] Abteilungen = ["Konserven", "Obst & Gemüse", "Trockenware"];
 
     private Rezept Chili(string anleitung = "Kochen.") => new(
-        Kennung("chili"), "Chili sin Carne", "mittag", 40, true, 829, 52,
+        Kennung("chili"), "Chili sin Carne", "mittag", 40, true, true, 829, 52,
         [
             new Zutat("Kidneybohnen", 150, "Konserven"),
             new Zutat("Zwiebel", 70, "Obst & Gemüse"),
@@ -35,7 +35,7 @@ public abstract class StammdatenVertrag
         anleitung);
 
     private Rezept Oats() => new(
-        Kennung("oats"), "Overnight Oats", "fruehstueck", 5, true, 512, 38,
+        Kennung("oats"), "Overnight Oats", "fruehstueck", 5, true, true, 512, 38,
         [new Zutat("Haferflocken", 80, "Trockenware")],
         "## Abends\nAlles verrühren.");
 

@@ -49,6 +49,22 @@ else
         </div>
     </nav>
 
+    @* Gepflegt wird im Gespraech, benutzt wird hier: was dort an der Rechnung
+       gedreht wurde, darf nicht still ankommen. Eine Zahl, kein Unterschied —
+       eine Aenderungsliste waere ein anderes Feature. *@
+    @if (Zustand.Planhinweis is { } hinweis)
+    {
+        <div class="streifen" role="status">
+            <div class="huelle streifen-innen">
+                <span>
+                    <strong>Plan geändert</strong> — deine Zielaufnahme liegt jetzt bei
+                    @Zahl.Kcal(hinweis.Neu) statt @Zahl.Kcal(hinweis.Alt) kcal am Tag.
+                </span>
+                <button @onclick="Zustand.PlanhinweisZurKenntnis">Zur Kenntnis</button>
+            </div>
+        </div>
+    }
+
     @if (Zustand.Lage is Speicherlage.Fehler)
     {
         <div class="streifen" role="status">

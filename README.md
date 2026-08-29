@@ -10,13 +10,16 @@ gewichtsabhängiger Verbrauchsrechnung.
 
 - **Woche** — Gerichte auf Wochentage und Mahlzeiten legen. Tagessumme kcal und Protein
   läuft mit und färbt sich, wenn das Ziel getroffen ist. Ein Knopf füllt die Woche
-  automatisch und wählt die Portionen so, dass jeder Tag nah am Kalorienziel landet.
+  automatisch und wählt die Portionen so, dass jeder Tag nah am Kalorienziel landet;
+  werktags nimmt er die vorkochbaren Gerichte. Vorgeschlagen wird nach Mahlzeit,
+  gesperrt ist nichts — mittags darf auch ein Abendgericht stehen.
 - **Einkauf** — Wochenliste (Frischware, aus dem Wochenplan aggregiert, nach
   Supermarkt-Abteilungen sortiert, abhakbar) und Grundstock (einmaliger Vorratseinkauf).
-- **Rezepte** — 24 Gerichte. Die Übersicht ist nach Mahlzeit gruppiert; ein
-  Tippen öffnet die Kochseite mit Portionsrechner, Zutaten in Gramm und einer
-  ausführlichen Anleitung. Die Rezepte liegen in der Datenbank, nicht im
-  Quellcode.
+- **Rezepte** — 24 Gerichte. Die Übersicht ist nach Mahlzeit gruppiert und nennt
+  je Gericht kcal, Protein, Zeit sowie, ob es kalt schmeckt und ob es sich
+  vorkochen lässt; ein Tippen öffnet die Kochseite mit Portionsrechner, Zutaten
+  in Gramm und einer ausführlichen Anleitung. Die Rezepte liegen in der
+  Datenbank, nicht im Quellcode.
 - **Training** — Fünf Phasen mit Wochenplan, Verbrauchstabelle beim aktuellen Gewicht,
   Kraftplan A/B und Regelwerk.
 - **Ich** — Gewicht, Zielgewicht, Größe, Alter, Zieltermin, Proteinfaktor und wahlweise ein
@@ -107,9 +110,9 @@ ausgerollte App einmalig von Hand, mit derselben `WEEKPLAN_COSMOS` wie oben:
 dotnet run --project tools/Weekplan.Stammdaten
 ```
 
-### Rezepte pflegen
+### Den Plan pflegen
 
-Rezepte werden nicht in der App bearbeitet, sondern im Gespraech mit Claude Code.
+Der Plan wird nicht in der App bearbeitet, sondern im Gespraech mit Claude Code.
 Der ausgerollte Server bietet dafuer einen MCP-Endpunkt; `.mcp.json` im Repo
 kennt die Adresse, der Schluessel kommt aus der Umgebung:
 
@@ -118,9 +121,21 @@ $env:WEEKPLAN_MCP_SCHLUESSEL = "<der Schluessel aus dem Container-App-Secret>"
 ```
 
 Danach genuegt eine Ansage wie „leg mir was Warmes fuer den Abend an, um 700 kcal,
-mindestens 45 g Protein, unter 30 Minuten". Schreibbar sind **nur Rezepte**;
-Trainingsphasen, MET-Werte, Grundstock und die Abteilungsliste sind
-Rechengrundlage und aendern sich nur durch einen Commit.
+mindestens 45 g Protein, unter 30 Minuten" — oder „nimm das Laufband am Montag
+auf 60 Minuten runter".
+
+| Was | Lesen | Schreiben |
+|---|---|---|
+| Rezepte | ja | ja |
+| Trainingsplan, MET-Werte, Kraftplan | ja | ja |
+| Grundstock, Abteilungen | ja | ja |
+| Regelwerk (die sechs Regeln) | ja | **nein** |
+| Gewicht, Verlauf, Wochenplan | **nein** | **nein** |
+
+Jedes Schreiben ersetzt sein Dokument **vollstaendig** — also vorher lesen,
+damit nichts verlorengeht. Aendert sich dabei etwas, das rueckwirkend rechnet,
+zeigt die App beim naechsten Start einen Hinweis mit der alten und der neuen
+Zielaufnahme.
 
 Tests:
 

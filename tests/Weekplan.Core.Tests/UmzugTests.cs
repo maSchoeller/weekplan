@@ -152,6 +152,9 @@ public class UmzugTests
             r.GetProperty("kategorie").GetString()!,
             r.GetProperty("zeitMin").GetInt32(),
             r.GetProperty("kalt").GetBoolean(),
+            // Der Altbestand kennt kein prep — der Umzug setzt es auf false,
+            // und genau das wird hier nachgestellt.
+            false,
             r.GetProperty("kcal").GetInt32(),
             r.GetProperty("protein").GetInt32(),
             [.. r.GetProperty("zutaten").EnumerateArray().Select(z => new Zutat(

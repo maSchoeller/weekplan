@@ -19,7 +19,7 @@ public class AbweichungTests
     private static readonly Zutat[] Zutaten = [new("Kidneybohnen", 150, "Konserven")];
 
     private static Rezept Chili(int kcal = 829, int protein = 52)
-        => new("chili", "Chili sin Carne", "mittag", 40, true, kcal, protein, Zutaten, "Kochen.");
+        => new("chili", "Chili sin Carne", "mittag", 40, true, false, kcal, protein, Zutaten, "Kochen.");
 
     [Fact]
     public void Ein_unveraendertes_Rezept_meldet_keine_Abweichung()
@@ -74,9 +74,9 @@ public class AbweichungTests
 
         var rezepte = new List<Rezept>
         {
-            new("f1", "Oats", "fruehstueck", 5, true, 500, 30, Zutaten, "."),
-            new("m1", "Chili", "mittag", 40, false, 800, 50, Zutaten, "."),
-            new("a1", "Ofen", "abend", 35, false, 600, 35, Zutaten, ".")
+            new("f1", "Oats", "fruehstueck", 5, true, false, 500, 30, Zutaten, "."),
+            new("m1", "Chili", "mittag", 40, false, false, 800, 50, Zutaten, "."),
+            new("a1", "Ofen", "abend", 35, false, false, 600, 35, Zutaten, ".")
         };
 
         var bilanz = new Bilanz(1600, 400, 300, 2300, 500, 500, false,

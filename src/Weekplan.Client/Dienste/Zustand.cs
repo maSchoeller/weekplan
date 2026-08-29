@@ -57,8 +57,54 @@ public sealed class Zustand(
 
     public IReadOnlyList<Rezept> Rezepte => Stamm.Rezepte.Rezepte;
 
+    /// <summary>
+    /// Eine Planaenderung hat die Zielaufnahme verschoben — alte und neue Zahl
+    /// fuer den Normaltag.
+    /// </summary>
+    public sealed record Planaenderung(int Alt, int Neu);
+
+    private Stammdatensatz? _vorherigerStand;
+
+    /// <summary>
+    /// <c>null</c>, wenn nichts anliegt oder der Nutzer es weggeklickt hat.
+    ///
+    /// <para>
+    /// Gerechnet wird beim Lesen, nicht beim Auffrischen. Der Grund ist ein
+    /// Wettlauf: <c>LadenAsync</c> stoesst das Nachfragen an und holt <b>danach</b>
+    /// das Profil; gegen einen schnellen Server ist der neue Stand da, bevor ein
+    /// Gewicht vorliegt — und ohne Gewicht gibt es keine Zielaufnahme. Beim
+    /// Ereignis zu rechnen verschluckte den Hinweis also genau dann, wenn alles
+    /// gut laeuft.
+    /// </para>
+    /// </summary>
+    public Planaenderung? Planhinweis
+    {
+        get
+        {
+            // Beim Kaltstart ohne Browserspeicher gibt es keinen Vorgaenger und
+            // damit nichts zu vergleichen. Das ist kein Hinweis, sondern Ruhe.
+            if (!Geladen || _vorherigerStand is not { } vorher) return null;
+
+            // Einen Hinweis ist nur wert, was rueckwirkend rechnet: Grundstock
+            // und Abteilungen bewegen keine Zahl, ein geaenderter Phasenname
+            // auch nicht. Verglichen wird darum nicht, was sich geaendert hat,
+            // sondern was es bewirkt.
+            var alt = BilanzMit(vorher).Normal;
+            var neu = BilanzMit(Stamm).Normal;
+
+            return alt == neu ? null : new Planaenderung(alt, neu);
+        }
+    }
+
+    public void PlanhinweisZurKenntnis()
+    {
+        _vorherigerStand = null;
+        Melden();
+    }
+
     private void FrischeStammdaten(Stammdatensatz satz)
     {
+        _vorherigerStand = lader.Vorheriger;
         Stamm = satz;
         Melden();
     }
@@ -89,14 +135,23 @@ public sealed class Zustand(
 
     // ── Rechnung ────────────────────────────────────────
 
-    public PhasenAnzeige AktivePhase()
-        => Stamm.Training.Phasen.FirstOrDefault(p => p.Id == Profil.PhaseId) ?? Stamm.Training.Phasen[0];
+    public PhasenAnzeige AktivePhase() => AktivePhaseIn(Stamm);
 
-    public Bilanz Bilanz() => rechner.Bilanz(
+    private PhasenAnzeige AktivePhaseIn(Stammdatensatz satz)
+        => satz.Training.Phasen.FirstOrDefault(p => p.Id == Profil.PhaseId) ?? satz.Training.Phasen[0];
+
+    public Bilanz Bilanz() => BilanzMit(Stamm);
+
+    /// <summary>
+    /// Dieselbe Rechnung, aber gegen einen beliebigen Stand — gebraucht wird das
+    /// nur, um alten und neuen Trainingsplan zu vergleichen. Ein zweiter
+    /// Rechenweg entstuende dabei nicht: es ist derselbe Rechner.
+    /// </summary>
+    private Bilanz BilanzMit(Stammdatensatz satz) => rechner.Bilanz(
         new Profil(Profil.GewichtKg, Profil.ZielKg, Profil.GroesseCm, Profil.Alter,
                    Profil.ProteinFaktor, Profil.TempoKgProWoche),
-        AktivePhase().AlsPhase(),
-        Stamm.Training.MetWerte);
+        AktivePhaseIn(satz).AlsPhase(),
+        satz.Training.MetWerte);
 
     public int TagesZiel(string tag)
     {

@@ -161,4 +161,142 @@ public sealed class McpWerkzeugeTests(McpServerFixture server) : IClassFixture<M
         Assert.Contains("Haferflocken", TextVon(await RufenAsync("grundstock_lesen", new { })));
         Assert.Contains("Anlauf", TextVon(await RufenAsync("training_lesen", new { })));
     }
+
+    // ── Plan schreiben (Lauf 2026-08-29) ────────────────
+
+    /// <summary>Der Trainingsplan, wie ihn das Werkzeug erwartet — ohne Regeln.</summary>
+    private static object Plan(double met = 3.5, int min = 30, string typ = "gehen")
+        => new
+        {
+            training = new
+            {
+                hinweis = "MET-Hinweis",
+                metWerte = new Dictionary<string, object> { ["gehen"] = new { label = "Gehen", met } },
+                phasen = new[]
+                {
+                    new
+                    {
+                        id = "p1", name = "Anlauf", wochen = "Woche 1–2", zeitraum = "2 Wochen",
+                        defizitZiel = 500, beschreibung = "Beschreibung",
+                        tage = new[]
+                        {
+                            new
+                            {
+                                tag = "Mo", ort = "Homeoffice",
+                                einheiten = new[] { new { typ, min } }
+                            }
+                        }
+                    }
+                },
+                kraftplan = new { equipment = "Kurzhanteln", prinzip = "Ganzkörper", einheiten = Array.Empty<object>() }
+            }
+        };
+
+    [Fact]
+    public async Task Der_Trainingsplan_laesst_sich_ueber_das_Protokoll_schreiben()
+    {
+        await server.StammdatenBefuellenAsync();
+
+        var antwort = await RufenAsync("training_schreiben", Plan(min: 75));
+
+        Assert.False(IstFehler(antwort), TextVon(antwort));
+        Assert.Contains("75", TextVon(await RufenAsync("training_lesen", new { })));
+    }
+
+    /// <summary>
+    /// Der Schreibschutz ist der Typ selbst: <c>Trainingsentwurf</c> hat kein
+    /// Regelfeld. Hier wird gezeigt, dass die vorhandene Regel das Schreiben
+    /// ueberlebt.
+    /// </summary>
+    [Fact]
+    public async Task Schreiben_laesst_das_Regelwerk_stehen()
+    {
+        await server.StammdatenBefuellenAsync();
+
+        await RufenAsync("training_schreiben", Plan(min: 60));
+
+        Assert.Contains("Plateau-Regel", TextVon(await RufenAsync("training_lesen", new { })));
+    }
+
+    /// <summary>
+    /// Ein MET unter 1 ergaebe nach (MET − 1) einen negativen Verbrauch und
+    /// senkte die Zielaufnahme still. Die Absage muss beim Aufrufer ankommen.
+    /// </summary>
+    [Fact]
+    public async Task Ein_MET_Wert_unter_eins_wird_ueber_das_Protokoll_abgelehnt()
+    {
+        await server.StammdatenBefuellenAsync();
+
+        var antwort = await RufenAsync("training_schreiben", Plan(met: 0.5));
+
+        Assert.True(IstFehler(antwort));
+        Assert.Contains("gehen", TextVon(antwort));
+    }
+
+    [Fact]
+    public async Task Eine_Einheit_mit_unbekanntem_MET_Typ_wird_ueber_das_Protokoll_abgelehnt()
+    {
+        await server.StammdatenBefuellenAsync();
+
+        var antwort = await RufenAsync("training_schreiben", Plan(typ: "schwimmen"));
+
+        Assert.True(IstFehler(antwort));
+        Assert.Contains("schwimmen", TextVon(antwort));
+    }
+
+    [Fact]
+    public async Task Der_Grundstock_laesst_sich_ueber_das_Protokoll_ersetzen()
+    {
+        await server.StammdatenBefuellenAsync();
+
+        var antwort = await RufenAsync("grundstock_schreiben", new
+        {
+            grundstock = new
+            {
+                hinweis = "Neuer Vorrat",
+                gruppen = new[]
+                {
+                    new
+                    {
+                        name = "Trockenware",
+                        artikel = new[] { new { name = "Sojagranulat", menge = "500 g", reichweite = "8 Portionen" } }
+                    }
+                }
+            }
+        });
+
+        Assert.False(IstFehler(antwort), TextVon(antwort));
+        Assert.Contains("Sojagranulat", await server.CreateClient().GetStringAsync("/stammdaten"));
+    }
+
+    /// <summary>Akzeptanzkriterium 5: nichts verschwindet, und der Nutzer erfaehrt es.</summary>
+    [Fact]
+    public async Task Eine_entfernte_Abteilung_schiebt_ihre_Zutaten_nach_Sonstiges()
+    {
+        await server.StammdatenBefuellenAsync();
+
+        var antwort = await RufenAsync("abteilungen_schreiben", new
+        {
+            abteilungen = new { hinweis = "Weg durch den Laden", abteilungen = new[] { "Obst & Gemüse" } }
+        });
+
+        Assert.False(IstFehler(antwort), TextVon(antwort));
+        Assert.Contains("Sonstiges", TextVon(antwort));
+
+        var gelesen = TextVon(await RufenAsync("rezept_lesen", new { id = "chili-sin-carne" }));
+        Assert.Contains("Sonstiges", gelesen);
+    }
+
+    [Fact]
+    public async Task Eine_leere_Abteilungsliste_wird_ueber_das_Protokoll_abgelehnt()
+    {
+        await server.StammdatenBefuellenAsync();
+
+        var antwort = await RufenAsync("abteilungen_schreiben", new
+        {
+            abteilungen = new { hinweis = "Leer", abteilungen = Array.Empty<string>() }
+        });
+
+        Assert.True(IstFehler(antwort));
+    }
 }

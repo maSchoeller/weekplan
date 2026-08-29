@@ -11,12 +11,10 @@ namespace Weekplan.Server;
 /// benannten Modells, englische Namen davor waeren der einzige Bruch im Repo.
 ///
 /// <para>
-/// <b>Schreiben darf nur, was Rezept ist.</b> Trainingsphasen, MET-Werte,
-/// Grundstock und die Abteilungsliste sind Rechengrundlage und bleiben dem
-/// Commit vorbehalten: eine verrutschte MET-Zahl verschoebe still jede
-/// Kalorienzahl der App. Lesen darf man alles — ohne den Grundstock liesse sich
-/// nicht entscheiden, ob eine Zutat Vorrat ist, und ohne die Abteilungen
-/// muesste man sie erraten.
+/// Alles ausser den Rezepten liegt seit dem Lauf 2026-08-29 bei
+/// <see cref="Planwerkzeuge"/> — auch das Lesen von Training, Grundstock und
+/// Abteilungen, das frueher hier stand. Die Trennung verlaeuft am Gegenstand,
+/// nicht an Lesen und Schreiben.
 /// </para>
 /// </summary>
 [McpServerToolType]
@@ -25,16 +23,18 @@ public sealed class Rezeptwerkzeuge(
 {
     /// <summary>Die Kurzform fuer Listen — ohne Anleitung, die ist lang.</summary>
     public sealed record Rezeptzeile(
-        string Id, string Name, string Kategorie, int Kcal, int Protein, int ZeitMin, bool Kalt);
+        string Id, string Name, string Kategorie, int Kcal, int Protein, int ZeitMin,
+        bool Kalt, bool Prep);
 
     [McpServerTool(Name = "rezepte_auflisten")]
-    [Description("Listet alle Rezepte mit Kennung, Name, Kategorie, kcal, Protein und Zeit — "
-                 + "ohne die Anleitung. Der Einstieg, bevor man etwas liest oder aendert.")]
+    [Description("Listet alle Rezepte mit Kennung, Name, Kategorie, kcal, Protein, Zeit sowie den "
+                 + "Merkmalen kalt und prep — ohne die Anleitung. Der Einstieg, bevor man etwas "
+                 + "liest oder aendert.")]
     public async Task<IReadOnlyList<Rezeptzeile>> AuflistenAsync(CancellationToken ct)
     {
         var alles = await quelle.AllesAsync(ct);
         return [.. alles.Rezepte.Rezepte.Select(r =>
-            new Rezeptzeile(r.Id, r.Name, r.Kategorie, r.Kcal, r.Protein, r.ZeitMin, r.Kalt))];
+            new Rezeptzeile(r.Id, r.Name, r.Kategorie, r.Kcal, r.Protein, r.ZeitMin, r.Kalt, r.Prep))];
     }
 
     [McpServerTool(Name = "rezept_lesen")]
@@ -50,8 +50,10 @@ public sealed class Rezeptwerkzeuge(
     [Description("Legt ein neues Rezept an. Die Kennung entsteht aus dem Namen; gibt es sie schon, "
                  + "ist das ein Fehler — zum Ersetzen rezept_aendern nehmen. Mengen gelten je Portion. "
                  + "Zutaten, die im Grundstock stehen, mit vorrat=true kennzeichnen, sonst landen sie "
-                 + "auf der Wochenliste. Die Anleitung ist Markdown: Zwischenueberschriften, Listen und "
-                 + "Tabellen sind erlaubt, Bilder und eingebettetes HTML nicht.")]
+                 + "auf der Wochenliste. kalt=true heisst: schmeckt auch kalt. prep=true heisst: haelt "
+                 + "drei Tage im Kuehlschrank und waermt gut auf — danach waehlt die App die Gerichte "
+                 + "fuer die Werktage aus. Die Anleitung ist Markdown: Zwischenueberschriften, Listen "
+                 + "und Tabellen sind erlaubt, Bilder und eingebettetes HTML nicht.")]
     public async Task<Rezept> AnlegenAsync(Rezeptentwurf rezept, CancellationToken ct)
     {
         var angelegt = await Durchreichen(() => quelle.AnlegenAsync(rezept, ct));
@@ -104,28 +106,9 @@ public sealed class Rezeptwerkzeuge(
         {
             return await tun();
         }
-        catch (RezeptUngueltigException fehler)
+        catch (StammdatenUngueltigException fehler)
         {
             throw new McpException(fehler.Message, fehler);
         }
     }
-
-    [McpServerTool(Name = "abteilungen_lesen")]
-    [Description("Die erlaubten Supermarkt-Abteilungen, in der Reihenfolge der Einkaufsliste. "
-                 + "Jede Zutat muss eine davon nennen. Nur lesbar: die Reihenfolge ist der Weg "
-                 + "durch den Laden und wird per Commit geaendert.")]
-    public async Task<IReadOnlyList<string>> AbteilungenAsync(CancellationToken ct)
-        => (await quelle.AllesAsync(ct)).Rezepte.Abteilungen;
-
-    [McpServerTool(Name = "grundstock_lesen")]
-    [Description("Der Vorratseinkauf. Was hier steht, gehoert in einem Rezept mit vorrat=true "
-                 + "gekennzeichnet, damit es nicht auf der Wochenliste landet. Nur lesbar.")]
-    public async Task<Grundstockdaten> GrundstockAsync(CancellationToken ct)
-        => (await quelle.AllesAsync(ct)).Grundstock;
-
-    [McpServerTool(Name = "training_lesen")]
-    [Description("Trainingsphasen, MET-Werte und Kraftplan. Nur lesbar — sie sind Rechengrundlage "
-                 + "der ganzen App und werden per Commit geaendert, nicht im Gespraech.")]
-    public async Task<Trainingsdaten> TrainingAsync(CancellationToken ct)
-        => (await quelle.AllesAsync(ct)).Training;
 }

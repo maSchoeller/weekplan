@@ -16,7 +16,7 @@ public class WochenplanungTests
     private static readonly string[] Abteilungen = ["Obst & Gemuese", "Konserven", "Oel & Gewuerze"];
 
     private static readonly Rezept Chili = new(
-        "chili", "Chili sin Carne", "mittag", 40, true, 800, 50,
+        "chili", "Chili sin Carne", "mittag", 40, true, true, 800, 50,
         [
             new Zutat("Kidneybohnen", 150, "Konserven"),
             new Zutat("Zwiebel", 70, "Obst & Gemuese"),
@@ -25,12 +25,12 @@ public class WochenplanungTests
         "Kochen.");
 
     private static readonly Rezept Ofen = new(
-        "ofen", "Ofengemuese", "abend", 35, false, 600, 30,
+        "ofen", "Ofengemuese", "abend", 35, false, false, 600, 30,
         [new Zutat("Zwiebel", 30, "Obst & Gemuese"), new Zutat("Karotte", 100, "Obst & Gemuese")],
         "Backen.");
 
     private static readonly Rezept Oats = new(
-        "oats", "Overnight Oats", "fruehstueck", 5, true, 500, 30,
+        "oats", "Overnight Oats", "fruehstueck", 5, true, true, 500, 30,
         [new Zutat("Haferflocken", 80, "Trockenware"), new Zutat("Ei", 0, "Kuehlregal", Stk: 1)],
         "Ruehren.");
 
@@ -130,7 +130,7 @@ public class AutomatischFuellenTests
             .GetRequiredService<IWochenplanung>();
 
     private static Rezept R(string id, string kategorie, int kcal, int protein) =>
-        new(id, id, kategorie, 20, false, kcal, protein, [new Zutat("X", 10, "Trockenware")], "Kochen.");
+        new(id, id, kategorie, 20, false, false, kcal, protein, [new Zutat("X", 10, "Trockenware")], "Kochen.");
 
     private static readonly List<Rezept> Auswahl =
     [
@@ -196,5 +196,54 @@ public class AutomatischFuellenTests
         var ergebnis = Planung().AutomatischFuellen(WochenStand.Leer, nurFruehstueck, Ziel);
 
         Assert.Empty(ergebnis.Plan);
+    }
+
+    // ── Vorkochbar (Lauf 2026-08-29) ────────────────────
+
+    private static Rezept P(string id, string kategorie, int kcal, int protein, bool prep) =>
+        new(id, id, kategorie, 20, false, prep, kcal, protein,
+            [new Zutat("X", 10, "Trockenware")], "Kochen.");
+
+    /// <summary>
+    /// Der Alltag steht auf zwei sonntags vorgekochten Sorten. Bei sonst
+    /// gleichwertigen Gerichten soll darum werktags das vorkochbare gewinnen —
+    /// und am Wochenende, wo frisch gekocht wird, das andere.
+    /// </summary>
+    [Fact]
+    public void Automatisch_fuellen_bevorzugt_werktags_die_vorkochbaren_Gerichte()
+    {
+        IReadOnlyList<Rezept> auswahl =
+        [
+            P("f1", "fruehstueck", 500, 30, prep: true),
+            P("m-prep", "mittag", 800, 50, prep: true),
+            P("m-frisch", "mittag", 800, 50, prep: false),
+            P("a-prep", "abend", 600, 40, prep: true),
+            P("a-frisch", "abend", 600, 40, prep: false)
+        ];
+
+        var gefuellt = Planung().AutomatischFuellen(WochenStand.Leer, auswahl, Ziel);
+
+        foreach (var tag in new[] { "Mo", "Di", "Mi", "Do", "Fr" })
+        {
+            Assert.Equal("m-prep", gefuellt.Plan[tag]["mittag"][0].RezeptId);
+            Assert.Equal("a-prep", gefuellt.Plan[tag]["abend"][0].RezeptId);
+        }
+    }
+
+    /// <summary>Bevorzugt, nicht erzwungen: gibt es keine vorkochbaren, bleibt der Plan trotzdem voll.</summary>
+    [Fact]
+    public void Ohne_vorkochbare_Gerichte_bleibt_die_Woche_trotzdem_gefuellt()
+    {
+        IReadOnlyList<Rezept> auswahl =
+        [
+            P("f1", "fruehstueck", 500, 30, prep: false),
+            P("m1", "mittag", 800, 50, prep: false),
+            P("a1", "abend", 600, 40, prep: false)
+        ];
+
+        var gefuellt = Planung().AutomatischFuellen(WochenStand.Leer, auswahl, Ziel);
+
+        Assert.Equal(Woche.Tage.Count, gefuellt.Plan.Count);
+        Assert.Equal("m1", gefuellt.Plan["Mo"]["mittag"][0].RezeptId);
     }
 }

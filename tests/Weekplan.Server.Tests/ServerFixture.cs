@@ -73,7 +73,7 @@ public class ServerFixture : WebApplicationFactory<Program>
         await stammdaten.BefuellenAsync(new Stammdatensatz(
             new Rezeptdaten("Alle Grammangaben pro Portion.", ["Konserven", "Obst & Gemüse"],
             [
-                new Rezept("chili-sin-carne", "Chili sin Carne", "mittag", 40, true, 829, 52,
+                new Rezept("chili-sin-carne", "Chili sin Carne", "mittag", 40, true, true, 829, 52,
                     [new Zutat("Kidneybohnen", 150, "Konserven")], Anleitung)
             ]),
             new Trainingsdaten("MET-Hinweis",
@@ -81,7 +81,9 @@ public class ServerFixture : WebApplicationFactory<Program>
                 [new PhasenAnzeige("p1", "Anlauf", "Woche 1–2", "2 Wochen", 500, "Beschreibung",
                     [new TrainingstagDaten("Mo", "Homeoffice", [new EinheitDaten("gehen", 30)])])],
                 new Kraftplan("Kurzhanteln", "Ganzkörper", []),
-                []),
+                // Eine echte Regel, damit nachweisbar ist, dass training_schreiben
+                // sie stehen laesst.
+                [new Regel("Plateau-Regel", "Erst 14 Tage Stillstand sind ein Plateau.")]),
             new Grundstockdaten("Vorratshinweis",
                 [new Gruppe("Trockenware", [new Artikel("Haferflocken", "1.500 g", "4 Wochen")])])));
     }

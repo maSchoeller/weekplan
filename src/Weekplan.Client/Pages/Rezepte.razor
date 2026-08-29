@@ -24,7 +24,7 @@
                     <span class="meta">
                         @Zahl.Kcal(rezept.Kcal) kcal
                         · @rezept.Protein g Protein
-                        · @rezept.ZeitMin min@(rezept.Kalt ? " · kalt" : null)
+                        · @rezept.ZeitMin min@(rezept.Kalt ? " · kalt" : null)@(rezept.Prep ? " · vorkochbar" : null)
                     </span>
                     <span class="pfeil" aria-hidden="true">›</span>
                 </a>
