@@ -12,7 +12,13 @@ public sealed record Einkaufsposten(
     public bool InStueck => Stueck > 0;
 }
 
-public sealed record Einkaufsliste(IReadOnlyList<Einkaufsposten> Posten, int VorratUebersprungen);
+/// <summary>
+/// Die Wochenliste. <paramref name="Gaesteportionen"/> ist die Zahl der Portionen,
+/// die nur wegen zusaetzlicher Esser darin stecken — damit keine erhoehte Menge
+/// ohne Begruendung dasteht.
+/// </summary>
+public sealed record Einkaufsliste(
+    IReadOnlyList<Einkaufsposten> Posten, int VorratUebersprungen, int Gaesteportionen = 0);
 
 public sealed record Wochentag(string Kuerzel, string Name, string Ort);
 

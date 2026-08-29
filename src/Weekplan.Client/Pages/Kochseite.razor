@@ -34,6 +34,17 @@ else
                @onchange="PortionenSetzen" />
     </div>
 
+    @if (_ausDemWochenplan)
+    {
+        @* Eine gesetzte Zahl ohne Grund waere ein Raetsel — hier steht er.
+           Keine Aufschluesselung in „du und N Gaeste": die Adresse traegt nur
+           die Summe, und geraten wird hier nichts. *@
+        <p class="herkunft">
+            Aus dem Wochenplan: <strong>@_portionen Portionen</strong>.
+            Zutaten und Nährwerte sind dafür gerechnet.
+        </p>
+    }
+
     <h2>Zutaten</h2>
     <ul class="zutaten">
         @foreach (var zutat in _rezept.Zutaten)
@@ -56,17 +67,26 @@ else
 @code {
     [Parameter] public string Id { get; set; } = "";
 
+    /// <summary>
+    /// Kommt man aus dem Wochenplan, traegt die Adresse die Kochportionen des
+    /// Tages mit — eigene plus Gaeste. Nur eine Zahl, nicht Tag und Mahlzeit:
+    /// die Kochseite soll das Wochenplan-Modell nicht kennen muessen.
+    /// </summary>
+    [SupplyParameterFromQuery] public int? Portionen { get; set; }
+
     private Rezept? _rezept;
 
     // Nur Anzeige: die Portionszahl hier gehoert zum Ansehen des Rezepts, nicht
     // zum Wochenplan. Dort wird sie gespeichert, hier bewusst nicht — sonst
     // gaebe es zwei Orte fuer dieselbe Zahl.
     private int _portionen = 1;
+    private bool _ausDemWochenplan;
 
     protected override void OnParametersSet()
     {
         _rezept = Z.RezeptMit(Id);
-        _portionen = 1;
+        _ausDemWochenplan = Portionen is > 1;
+        _portionen = Math.Clamp(Portionen ?? 1, 1, 9);
     }
 
     private void PortionenSetzen(ChangeEventArgs e)

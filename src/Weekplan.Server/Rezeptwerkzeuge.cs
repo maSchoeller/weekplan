@@ -24,17 +24,18 @@ public sealed class Rezeptwerkzeuge(
     /// <summary>Die Kurzform fuer Listen — ohne Anleitung, die ist lang.</summary>
     public sealed record Rezeptzeile(
         string Id, string Name, string Kategorie, int Kcal, int Protein, int ZeitMin,
-        bool Kalt, bool Prep);
+        bool Kalt, bool Prep, bool Wochenende, bool Refeed);
 
     [McpServerTool(Name = "rezepte_auflisten")]
     [Description("Listet alle Rezepte mit Kennung, Name, Kategorie, kcal, Protein, Zeit sowie den "
-                 + "Merkmalen kalt und prep — ohne die Anleitung. Der Einstieg, bevor man etwas "
-                 + "liest oder aendert.")]
+                 + "Merkmalen kalt, prep, wochenende und refeed — ohne die Anleitung. Der Einstieg, "
+                 + "bevor man etwas liest oder aendert.")]
     public async Task<IReadOnlyList<Rezeptzeile>> AuflistenAsync(CancellationToken ct)
     {
         var alles = await quelle.AllesAsync(ct);
         return [.. alles.Rezepte.Rezepte.Select(r =>
-            new Rezeptzeile(r.Id, r.Name, r.Kategorie, r.Kcal, r.Protein, r.ZeitMin, r.Kalt, r.Prep))];
+            new Rezeptzeile(r.Id, r.Name, r.Kategorie, r.Kcal, r.Protein, r.ZeitMin,
+                r.Kalt, r.Prep, r.Wochenende, r.Refeed))];
     }
 
     [McpServerTool(Name = "rezept_lesen")]
@@ -52,7 +53,10 @@ public sealed class Rezeptwerkzeuge(
                  + "Zutaten, die im Grundstock stehen, mit vorrat=true kennzeichnen, sonst landen sie "
                  + "auf der Wochenliste. kalt=true heisst: schmeckt auch kalt. prep=true heisst: haelt "
                  + "drei Tage im Kuehlschrank und waermt gut auf — danach waehlt die App die Gerichte "
-                 + "fuer die Werktage aus. Die Anleitung ist Markdown: Zwischenueberschriften, Listen "
+                 + "fuer die Werktage aus. wochenende=true heisst: frisch gekocht, gehoert auf Samstag "
+                 + "und Sonntag (dort landet das Fleisch). refeed=true heisst: traegt die deutlich "
+                 + "hoehere Aufnahme des Refeed-Tags. Die drei Merkmale schliessen einander nicht aus. "
+                 + "Die Anleitung ist Markdown: Zwischenueberschriften, Listen "
                  + "und Tabellen sind erlaubt, Bilder und eingebettetes HTML nicht.")]
     public async Task<Rezept> AnlegenAsync(Rezeptentwurf rezept, CancellationToken ct)
     {

@@ -13,9 +13,12 @@ internal sealed class Wochenplanung : IWochenplanung
         var nachId = rezepte.ToDictionary(r => r.Id);
         var gesammelt = new Dictionary<string, Sammler>();
         var vorratUebersprungen = 0;
+        var gaesteportionen = 0;
 
-        foreach (var (rezept, portionen) in Geplant(woche, nachId))
+        foreach (var (rezept, portionen, gaeste) in Geplant(woche, nachId))
         {
+            gaesteportionen += gaeste;
+
             foreach (var zutat in rezept.Zutaten)
             {
                 if (zutat.Vorrat)
@@ -48,7 +51,7 @@ internal sealed class Wochenplanung : IWochenplanung
             .Select(s => new Einkaufsposten(s.Name, s.Abteilung, s.Gramm, s.Stueck, [.. s.Quellen]))
             .ToList();
 
-        return new Einkaufsliste(posten, vorratUebersprungen);
+        return new Einkaufsliste(posten, vorratUebersprungen, gaesteportionen);
     }
 
     public (int Kcal, int Protein) Tagessumme(
@@ -71,6 +74,25 @@ internal sealed class Wochenplanung : IWochenplanung
         return (kcal, protein);
     }
 
+    /// <summary>
+    /// Fuellt die Woche nach den Regeln aus <c>docs/ernaehrungsplan.md</c> §3:
+    /// werktags zwei vorgekochte Sorten in zusammenhaengenden Bloecken, am
+    /// Wochenende frisch gekocht, am Refeed-Tag eigene Gerichte, das Fruehstueck
+    /// taeglich rotierend.
+    ///
+    /// <para>
+    /// <b>Erst filtern, dann bewerten.</b> Jede Regel ist eine Vorauswahl mit
+    /// Rueckfall, kein Strafpunkt in einer Bewertungsfunktion — Strafpunkte
+    /// kaempfen gegeneinander und machen aus einer Regel ein Raetsel. Innerhalb
+    /// der Vorauswahl entscheidet weiterhin der Abstand zum Kalorienziel und das
+    /// fehlende Protein.
+    /// </para>
+    ///
+    /// <para>
+    /// Die bisherige Woche wird <b>ueberbuegelt, nicht ausgewertet</b>. Die
+    /// Abwechslung beim zweiten Druecken traegt allein <c>Rotation</c>.
+    /// </para>
+    /// </summary>
     public WochenStand AutomatischFuellen(
         WochenStand woche, IReadOnlyList<Rezept> rezepte, Bilanz bilanz)
     {
@@ -80,110 +102,234 @@ internal sealed class Wochenplanung : IWochenplanung
         if (fruehstueck.Count == 0 || mittag.Count == 0 || abend.Count == 0) return woche;
 
         var rotation = (woche.Rotation + 1) % 1000;
-        var benutzt = new Dictionary<string, int>();
+        var tage = Contracts.Woche.Tage;
+
+        // Das Fruehstueck rotiert taeglich — die Mahlzeit, die Wiederholung am
+        // besten vertraegt, und vorzubereiten ist daran nichts.
+        var fruehJeTag = Enumerable.Range(0, tage.Count)
+            .Select(i => fruehstueck[(i + rotation) % fruehstueck.Count])
+            .ToArray();
+
+        var mittagJeTag = new Rezept[tage.Count];
+        var abendJeTag = new Rezept[tage.Count];
+        var vergeben = new HashSet<string>();
+
+        // Der Refeed-Tag gewinnt gegen jede andere Regel; danach das Wochenende.
+        // Beide werden Tag fuer Tag gewaehlt, nicht in Bloecken — dort wird
+        // frisch gekocht.
+        foreach (var i in Einzeltage(woche.RefeedTag))
+        {
+            var refeed = tage[i].Kuerzel == woche.RefeedTag;
+            var m = Gefiltert(mittag, r => refeed ? r.Refeed : r.Wochenende);
+            var a = Gefiltert(abend, r => refeed ? r.Refeed : r.Wochenende);
+
+            var paar = BestesPaar(
+                Ohne(m, vergeben), Ohne(a, vergeben),
+                [(fruehJeTag[i], Ziel(tage[i].Kuerzel))], bilanz, rotation);
+
+            mittagJeTag[i] = paar.Mittag;
+            abendJeTag[i] = paar.Abend;
+            vergeben.Add(paar.Mittag.Id);
+            vergeben.Add(paar.Abend.Id);
+        }
+
+        // Die Werktage stehen auf zwei sonntags vorgekochten Sorten. Ein Gericht
+        // je Block, und der zweite Block ein anderes als der erste.
+        var werktage = Werktage(woche.RefeedTag);
+        var werktagsMittag = Gefiltert(mittag, r => r.Prep);
+        var werktagsAbend = Gefiltert(abend, r => r.Prep);
+        var genommen = new HashSet<string>();
+        var ab = 0;
+
+        foreach (var laenge in Blockaufteilung(werktage.Length, rotation))
+        {
+            var block = werktage.Skip(ab).Take(laenge).ToArray();
+            ab += laenge;
+
+            var paar = BestesPaar(
+                Ohne(werktagsMittag, genommen), Ohne(werktagsAbend, genommen),
+                [.. block.Select(i => (fruehJeTag[i], Ziel(tage[i].Kuerzel)))], bilanz, rotation);
+
+            foreach (var i in block)
+            {
+                mittagJeTag[i] = paar.Mittag;
+                abendJeTag[i] = paar.Abend;
+            }
+
+            genommen.Add(paar.Mittag.Id);
+            genommen.Add(paar.Abend.Id);
+        }
+
         var plan = new Dictionary<string, IReadOnlyDictionary<string, IReadOnlyList<PlanEintrag>>>();
 
-        for (var i = 0; i < Contracts.Woche.Tage.Count; i++)
+        for (var i = 0; i < tage.Count; i++)
         {
-            var tag = Contracts.Woche.Tage[i];
-            var ziel = tag.Kuerzel == woche.RefeedTag ? bilanz.Refeed : bilanz.Normal;
+            var portionen = BestePortionen(
+                fruehJeTag[i], mittagJeTag[i], abendJeTag[i], Ziel(tage[i].Kuerzel), bilanz.Protein);
 
-            // Das Fruehstueck rotiert fest — es soll bewusst gleichfoermig sein.
-            var f = fruehstueck[(i + rotation) % fruehstueck.Count];
-
-            // Der Alltag steht auf zwei sonntags vorgekochten Sorten: werktags
-            // kommt die Box auf den Tisch, am Wochenende wird gekocht.
-            var werktag = tag.Kuerzel is not ("Sa" or "So");
-            var beste = Bestes(
-                f, Vorkochbar(mittag, werktag), Vorkochbar(abend, werktag),
-                ziel, bilanz.Protein, benutzt);
-
-            benutzt[beste.Mittag.Id] = benutzt.GetValueOrDefault(beste.Mittag.Id) + 1;
-            benutzt[beste.Abend.Id] = benutzt.GetValueOrDefault(beste.Abend.Id) + 1;
-
-            plan[tag.Kuerzel] = new Dictionary<string, IReadOnlyList<PlanEintrag>>
+            plan[tage[i].Kuerzel] = new Dictionary<string, IReadOnlyList<PlanEintrag>>
             {
                 // Die Naehrwerte werden mitgeschrieben, damit ein spaeter
                 // geaendertes Rezept am betroffenen Tag auffaellt.
-                ["fruehstueck"] = [Eintrag(f, beste.PortionenF)],
-                ["mittag"] = [Eintrag(beste.Mittag, beste.PortionenM)],
-                ["abend"] = [Eintrag(beste.Abend, beste.PortionenA)]
+                ["fruehstueck"] = [Eintrag(fruehJeTag[i], portionen.F)],
+                ["mittag"] = [Eintrag(mittagJeTag[i], portionen.M)],
+                ["abend"] = [Eintrag(abendJeTag[i], portionen.A)]
             };
         }
 
+        // Gaeste bleiben stehen: der Besuch ist eine Tatsache und haengt nicht
+        // am Plan. `with` fasst nur an, was hier genannt wird.
         return woche with { Plan = plan, Rotation = rotation };
+
+        int Ziel(string kuerzel) => kuerzel == woche.RefeedTag ? bilanz.Refeed : bilanz.Normal;
+    }
+
+    /// <summary>Refeed-Tag zuerst, danach die uebrigen Wochenendtage — jeder fuer sich gewaehlt.</summary>
+    private static IEnumerable<int> Einzeltage(string refeedTag)
+    {
+        var tage = Contracts.Woche.Tage;
+
+        for (var i = 0; i < tage.Count; i++)
+        {
+            if (tage[i].Kuerzel == refeedTag) yield return i;
+        }
+
+        for (var i = 0; i < tage.Count; i++)
+        {
+            if (tage[i].Kuerzel is "Sa" or "So" && tage[i].Kuerzel != refeedTag) yield return i;
+        }
+    }
+
+    private static int[] Werktage(string refeedTag)
+    {
+        var tage = Contracts.Woche.Tage;
+        return [.. Enumerable.Range(0, tage.Count)
+            .Where(i => tage[i].Kuerzel is not ("Sa" or "So") && tage[i].Kuerzel != refeedTag)];
     }
 
     /// <summary>
-    /// Werktags kommen nur vorkochbare Gerichte in die Auswahl — gibt es keine,
-    /// bleibt die volle. Ein Filter und keine Strafpunkte: gegen den Aufschlag
-    /// fuer Wiederholung tariert, kippte eine Strafe je nach Wochentag mal so
-    /// und mal so, und niemand koennte vorhersagen, was der Knopf tut. Der
-    /// Alltag steht ohnehin auf zwei Sorten fuer je zwei bis drei Tage —
-    /// Wiederholung ist dort der Normalfall, nicht der Makel.
+    /// Zerlegt die Werktage in zusammenhaengende Bloecke von zwei bis drei Tagen
+    /// — die Laenge, die ein vorgekochtes Gericht im Kuehlschrank durchhaelt.
+    /// Bei fuenf Tagen entscheidet die Rotation, ob der lange Block vorne oder
+    /// hinten liegt.
     /// </summary>
-    private static IReadOnlyList<Rezept> Vorkochbar(IReadOnlyList<Rezept> auswahl, bool werktag)
+    private static int[] Blockaufteilung(int werktage, int rotation) => werktage switch
     {
-        if (!werktag) return auswahl;
+        0 => [],
+        <= 3 => [werktage],
+        4 => [2, 2],
+        _ => rotation % 2 == 0 ? [3, werktage - 3] : [2, werktage - 2]
+    };
 
-        List<Rezept> vorkochbar = [.. auswahl.Where(r => r.Prep)];
-        return vorkochbar.Count > 0 ? vorkochbar : auswahl;
+    /// <summary>
+    /// Eine Vorauswahl mit Rueckfall: bleibt nach dem Filter nichts uebrig, gilt
+    /// die volle Auswahl. So bleibt kein Tag leer, auch wenn ein Merkmal an
+    /// keinem Gericht gepflegt ist — und genau das traegt den Pool direkt nach
+    /// dem Ausrollen.
+    /// </summary>
+    private static IReadOnlyList<Rezept> Gefiltert(
+        IReadOnlyList<Rezept> auswahl, Func<Rezept, bool> merkmal)
+    {
+        List<Rezept> passend = [.. auswahl.Where(merkmal)];
+        return passend.Count > 0 ? passend : auswahl;
     }
 
-    private static (Rezept Mittag, Rezept Abend, int PortionenF, int PortionenM, int PortionenA) Bestes(
-        Rezept fruehstueck,
+    private static IReadOnlyList<Rezept> Ohne(IReadOnlyList<Rezept> auswahl, HashSet<string> schon)
+        => Gefiltert(auswahl, r => !schon.Contains(r.Id));
+
+    /// <summary>
+    /// Das Paar (Mittag, Abend), das ueber alle Tage der Gruppe zusammen am
+    /// besten passt. Zurueckgegeben wird nicht das beste, sondern das
+    /// <c>rotation % 3</c>-beste: alle stammen aus derselben Vorauswahl, sind
+    /// also gleich regelkonform, und treffen das Kalorienziel nur verschieden
+    /// genau. Das ist die ganze Abwechslung beim zweiten Druecken.
+    /// </summary>
+    private static (Rezept Mittag, Rezept Abend) BestesPaar(
         IReadOnlyList<Rezept> mittag,
         IReadOnlyList<Rezept> abend,
-        int zielKcal,
-        int zielProtein,
-        Dictionary<string, int> benutzt)
+        IReadOnlyList<(Rezept Fruehstueck, int Ziel)> tage,
+        Bilanz bilanz,
+        int rotation)
     {
-        var besteBewertung = double.PositiveInfinity;
-        var ergebnis = (Mittag: mittag[0], Abend: abend[0], F: 1, M: 1, A: 1);
+        var bewertet = new List<(Rezept M, Rezept A, double Punkte)>();
 
         foreach (var m in mittag)
         {
             foreach (var a in abend)
             {
-                for (var fp = 1; fp <= 2; fp++)
-                for (var mp = 1; mp <= 2; mp++)
-                for (var ap = 1; ap <= 2; ap++)
-                {
-                    var kcal = fruehstueck.Kcal * fp + m.Kcal * mp + a.Kcal * ap;
-                    var protein = fruehstueck.Protein * fp + m.Protein * mp + a.Protein * ap;
+                var punkte = tage.Sum(t =>
+                    BestePortionen(t.Fruehstueck, m, a, t.Ziel, bilanz.Protein).Punkte);
 
-                    // Kalorienabstand zaehlt einfach; fehlendes Protein wiegt schwer,
-                    // Wiederholung ebenso, und grosse Portionen kosten einen Aufschlag.
-                    var bewertung = Math.Abs(kcal - zielKcal)
-                        + Math.Max(0, zielProtein - protein) * 12
-                        + (benutzt.GetValueOrDefault(m.Id) + benutzt.GetValueOrDefault(a.Id)) * 250
-                        + (fp - 1 + (mp - 1) + (ap - 1)) * 20;
-
-                    if (bewertung >= besteBewertung) continue;
-                    besteBewertung = bewertung;
-                    ergebnis = (m, a, fp, mp, ap);
-                }
+                bewertet.Add((m, a, punkte));
             }
         }
 
-        return (ergebnis.Mittag, ergebnis.Abend, ergebnis.F, ergebnis.M, ergebnis.A);
+        // Nach Kennung als zweitem Schluessel, damit die Reihenfolge des Pools
+        // das Ergebnis nicht verschiebt.
+        var geordnet = bewertet
+            .OrderBy(x => x.Punkte)
+            .ThenBy(x => x.M.Id, StringComparer.Ordinal)
+            .ThenBy(x => x.A.Id, StringComparer.Ordinal)
+            .ToList();
+
+        var gewaehlt = geordnet[Math.Min(rotation % 3, geordnet.Count - 1)];
+        return (gewaehlt.M, gewaehlt.A);
+    }
+
+    /// <summary>
+    /// Die Portionen eines Tages bei feststehenden Gerichten. Kalorienabstand
+    /// zaehlt einfach, fehlendes Protein wiegt schwer, grosse Portionen kosten
+    /// einen Aufschlag. Ein Aufschlag fuer Wiederholung steht hier nicht mehr:
+    /// Wiederholung ist seit den Bloecken Struktur, nicht Makel.
+    /// </summary>
+    private static (int F, int M, int A, double Punkte) BestePortionen(
+        Rezept fruehstueck, Rezept mittag, Rezept abend, int zielKcal, int zielProtein)
+    {
+        var beste = double.PositiveInfinity;
+        var ergebnis = (F: 1, M: 1, A: 1);
+
+        for (var fp = 1; fp <= 2; fp++)
+        for (var mp = 1; mp <= 2; mp++)
+        for (var ap = 1; ap <= 2; ap++)
+        {
+            var kcal = fruehstueck.Kcal * fp + mittag.Kcal * mp + abend.Kcal * ap;
+            var protein = fruehstueck.Protein * fp + mittag.Protein * mp + abend.Protein * ap;
+
+            var punkte = Math.Abs(kcal - zielKcal)
+                + Math.Max(0, zielProtein - protein) * 12
+                + (fp - 1 + (mp - 1) + (ap - 1)) * 20;
+
+            if (punkte >= beste) continue;
+            beste = punkte;
+            ergebnis = (fp, mp, ap);
+        }
+
+        return (ergebnis.F, ergebnis.M, ergebnis.A, beste);
     }
 
     private static List<Rezept> Auswahl(IReadOnlyList<Rezept> rezepte, string kategorie)
         => [.. rezepte.Where(r => r.Kategorie == kategorie)];
 
-    private static IEnumerable<(Rezept Rezept, int Portionen)> Geplant(
+    /// <summary>
+    /// Jedes geplante Gericht mit seinen <b>Kochportionen</b> — eigene Portionen
+    /// plus zusaetzliche Esser. Nur der Einkauf laeuft hier durch; die Bilanz
+    /// nimmt in <see cref="Tagessumme"/> ihren eigenen Weg und sieht die
+    /// Gaestezahl nie.
+    /// </summary>
+    private static IEnumerable<(Rezept Rezept, int Portionen, int Gaeste)> Geplant(
         WochenStand woche, Dictionary<string, Rezept> nachId)
     {
         foreach (var tag in Contracts.Woche.Tage)
         {
             foreach (var mahlzeit in Contracts.Woche.Mahlzeiten)
             {
+                var gaeste = woche.Gaeste(tag.Kuerzel, mahlzeit.Schluessel);
+
                 foreach (var eintrag in Eintraege(woche, tag.Kuerzel, mahlzeit.Schluessel))
                 {
                     if (nachId.TryGetValue(eintrag.RezeptId, out var rezept))
                     {
-                        yield return (rezept, eintrag.Portionen);
+                        yield return (rezept, eintrag.Portionen + gaeste, gaeste);
                     }
                 }
             }

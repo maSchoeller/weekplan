@@ -213,10 +213,64 @@ public sealed class Zustand(
         => PlanAendern(tag, mahlzeit, eintraege =>
             [.. eintraege.Select((e, i) => i == stelle ? e with { Portionen = Math.Clamp(portionen, 1, 9) } : e)]);
 
+    /// <summary>
+    /// Leert die Gerichte. Die Gaeste bleiben stehen — der Besuch am Wochenende
+    /// ist eine Tatsache und haengt nicht daran, was auf dem Tisch steht.
+    /// </summary>
     public void WocheLeeren() => WocheAendern(w => w with
     {
         Plan = new Dictionary<string, IReadOnlyDictionary<string, IReadOnlyList<PlanEintrag>>>()
     });
+
+    // ── Aendern: Gaeste ─────────────────────────────────
+
+    /// <summary>
+    /// Setzt die zusaetzlichen Esser eines Tages. Auf null zurueck heisst: der
+    /// Tag ist wieder ein gewoehnlicher — dann fallen auch seine
+    /// Mahlzeit-Ausnahmen weg, sonst bliebe unsichtbarer Zustand liegen, der
+    /// beim naechsten Besuch ueberraschend wieder auftaucht.
+    /// </summary>
+    public void GaesteAmTagSetzen(string tag, int zahl) => WocheAendern(w =>
+    {
+        var wert = Math.Clamp(zahl, 0, 8);
+
+        var amTag = Kopie(w.GaesteTag);
+        if (wert > 0) amTag[tag] = wert; else amTag.Remove(tag);
+
+        var ausnahmen = Kopie(w.GaesteMahlzeit);
+        if (wert == 0)
+        {
+            foreach (var mahlzeit in Core.Wochenplanung.Contracts.Woche.Mahlzeiten)
+            {
+                ausnahmen.Remove(WochenStand.Mahlzeitschluessel(tag, mahlzeit.Schluessel));
+            }
+        }
+
+        return w with { GaesteTag = amTag, GaesteMahlzeit = ausnahmen };
+    });
+
+    /// <summary>Loest eine Mahlzeit vom Tag ab — auch auf 0, das ist der Fall „fruehstuecken nicht mit".</summary>
+    public void GaesteAnDerMahlzeitSetzen(string tag, string mahlzeit, int zahl) => WocheAendern(w =>
+    {
+        var ausnahmen = Kopie(w.GaesteMahlzeit);
+        ausnahmen[WochenStand.Mahlzeitschluessel(tag, mahlzeit)] = Math.Clamp(zahl, 0, 8);
+        return w with { GaesteMahlzeit = ausnahmen };
+    });
+
+    /// <summary>Haengt die Mahlzeit wieder an den Tag.</summary>
+    public void GaesteAnDerMahlzeitZuruecksetzen(string tag, string mahlzeit) => WocheAendern(w =>
+    {
+        var ausnahmen = Kopie(w.GaesteMahlzeit);
+        ausnahmen.Remove(WochenStand.Mahlzeitschluessel(tag, mahlzeit));
+        return w with { GaesteMahlzeit = ausnahmen };
+    });
+
+    /// <summary>Was tatsaechlich gekocht wird: die eigene Portion plus die Gaeste.</summary>
+    public int Kochportionen(string tag, string mahlzeit, PlanEintrag eintrag)
+        => eintrag.Portionen + Woche.Gaeste(tag, mahlzeit);
+
+    private static Dictionary<string, int> Kopie(IReadOnlyDictionary<string, int>? quelle)
+        => quelle is null ? [] : new Dictionary<string, int>(quelle);
 
     public void WocheFuellen() => WocheAendern(w => planung.AutomatischFuellen(w, Rezepte, Bilanz()));
 

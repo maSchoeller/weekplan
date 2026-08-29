@@ -188,7 +188,8 @@ internal sealed class Stammdatendienst(IAblage ablage) : IStammdaten
     {
         var rezept = new Rezept(
             id, entwurf.Name.Trim(), entwurf.Kategorie, entwurf.ZeitMin, entwurf.Kalt, entwurf.Prep,
-            entwurf.Kcal, entwurf.Protein, entwurf.Zutaten, entwurf.Anleitung);
+            entwurf.Kcal, entwurf.Protein, entwurf.Zutaten, entwurf.Anleitung,
+            entwurf.Wochenende, entwurf.Refeed);
 
         await ablage.SchreibenAsync(Namen.Rezept, id, rezept, ct);
         return rezept;

@@ -16,6 +16,15 @@
                 nicht hier.
             </text>
         }
+        @* Keine erhoehte Menge ohne Begruendung: wer Gaeste eingetragen hat,
+           soll die Mehrmenge hier wiederfinden. *@
+        @if (_liste.Gaesteportionen > 0)
+        {
+            <text>
+                Darin @_liste.Gaesteportionen @(_liste.Gaesteportionen == 1 ? "Portion" : "Portionen")
+                für zusätzliche Esser.
+            </text>
+        }
     </p>
 
     @if (_liste.Posten.Count == 0)
