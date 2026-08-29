@@ -10,6 +10,30 @@ public sealed record AnmeldeAntwort(string Merkmal);
 public static class Endpunkte
 {
     internal const string AnmeldeGrenze = "anmeldung";
+    internal const string StammdatenGrenze = "stammdaten";
+
+    /// <summary>
+    /// Die festen Daten: Rezepte, Trainingsphasen, Grundstock. Bewusst ohne
+    /// Anmeldung — sie gehoeren keinem Nutzer und sind kein Geheimnis. Mit ETag,
+    /// damit der Client seinen Zwischenspeicher behalten kann, und mengen-
+    /// begrenzt, weil die Adresse oeffentlich ist.
+    /// </summary>
+    public static void MapStammdaten(this WebApplication app) =>
+        app.MapGet("/stammdaten", async (
+            HttpContext ctx, Stammdatenausgabe ausgabe, CancellationToken ct) =>
+        {
+            var stand = await ausgabe.StandAsync(ct);
+
+            // Das Kennzeichen gehoert auch an die 304 — sonst verliert der
+            // Client es beim ersten unveraenderten Abruf wieder.
+            ctx.Response.Headers.ETag = stand.ETag;
+
+            return ctx.Request.Headers.IfNoneMatch.Contains(stand.ETag)
+                ? Results.StatusCode(StatusCodes.Status304NotModified)
+                : Results.Bytes(stand.Json, "application/json");
+        })
+        .RequireRateLimiting(StammdatenGrenze);
+
 
     public static void MapAnmeldung(this WebApplication app) =>
         app.MapPost("/anmeldung", async (

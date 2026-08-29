@@ -1,6 +1,6 @@
 # Lokal starten und pruefen
 
-## Die Zielform (Client + Server)
+## Client und Server
 
 ```powershell
 ./run-local.ps1
@@ -16,19 +16,15 @@ Startet beides und gibt die Adressen aus:
 Strg+C beendet beide. Die Ports sind fest — zwei Worktrees gleichzeitig gehen
 nicht, der zweite scheitert an der belegten Adresse.
 
+Beim ersten Start befuellt das Skript die oertliche Stammdatenablage aus
+`tools/Weekplan.Stammdaten/altbestand/` — ohne sie liefert der Server keine
+Rezepte und die App bleibt bei der Fehlerkarte stehen. Der Ordner
+`src/Weekplan.Server/stammdaten/` liegt nicht im Repo.
+
 Der erste Aufruf des Clients zeigt, ob die Trennung traegt: die Startseite ruft
 `/health` auf der anderen Herkunft. Steht dort „Nicht erreichbar", ist entweder
 der Server nicht oben oder seine `Cors:Origins` enthalten
 `http://localhost:5180` nicht (`src/Weekplan.Server/appsettings.Development.json`).
-
-## Die alte statische App
-
-Sie laedt ihre Daten per `fetch`, ein Doppelklick auf `index.html` genuegt also
-nicht — der Browser blockiert das aus dem Dateisystem:
-
-```bash
-npx serve .
-```
 
 ## Tests
 

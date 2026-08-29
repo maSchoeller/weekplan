@@ -36,3 +36,7 @@ Thumbs.db
 # liegen.
 /daten/
 /src/Weekplan.Server/daten/
+
+# Die oertliche Stammdatenablage. Sie entsteht aus tools/Weekplan.Stammdaten,
+# ist also jederzeit wiederherstellbar und gehoert nicht ins Repo.
+/src/Weekplan.Server/stammdaten/

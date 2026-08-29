@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Weekplan.Core.Anmeldung.Contracts;
+using Weekplan.Core.Rechnen.Contracts;
+using Weekplan.Core.Stammdaten.Contracts;
 using Weekplan.Core.Tagebuch;
 using Weekplan.Core.Tagebuch.Contracts;
 
@@ -15,8 +17,20 @@ namespace Weekplan.Server.Tests;
 public sealed class ServerFixture : WebApplicationFactory<Program>
 {
     public const string Schluessel = "test-signaturschluessel-mindestens-32!";
+    /// <summary>Die Herkunft des Clients — Anmeldung und Stammdaten kommen von dort.</summary>
+    public const string ClientHerkunft = "http://localhost:5180";
+
     public const string Benutzer = "marvin";
     public const string Passwort = "k0rrekt-pferd";
+
+    /// <summary>Mit Umbruch und Ueberschrift — genau das, was Markdown ausmacht.</summary>
+    public const string Anleitung = """
+        ## Vorbereitung
+        Zwiebel wuerfeln.
+
+        ## Am Herd
+        1. Anbraten.
+        """;
 
     private readonly string _ordner = Path.Combine(
         Path.GetTempPath(), "weekplan-servertests", Guid.NewGuid().ToString("n"));
@@ -26,7 +40,9 @@ public sealed class ServerFixture : WebApplicationFactory<Program>
         builder.ConfigureHostConfiguration(c => c.AddInMemoryCollection(new Dictionary<string, string?>
         {
             ["Anmeldung:Schluessel"] = Schluessel,
-            ["Tagebuch:Ordner"] = _ordner
+            ["Tagebuch:Ordner"] = _ordner,
+            ["Stammdaten:Ordner"] = Path.Combine(_ordner, "stammdaten"),
+            ["Cors:Origins:0"] = ClientHerkunft
         }));
         return base.CreateHost(builder);
     }
@@ -43,6 +59,31 @@ public sealed class ServerFixture : WebApplicationFactory<Program>
 
         client.DefaultRequestHeaders.Authorization = new("Bearer", merkmal);
         return client;
+    }
+
+    /// <summary>
+    /// Befuellt die Stammdaten, wie es das Werkzeug taete. Ohne diesen Schritt
+    /// hat der Server nichts auszuliefern — und das ist Absicht, kein Versehen.
+    /// </summary>
+    public async Task StammdatenBefuellenAsync()
+    {
+        using var bereich = Services.CreateScope();
+        var stammdaten = bereich.ServiceProvider.GetRequiredService<IStammdaten>();
+
+        await stammdaten.BefuellenAsync(new Stammdatensatz(
+            new Rezeptdaten("Alle Grammangaben pro Portion.", ["Konserven", "Obst & Gemüse"],
+            [
+                new Rezept("chili-sin-carne", "Chili sin Carne", "mittag", 40, true, 829, 52,
+                    [new Zutat("Kidneybohnen", 150, "Konserven")], Anleitung)
+            ]),
+            new Trainingsdaten("MET-Hinweis",
+                new Dictionary<string, MetWert> { ["gehen"] = new("Gehen", 3.5) },
+                [new PhasenAnzeige("p1", "Anlauf", "Woche 1–2", "2 Wochen", 500, "Beschreibung",
+                    [new TrainingstagDaten("Mo", "Homeoffice", [new EinheitDaten("gehen", 30)])])],
+                new Kraftplan("Kurzhanteln", "Ganzkörper", []),
+                []),
+            new Grundstockdaten("Vorratshinweis",
+                [new Gruppe("Trockenware", [new Artikel("Haferflocken", "1.500 g", "4 Wochen")])])));
     }
 
     public async Task KontoAnlegenAsync()

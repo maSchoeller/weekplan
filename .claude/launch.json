@@ -3,9 +3,8 @@
   "configurations": [
     {
       "name": "weekplan",
-      "runtimeExecutable": "npx",
-      "runtimeArgs": ["--yes", "serve", "-l", "4321", "."],
-      "port": 4321
+      "url": "http://localhost:5180",
+      "port": 5180
     }
   ]
 }

@@ -1,23 +1,5 @@
 namespace Weekplan.Core.Wochenplanung.Contracts;
 
-/// <summary>
-/// Eine Zutat mit Menge je Portion. <paramref name="Vorrat"/> markiert, was im
-/// Grundstock steht und deshalb nicht auf die Wochenliste gehoert — 6 g
-/// Olivenoel sind rechnerisch richtig und praktisch Unsinn.
-/// </summary>
-public sealed record Zutat(string Name, double G, string Abt, bool Vorrat = false, double Stk = 0);
-
-public sealed record Rezept(
-    string Id,
-    string Name,
-    string Kategorie,
-    int ZeitMin,
-    bool Kalt,
-    int Kcal,
-    int Protein,
-    IReadOnlyList<Zutat> Zutaten,
-    IReadOnlyList<string> Schritte);
-
 /// <summary>Ein Posten der Einkaufsliste, ueber alle Gerichte der Woche summiert.</summary>
 public sealed record Einkaufsposten(
     string Name,

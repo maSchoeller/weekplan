@@ -30,6 +30,25 @@ jobs:
       - name: Testen
         run: dotnet test Weekplan.slnx --configuration Release --filter "Ablage!=Cosmos"
 
+      # /health sagt nur, dass der Prozess laeuft. Seit die Rezepte und Phasen
+      # aus der Datenbank kommen, ist die App ohne sie unbrauchbar — ein
+      # fehlender oder leerer Behaelter faellt hier auf und nicht erst beim
+      # naechsten Einkauf.
+      - name: Stammdaten pruefen
+        run: |
+          curl --fail --retry 6 --retry-delay 10 --retry-all-errors             --output stammdaten.json "${API_URL}/stammdaten"
+          python3 - <<'PRUEFUNG'
+          import json, sys
+          daten = json.load(open("stammdaten.json", encoding="utf-8"))
+          rezepte = daten["rezepte"]["rezepte"]
+          phasen = daten["training"]["phasen"]
+          if not rezepte or not phasen:
+              sys.exit(f"Stammdaten unvollstaendig: {len(rezepte)} Rezepte, {len(phasen)} Phasen.")
+          print(f"{len(rezepte)} Rezepte, {len(phasen)} Phasen.")
+          PRUEFUNG
+        env:
+          API_URL: ${{ vars.API_URL }}
+
       - name: Client veroeffentlichen
         run: dotnet publish src/Weekplan.Client/Weekplan.Client.csproj -c Release -o artifacts/client
 

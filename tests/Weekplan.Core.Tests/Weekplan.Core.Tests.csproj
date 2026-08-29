@@ -20,12 +20,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Weekplan.Client\Weekplan.Client.csproj" />
     <ProjectReference Include="..\..\src\Weekplan.Core.Rechnen\Weekplan.Core.Rechnen.csproj" />
     <ProjectReference Include="..\..\src\Weekplan.Core.Rechnen.Contracts\Weekplan.Core.Rechnen.Contracts.csproj" />
     <ProjectReference Include="..\..\src\Weekplan.Core.Anmeldung\Weekplan.Core.Anmeldung.csproj" />
     <ProjectReference Include="..\..\src\Weekplan.Core.Anmeldung.Contracts\Weekplan.Core.Anmeldung.Contracts.csproj" />
     <ProjectReference Include="..\..\src\Weekplan.Core.Tagebuch\Weekplan.Core.Tagebuch.csproj" />
     <ProjectReference Include="..\..\src\Weekplan.Core.Tagebuch.Contracts\Weekplan.Core.Tagebuch.Contracts.csproj" />
+    <ProjectReference Include="..\..\src\Weekplan.Core.Stammdaten\Weekplan.Core.Stammdaten.csproj" />
+    <ProjectReference Include="..\..\tools\Weekplan.Stammdaten\Weekplan.Stammdaten.csproj" />
+    <ProjectReference Include="..\..\src\Weekplan.Core.Stammdaten.Contracts\Weekplan.Core.Stammdaten.Contracts.csproj" />
     <ProjectReference Include="..\..\src\Weekplan.Core.Wochenplanung\Weekplan.Core.Wochenplanung.csproj" />
     <ProjectReference Include="..\..\src\Weekplan.Core.Wochenplanung.Contracts\Weekplan.Core.Wochenplanung.Contracts.csproj" />
   </ItemGroup>

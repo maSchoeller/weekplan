@@ -1,4 +1,5 @@
 using Weekplan.Core.Rechnen.Contracts;
+using Weekplan.Core.Stammdaten.Contracts;
 using Weekplan.Core.Tagebuch.Contracts;
 
 namespace Weekplan.Core.Wochenplanung.Contracts;

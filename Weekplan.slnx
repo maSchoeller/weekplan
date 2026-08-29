@@ -7,6 +7,8 @@
     <Project Path="src/Weekplan.Core.Rechnen/Weekplan.Core.Rechnen.csproj" />
     <Project Path="src/Weekplan.Core.Tagebuch.Contracts/Weekplan.Core.Tagebuch.Contracts.csproj" />
     <Project Path="src/Weekplan.Core.Tagebuch/Weekplan.Core.Tagebuch.csproj" />
+    <Project Path="src/Weekplan.Core.Stammdaten.Contracts/Weekplan.Core.Stammdaten.Contracts.csproj" />
+    <Project Path="src/Weekplan.Core.Stammdaten/Weekplan.Core.Stammdaten.csproj" />
     <Project Path="src/Weekplan.Core.Wochenplanung.Contracts/Weekplan.Core.Wochenplanung.Contracts.csproj" />
     <Project Path="src/Weekplan.Core.Wochenplanung/Weekplan.Core.Wochenplanung.csproj" />
     <Project Path="src/Weekplan.Server/Weekplan.Server.csproj" />
@@ -17,5 +19,6 @@
   </Folder>
   <Folder Name="/tools/">
     <Project Path="tools/Weekplan.Konto/Weekplan.Konto.csproj" />
+    <Project Path="tools/Weekplan.Stammdaten/Weekplan.Stammdaten.csproj" />
   </Folder>
 </Solution>

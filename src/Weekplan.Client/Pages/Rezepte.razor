@@ -54,12 +54,7 @@
                 </ul>
 
                 <h4>Zubereitung</h4>
-                <ol class="schritte">
-                    @foreach (var schritt in rezept.Schritte)
-                    {
-                        <li>@schritt</li>
-                    }
-                </ol>
+                <div class="anleitung">@Markdowntext.AlsHtml(rezept.Anleitung)</div>
             </article>
         }
     </div>

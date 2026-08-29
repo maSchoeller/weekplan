@@ -4,9 +4,7 @@ Wochenplaner für Ernährung und Training: Gerichte auf Tage und Mahlzeiten lege
 Portionen einstellen, Einkaufsliste in Gramm erhalten — plus Trainingsplan mit
 gewichtsabhängiger Verbrauchsrechnung.
 
-**Live:**
-- Neue Form (Konto, geräteübergreifend): https://gentle-moss-035769303.7.azurestaticapps.net
-- Alte statische Form: https://maschoeller.github.io/weekplan
+**Live:** https://gentle-moss-035769303.7.azurestaticapps.net
 
 ## Was drin ist
 
@@ -15,8 +13,9 @@ gewichtsabhängiger Verbrauchsrechnung.
   automatisch und wählt die Portionen so, dass jeder Tag nah am Kalorienziel landet.
 - **Einkauf** — Wochenliste (Frischware, aus dem Wochenplan aggregiert, nach
   Supermarkt-Abteilungen sortiert, abhakbar) und Grundstock (einmaliger Vorratseinkauf).
-- **Rezepte** — 24 Gerichte mit Grammangaben pro Portion und Zubereitungsschritten,
-  skalierbar über die Portionsanzahl.
+- **Rezepte** — 24 Gerichte mit Grammangaben pro Portion und ausführlicher
+  Zubereitung, skalierbar über die Portionsanzahl. Die Rezepte liegen in der
+  Datenbank, nicht im Quellcode.
 - **Training** — Fünf Phasen mit Wochenplan, Verbrauchstabelle beim aktuellen Gewicht,
   Kraftplan A/B und Regelwerk.
 - **Ich** — Gewicht, Zielgewicht, Größe, Alter, Zieltermin, Proteinfaktor und wahlweise ein
@@ -24,18 +23,13 @@ gewichtsabhängiger Verbrauchsrechnung.
   Grundumsatz, Zielaufnahme, Countdown, Gewichtsverlauf mit 7-Tage-Schnitt und
   Plateau-Erkennung.
 
-## Zwei Formen, eine im Umbau
+## Eine Form
 
-weekplan zieht gerade von einer reinen Browserseite auf Client und Server um.
-Beide Formen laufen, beide liegen im Repo:
-
-- **Die statische Seite** (`index.html`, `css/`, `js/`, `data/`) liegt weiter auf
-  GitHub Pages. Sie ist unveraendert und funktioniert wie bisher.
-- **Die Client/Server-Form** unter `src/` ist seit dem 27.08.2026 **in Azure
-  ausgerollt**: ein Blazor-WebAssembly-Client auf Static Web Apps, eine Minimal
-  API auf Container Apps, Daten in Cosmos DB. Sie loest das Problem, das die
-  statische Form nicht loesen kann — dass Handy und Laptop getrennte Staende
-  haben.
+weekplan ist ein Blazor-WebAssembly-Client auf Azure Static Web Apps, eine
+Minimal API auf Container Apps und Cosmos DB. Die urspruengliche statische
+Browserseite ist mit dem Lauf `2026-08-28-rezepte-aus-der-datenbank`
+**abgeschaltet und entfernt** — sie konnte nicht loesen, dass Handy und Laptop
+getrennte Staende haben.
 
 Der Server skaliert auf null, wenn ihn niemand braucht. **Nach einer laengeren
 Pause dauert der erste Aufruf darum ein paar Sekunden**, danach ist er schnell.
@@ -46,17 +40,13 @@ Details in [foundation.md](foundation.md) und
 
 ## Datenschutz
 
-**In der statischen Form steht keine einzige persoenliche Zahl im Repo.**
-`data/*.json` enthaelt ausschliesslich generische Rezepte und
-Trainingsstrukturen. Gewicht, Zielgewicht, Zieltermin und der Gewichtsverlauf
-liegen dort ausschliesslich im `localStorage` des Browsers und verlassen das
-Geraet nicht. Kein Backend, keine Analytics, keine externen Requests. Daraus
-folgt aber auch: Browserspeicher geloescht heisst Daten weg, und die Daten sind
-pro Geraet.
+**Im Repo steht keine einzige persoenliche Zahl.** Gewicht, Zielgewicht,
+Zieltermin und der Gewichtsverlauf liegen im Konto auf dem Server, damit Handy
+und Laptop denselben Stand sehen. Die Rezepte, Trainingsphasen und der
+Grundstock liegen daneben in derselben Datenbank — sie sind generisch und
+gehoeren keinem Nutzer, weshalb sie ohne Anmeldung lesbar sind.
 
-**In der neuen Form aendert sich genau das** — und zwar bewusst: die Zahlen
-liegen dann im Konto auf dem Server, damit Handy und Laptop denselben Stand
-sehen. Was gleich bleibt: keine Analytics, keine externen Requests, keine
+Was gilt: keine Analytics, keine externen Requests, keine
 Registrierungsseite. Es gibt genau ein Konto, angelegt von Hand ueber
 `tools/Weekplan.Konto`; ohne Anmeldung ist keine Zahl erreichbar. Ende-zu-Ende-
 Verschluesselt ist es nicht — wer den Server betreibt, koennte die Daten lesen.
@@ -64,16 +54,14 @@ Verschluesselt ist es nicht — wer den Server betreibt, koennte die Daten lesen
 ## Aufbau
 
 ```
-index.html            Statische Form: Geruest und Tabs
-css/styles.css        Gestaltung, hell und dunkel
-js/app.js             Rechenlogik, Rendering, localStorage
-data/*.json           Rezepte, Trainingsphasen, Grundstock
-
-src/Weekplan.Client   Neue Form: Blazor WebAssembly, die fuenf Tabs
-src/Weekplan.Server   Minimal API, CORS, Anmeldung, Tagebuch-Endpunkte
-src/Weekplan.Core.*   Slices: Rechnen, Anmeldung, Tagebuch, Wochenplanung
-tools/Weekplan.Konto  Legt das eine Konto an — es gibt keine Registrierung
-tests/                xUnit: Rechenkern, Ablage, Endpunkte
+src/Weekplan.Client      Blazor WebAssembly, die fuenf Tabs
+src/Weekplan.Server      Minimal API, CORS, Anmeldung, Tagebuch, Stammdaten
+src/Weekplan.Core.*      Slices: Rechnen, Anmeldung, Tagebuch, Wochenplanung,
+                         Stammdaten
+tools/Weekplan.Konto     Legt das eine Konto an — es gibt keine Registrierung
+tools/Weekplan.Stammdaten  Bringt Rezepte, Training und Grundstock einmalig in
+                         die Datenbank und prueft danach jedes Feld nach
+tests/                   xUnit: Rechenkern, Ablagen, Endpunkte, Umzug
 
 .github/workflows/    ci.yml testet jeden Push, deploy.yml rollt main nach Azure
 CLAUDE.md             Der Snowcap-Harness: jede Aenderung laeuft durch die Pipeline
@@ -109,11 +97,12 @@ $env:WEEKPLAN_COSMOS = (az cosmosdb keys list -n cosmos-weekplan-prod -g rg-week
 Es gibt bewusst keine Registrierungsseite: das ist der einzige Weg, ein Konto
 anzulegen, und es gibt keinen Weg, ein Passwort zurueckzusetzen.
 
-Die statische Form laedt ihre Daten per `fetch`, ein Doppelklick auf
-`index.html` genuegt also nicht:
+Die Rezepte, Trainingsphasen und der Grundstock kommen aus der Datenbank.
+Oertlich befuellt `run-local.ps1` sie beim ersten Start selbst; fuer die
+ausgerollte App einmalig von Hand, mit derselben `WEEKPLAN_COSMOS` wie oben:
 
 ```bash
-npx serve .
+dotnet run --project tools/Weekplan.Stammdaten
 ```
 
 Tests:

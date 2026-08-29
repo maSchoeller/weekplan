@@ -1,6 +1,5 @@
 #!/usr/bin/env pwsh
 # Einziger Startweg fuer weekplan lokal: Server und Client zusammen.
-# Die alte statische App laeuft unabhaengig davon mit `npx serve .`.
 # Beenden mit Strg+C — beide Prozesse werden mitgenommen.
 $ErrorActionPreference = 'Stop'
 
@@ -15,6 +14,19 @@ dotnet build (Join-Path $root 'Weekplan.slnx') --nologo --verbosity quiet
 if ($LASTEXITCODE -ne 0) {
     Write-Host 'Build fehlgeschlagen — es wird nichts gestartet.'
     exit $LASTEXITCODE
+}
+
+# Ohne Stammdaten hat der Server nichts auszuliefern und die App bleibt leer.
+# Der Ordner entsteht aus dem Altbestand und liegt nicht im Repo, also wird er
+# beim ersten Start hier angelegt.
+$stammdaten = Join-Path $root 'src/Weekplan.Server/stammdaten'
+if (-not (Test-Path (Join-Path $stammdaten 'liste'))) {
+    Write-Host 'Befuelle die Stammdaten (einmalig) ...'
+    dotnet run --no-build --project (Join-Path $root 'tools/Weekplan.Stammdaten') -- $stammdaten
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host 'Die Stammdaten liessen sich nicht befuellen — es wird nichts gestartet.'
+        exit $LASTEXITCODE
+    }
 }
 
 $processes = @()

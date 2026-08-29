@@ -2,6 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Weekplan.Core.Rechnen.Contracts;
 using Weekplan.Core.Tagebuch.Contracts;
 using Weekplan.Core.Wochenplanung;
+using Weekplan.Core.Stammdaten.Contracts;
 using Weekplan.Core.Wochenplanung.Contracts;
 
 namespace Weekplan.Core.Tests;
@@ -21,17 +22,17 @@ public class WochenplanungTests
             new Zutat("Zwiebel", 70, "Obst & Gemuese"),
             new Zutat("Olivenoel", 6, "Oel & Gewuerze", Vorrat: true)
         ],
-        ["Kochen."]);
+        "Kochen.");
 
     private static readonly Rezept Ofen = new(
         "ofen", "Ofengemuese", "abend", 35, false, 600, 30,
         [new Zutat("Zwiebel", 30, "Obst & Gemuese"), new Zutat("Karotte", 100, "Obst & Gemuese")],
-        ["Backen."]);
+        "Backen.");
 
     private static readonly Rezept Oats = new(
         "oats", "Overnight Oats", "fruehstueck", 5, true, 500, 30,
         [new Zutat("Haferflocken", 80, "Trockenware"), new Zutat("Ei", 0, "Kuehlregal", Stk: 1)],
-        ["Ruehren."]);
+        "Ruehren.");
 
     private static WochenStand MitPlan(params (string Tag, string Mahlzeit, string RezeptId, int Portionen)[] eintraege)
     {
@@ -129,7 +130,7 @@ public class AutomatischFuellenTests
             .GetRequiredService<IWochenplanung>();
 
     private static Rezept R(string id, string kategorie, int kcal, int protein) =>
-        new(id, id, kategorie, 20, false, kcal, protein, [new Zutat("X", 10, "Trockenware")], ["Kochen."]);
+        new(id, id, kategorie, 20, false, kcal, protein, [new Zutat("X", 10, "Trockenware")], "Kochen.");
 
     private static readonly List<Rezept> Auswahl =
     [

@@ -1,5 +1,6 @@
 using Weekplan.Client.Daten;
 using Weekplan.Core.Rechnen.Contracts;
+using Weekplan.Core.Stammdaten.Contracts;
 using Weekplan.Core.Tagebuch.Contracts;
 using Weekplan.Core.Wochenplanung.Contracts;
 using Profil = Weekplan.Core.Rechnen.Contracts.Profil;
@@ -25,7 +26,7 @@ public sealed class Zustand(
     private CancellationTokenSource? _profilWartet;
     private CancellationTokenSource? _wocheWartet;
 
-    public Stammdaten Stamm { get; private set; } = null!;
+    public Stammdatensatz Stamm { get; private set; } = null!;
     public ProfilStand Profil { get; private set; } = ProfilStand.Leer;
     public WochenStand Woche { get; private set; } = WochenStand.Leer;
 
@@ -37,8 +38,24 @@ public sealed class Zustand(
 
     public IReadOnlyList<Rezept> Rezepte => Stamm.Rezepte.Rezepte;
 
+    private void FrischeStammdaten(Stammdatensatz satz)
+    {
+        Stamm = satz;
+        Melden();
+    }
+
+    private bool _hoertAufStammdaten;
+
     public async Task LadenAsync()
     {
+        // Der Lader kann im Hintergrund einen neueren Stand nachliefern — etwa
+        // ein Rezept, das seit dem letzten Start dazugekommen ist.
+        if (!_hoertAufStammdaten)
+        {
+            lader.Aufgefrischt += FrischeStammdaten;
+            _hoertAufStammdaten = true;
+        }
+
         Stamm = await lader.LadenAsync();
 
         var profil = api.ProfilAsync();

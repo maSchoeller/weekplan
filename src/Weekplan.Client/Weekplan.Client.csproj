@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -13,7 +13,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Markdig" Version="1.3.2" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Weekplan.Core.Rechnen.Contracts\Weekplan.Core.Rechnen.Contracts.csproj" />
+    <ProjectReference Include="..\Weekplan.Core.Stammdaten.Contracts\Weekplan.Core.Stammdaten.Contracts.csproj" />
     <ProjectReference Include="..\Weekplan.Core.Tagebuch.Contracts\Weekplan.Core.Tagebuch.Contracts.csproj" />
     <ProjectReference Include="..\Weekplan.Core.Wochenplanung\Weekplan.Core.Wochenplanung.csproj" />
     <ProjectReference Include="..\Weekplan.Core.Wochenplanung.Contracts\Weekplan.Core.Wochenplanung.Contracts.csproj" />

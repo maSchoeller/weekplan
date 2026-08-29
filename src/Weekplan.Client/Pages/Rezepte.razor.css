@@ -97,12 +97,54 @@ h2 {
   white-space: nowrap;
 }
 
-.schritte {
-  margin: 0;
-  padding-left: var(--sp-6);
+.anleitung {
+  max-width: 62ch;
   font-size: .9375rem;
 }
 
-.schritte li {
+.anleitung :first-child { margin-top: 0; }
+.anleitung :last-child { margin-bottom: 0; }
+
+.anleitung p {
+  margin: 0 0 var(--sp-3);
+}
+
+.anleitung h1,
+.anleitung h2,
+.anleitung h3,
+.anleitung h4 {
+  margin: var(--sp-4) 0 var(--sp-2);
+  font-size: .9375rem;
+  font-weight: 650;
+}
+
+.anleitung ol,
+.anleitung ul {
+  margin: 0 0 var(--sp-3);
+  padding-left: var(--sp-6);
+}
+
+.anleitung li {
   margin-bottom: var(--sp-2);
+}
+
+.anleitung code {
+  font-size: .875em;
+}
+
+/* Breite Tabellen scrollen in sich, nie der Seitenkoerper. */
+.anleitung table {
+  display: block;
+  overflow-x: auto;
+  max-width: 100%;
+  margin: 0 0 var(--sp-3);
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+.anleitung th,
+.anleitung td {
+  padding: var(--sp-2) var(--sp-3);
+  border-bottom: 1px solid var(--border);
+  text-align: left;
 }

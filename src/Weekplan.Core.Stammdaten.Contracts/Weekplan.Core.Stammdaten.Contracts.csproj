@@ -1,8 +1,6 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\Weekplan.Core.Tagebuch.Contracts\Weekplan.Core.Tagebuch.Contracts.csproj" />
-    <ProjectReference Include="..\Weekplan.Core.Stammdaten.Contracts\Weekplan.Core.Stammdaten.Contracts.csproj" />
     <ProjectReference Include="..\Weekplan.Core.Rechnen.Contracts\Weekplan.Core.Rechnen.Contracts.csproj" />
   </ItemGroup>
 

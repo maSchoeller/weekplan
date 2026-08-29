@@ -23,6 +23,9 @@
     <ProjectReference Include="..\..\src\Weekplan.Server\Weekplan.Server.csproj" />
     <ProjectReference Include="..\..\src\Weekplan.Core.Tagebuch\Weekplan.Core.Tagebuch.csproj" />
     <ProjectReference Include="..\..\src\Weekplan.Core.Tagebuch.Contracts\Weekplan.Core.Tagebuch.Contracts.csproj" />
+    <ProjectReference Include="..\..\src\Weekplan.Core.Stammdaten\Weekplan.Core.Stammdaten.csproj" />
+    <ProjectReference Include="..\..\src\Weekplan.Core.Stammdaten.Contracts\Weekplan.Core.Stammdaten.Contracts.csproj" />
+    <ProjectReference Include="..\..\src\Weekplan.Core.Rechnen.Contracts\Weekplan.Core.Rechnen.Contracts.csproj" />
     <ProjectReference Include="..\..\src\Weekplan.Core.Anmeldung\Weekplan.Core.Anmeldung.csproj" />
     <ProjectReference Include="..\..\src\Weekplan.Core.Anmeldung.Contracts\Weekplan.Core.Anmeldung.Contracts.csproj" />
   </ItemGroup>
