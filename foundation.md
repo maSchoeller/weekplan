@@ -16,6 +16,10 @@
 - Testbefehl: `dotnet test Weekplan.slnx --filter "Ablage!=Cosmos"`. Ohne den
   Filter laufen auch die Cosmos-Tests mit, und die brauchen `WEEKPLAN_COSMOS` in
   der Umgebung — siehe `tests/Weekplan.Core.Tests/TagebuchInCosmosTests.cs`.
+  **Vorher `run-local.ps1` beenden.** Der laufende Server haelt die DLLs der
+  Slices; der Bau scheitert dann, aber die Zusammenfassung meldet trotzdem
+  `Passed!` fuer die Projekte, die noch durchkamen. Nur der Exit-Code sagt die
+  Wahrheit — am 29.08.2026 einmal live erlebt.
 - Ausrollbefehl: keiner. **Ein Push auf `main` rollt aus**
   (`.github/workflows/deploy.yml`): testen, Image nach `ghcr.io`, Container App
   aktualisieren, Client in die Static Web App. Von Hand anstossen geht mit

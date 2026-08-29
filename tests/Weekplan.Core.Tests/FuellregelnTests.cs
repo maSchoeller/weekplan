@@ -255,4 +255,68 @@ public class FuellregelnTests
             Assert.InRange(kcal, ziel - 500, ziel + 500);
         }
     }
+
+    // ── Der Rueckfall spricht (Retro 2026-08-29) ────────
+
+    [Fact]
+    public void Ein_vollstaendig_gepflegter_Pool_gibt_keine_Hinweise()
+    {
+        Assert.Empty(Planung().Fuellhinweise(Pool));
+    }
+
+    [Fact]
+    public void Ein_ungepflegter_Pool_nennt_jede_Regel_die_nicht_greifen_kann()
+    {
+        IReadOnlyList<Rezept> ohneMerkmale =
+            [.. Pool.Select(r => r with { Prep = false, Wochenende = false, Refeed = false })];
+
+        var hinweise = Planung().Fuellhinweise(ohneMerkmale);
+
+        Assert.Equal(3, hinweise.Count);
+        Assert.Contains(hinweise, h => h.Contains("vorkochbar"));
+        Assert.Contains(hinweise, h => h.Contains("Wochenendgericht"));
+        Assert.Contains(hinweise, h => h.Contains("refeed-tauglich"));
+    }
+
+    [Fact]
+    public void Fehlt_nur_eine_Markierung_steht_auch_nur_ein_Hinweis()
+    {
+        IReadOnlyList<Rezept> ohneRefeed = [.. Pool.Select(r => r with { Refeed = false })];
+
+        var hinweis = Assert.Single(Planung().Fuellhinweise(ohneRefeed));
+
+        Assert.Contains("refeed-tauglich", hinweis);
+    }
+
+    /// <summary>
+    /// Ein Gericht, das zugleich vorkochbar und Wochenendgericht ist, stuende
+    /// sonst zweimal in derselben Woche: einmal am Wochenende, einmal im Block.
+    /// </summary>
+    [Fact]
+    public void Ein_Gericht_fuer_beides_steht_trotzdem_nur_einmal_in_der_Woche()
+    {
+        IReadOnlyList<Rezept> doppeldeutig =
+        [
+            R("f1", "fruehstueck", 700, 65),
+            R("m-beides", "mittag", 850, 60, prep: true, wochenende: true, refeed: true),
+            R("m-prep-a", "mittag", 820, 62, prep: true),
+            R("m-prep-b", "mittag", 830, 63, prep: true),
+            R("a-beides", "abend", 700, 58, prep: true, wochenende: true, refeed: true),
+            R("a-prep-a", "abend", 650, 56, prep: true),
+            R("a-prep-b", "abend", 660, 57, prep: true)
+        ];
+
+        var woche = Planung().AutomatischFuellen(WochenStand.Leer, doppeldeutig, Ziel);
+
+        foreach (var mahlzeit in new[] { "mittag", "abend" })
+        {
+            var tage = Woche.Tage
+                .Where(t => Gericht(woche, t.Kuerzel, mahlzeit).EndsWith("beides"))
+                .Select(t => t.Kuerzel)
+                .ToList();
+
+            // Hoechstens die beiden Einzeltage (Refeed und Wochenende), nie ein Block.
+            Assert.All(tage, tag => Assert.Contains(tag, new[] { "Sa", "So" }));
+        }
+    }
 }

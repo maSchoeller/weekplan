@@ -272,7 +272,24 @@ public sealed class Zustand(
     private static Dictionary<string, int> Kopie(IReadOnlyDictionary<string, int>? quelle)
         => quelle is null ? [] : new Dictionary<string, int>(quelle);
 
-    public void WocheFuellen() => WocheAendern(w => planung.AutomatischFuellen(w, Rezepte, Bilanz()));
+    /// <summary>
+    /// Was das Fuellen nicht einhalten konnte — leer, solange nicht gefuellt
+    /// wurde. Der Rueckfall auf die volle Auswahl ist noetig, damit kein Tag
+    /// leer bleibt; unausgesprochen waere er eine regelwidrige Woche ohne Grund.
+    /// </summary>
+    public IReadOnlyList<string> Fuellhinweise { get; private set; } = [];
+
+    public void WocheFuellen()
+    {
+        Fuellhinweise = planung.Fuellhinweise(Rezepte);
+        WocheAendern(w => planung.AutomatischFuellen(w, Rezepte, Bilanz()));
+    }
+
+    public void FuellhinweiseZurKenntnis()
+    {
+        Fuellhinweise = [];
+        Melden();
+    }
 
     public void RefeedTagSetzen(string tag) => WocheAendern(w => w with { RefeedTag = tag });
 

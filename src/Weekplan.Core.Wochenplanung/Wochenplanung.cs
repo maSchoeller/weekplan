@@ -136,9 +136,12 @@ internal sealed class Wochenplanung : IWochenplanung
         // Die Werktage stehen auf zwei sonntags vorgekochten Sorten. Ein Gericht
         // je Block, und der zweite Block ein anderes als der erste.
         var werktage = Werktage(woche.RefeedTag);
+        // Die Bloecke wissen, was Wochenende und Refeed schon bekommen haben:
+        // ein Gericht, das zugleich vorkochbar und Wochenendgericht ist, stuende
+        // sonst zweimal in derselben Woche.
         var werktagsMittag = Gefiltert(mittag, r => r.Prep);
         var werktagsAbend = Gefiltert(abend, r => r.Prep);
-        var genommen = new HashSet<string>();
+        var genommen = new HashSet<string>(vergeben);
         var ab = 0;
 
         foreach (var laenge in Blockaufteilung(werktage.Length, rotation))
@@ -182,6 +185,41 @@ internal sealed class Wochenplanung : IWochenplanung
         return woche with { Plan = plan, Rotation = rotation };
 
         int Ziel(string kuerzel) => kuerzel == woche.RefeedTag ? bilanz.Refeed : bilanz.Normal;
+    }
+
+    /// <summary>
+    /// Die Kehrseite des Rueckfalls, ausgesprochen. Geprueft wird der Pool und
+    /// nicht das Ergebnis: eine gefuellte Woche darf der Nutzer jederzeit von
+    /// Hand umbauen, und ein Hinweis, der dann weiter mahnt, waere Bevormundung.
+    /// Was fehlt, fehlt am Pool — und dort wird es auch behoben.
+    /// </summary>
+    public IReadOnlyList<string> Fuellhinweise(IReadOnlyList<Rezept> rezepte)
+    {
+        // Fruehstuecke rotieren und kennen keine dieser Regeln.
+        var warm = rezepte.Where(r => r.Kategorie is "mittag" or "abend").ToList();
+        if (warm.Count == 0) return [];
+
+        var hinweise = new List<string>();
+
+        if (!warm.Any(r => r.Prep))
+        {
+            hinweise.Add("Kein Gericht ist als vorkochbar markiert — werktags steht "
+                         + "darum die volle Auswahl statt zwei vorgekochter Sorten.");
+        }
+
+        if (!warm.Any(r => r.Wochenende))
+        {
+            hinweise.Add("Kein Gericht ist als Wochenendgericht markiert — Samstag "
+                         + "und Sonntag bekommen darum dieselbe Auswahl wie die Werktage.");
+        }
+
+        if (!warm.Any(r => r.Refeed))
+        {
+            hinweise.Add("Kein Gericht ist als refeed-tauglich markiert — der "
+                         + "Refeed-Tag bekommt darum gewöhnliche Gerichte in größeren Portionen.");
+        }
+
+        return hinweise;
     }
 
     /// <summary>Refeed-Tag zuerst, danach die uebrigen Wochenendtage — jeder fuer sich gewaehlt.</summary>

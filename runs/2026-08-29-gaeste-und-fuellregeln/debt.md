@@ -34,3 +34,29 @@
   einander aus, die Bloecke wissen davon aber nichts. Bei gepflegten Merkmalen
   sind die Mengen ohnehin disjunkt. **Ausloeser:** wenn ein Wochenendgericht
   auch `prep` traegt und dann doppelt in der Woche steht.
+
+## Retro 2026-08-29 — wohin die Posten gegangen sind
+
+Der Nutzer hat drei von fuenf sofort beheben lassen. Alles Uebrige steht
+datiert in der Wurzel-`debt.md` unter „2026-08-29 — Gaeste und Fuellregeln";
+dieser Ordner wird nicht wieder geoeffnet.
+
+| Posten | Ausgang |
+|---|---|
+| Fokusverlust beim Zustandswechsel | **behoben** — ein Element statt zwei |
+| Stiller Rueckfall beim Fuellen | **behoben** — `Fuellhinweise` am Pool |
+| Bloecke und Einzeltage abgestimmt | **behoben** — `vergeben` reicht durch |
+| `?portionen=` traegt veraltete Zahl | getragen |
+| Worktree-Pflege vom Klassifizierer abgelehnt | getragen |
+| Merkmale am Pool ungepflegt | getragen bis zur Pflege nach dem Ausrollen |
+
+Drei Schulden frueherer Laeufe sind erledigt: Tastaturpruefung, Bildschirmfotos
+und frische Augen im Smoketest. Alle drei hingen am selben Umstand — verbundenes
+Chrome und eine Freigabe fuer den Unteragenten.
+
+Der Harness bleibt unangetastet: `check-budget.ps1` meldet CLAUDE.md 40/40 und
+den Pipeline-Kern 296/300. Wachstum braeuchte Verdraengung, und keine der
+Lehren ist es wert. Die eine Testlehre steht projektspezifisch in
+`foundation.md`, die Blazor-Lehre wartet in der Wurzel-`debt.md` auf ihr zweites
+Vorkommen.
+
