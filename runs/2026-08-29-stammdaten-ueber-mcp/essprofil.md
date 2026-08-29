@@ -61,9 +61,14 @@ Keine Allergien, keine Unverträglichkeiten.
 
 ## Ist-Zustand und Genussanker
 
-Heutige Gewohnheiten: viel Fleisch und Wurst, viel Panade, schlechte Fette.
-Kein Frühstück. Mittags Lieferdienst oder Aufbacken. Abends Snacks vor dem
-Fernseher.
+Heutige Gewohnheiten, in den Worten des Nutzers: viel Fleisch und Wurst, viel
+Panade, schlechte Fette. Kein Frühstück. Mittags Lieferdienst oder Aufbacken.
+
+> **Korrektur vom 29.08.2026.** Hier stand vorher „abends Snacks vor dem
+> Fernseher". Der Nutzer hat diese Formulierung zwar in einer Auswahlliste
+> angeklickt, sie stammte aber von mir — und die Geschichte, die ich daraus
+> gebaut habe (eine „Fernsehzeit" gegen 21 Uhr, in der das Naschen gewinnt), war
+> vollständig erfunden. Über das Abendverhalten ist damit **nichts belegt**.
 
 Drei Anker, die ersetzt und nicht verboten werden:
 
@@ -92,18 +97,16 @@ sind alle drei erwünscht; zwei Gerichte müssen unter fünf Minuten stehen.
 langer Lauf, Sonntag ist Meal-Prep-Tag; das Sonntagsgericht muss ohne
 Aufmerksamkeit nebenherlaufen.
 
-## Offener Punkt: der Abend nach dem Lauf
+## Der Abend nach dem Lauf
 
-Der Nutzer isst **erst, dann läuft er** — Abendessen ~17 Uhr, Lauf ~20 Uhr,
-zurück gegen 21 Uhr. Damit fallen vier Stunden ohne Nahrung genau in die
-Fernsehzeit, in der heute die Snacks gewinnen; die 16-Uhr-Regel schützt dort
-nicht. Vorschlag war, das Abendessen zu teilen und das Fenster an Lauftagen bis
-21:30 zu dehnen — so wie es §4 schon einmal von 16:00 auf 20:00 gedehnt hat,
-mit derselben Begründung.
+Der Nutzer isst **erst, dann läuft er** — Abendessen gegen 17 Uhr, Lauf gegen
+20 Uhr. Das Essensfenster endet um 20:00.
 
-**Der Nutzer hat abgelehnt: „Fenster bleibt, ich halte durch."** Entschieden,
-nicht offen. Wenn die Snacks in Woche zwei oder drei doch gewinnen, ist das die
-erste Stellschraube — und dann nach der Plateau-Regel genau diese eine.
+Vorgeschlagen war, das Abendessen zu teilen und das Fenster an Lauftagen zu
+dehnen. **Der Nutzer hat abgelehnt: „Fenster bleibt, ich halte durch."**
+Entschieden, nicht offen — und der Grund für den Vorschlag (eine angenommene
+Naschzeit nach dem Lauf) war ohnehin von mir erfunden, siehe die Korrektur
+oben. Es gibt derzeit keinen belegten Anlass, an dieser Stelle etwas zu ändern.
 
 ## Der geplante Pool — 18 Gerichte
 

@@ -74,6 +74,8 @@ foundation.md         Stack, Testbefehl, Startbefehl, Smoketest-Methode
 design-system.md      Bindende Tokens, Spacing-Skala, Layout-Regeln
 docs/architecture.md  Das eine aktuelle Bild des Systems
 docs/plan.md          Methodik: Formeln, Phasenlogik, Begruendungen
+docs/ernaehrungsplan.md  Warum welche Gerichte im Pool stehen — Praemissen
+                      und Pruefliste fuer neue Rezepte
 debt.md               Bewusst eingegangene Schulden, datiert und mit Ausloeser
 runs/                 Was in welchem Lauf entschieden wurde
 ```
@@ -136,6 +138,11 @@ Jedes Schreiben ersetzt sein Dokument **vollstaendig** — also vorher lesen,
 damit nichts verlorengeht. Aendert sich dabei etwas, das rueckwirkend rechnet,
 zeigt die App beim naechsten Start einen Hinweis mit der alten und der neuen
 Zielaufnahme.
+
+**Bevor ein Gericht angelegt wird**, gehoert
+[docs/ernaehrungsplan.md](docs/ernaehrungsplan.md) gelesen: dort stehen die
+Praemissen des Pools — Portionsziele, die Untergrenzen bei Protein je 100 kcal,
+die No-Go-Zutaten und eine Pruefliste.
 
 Tests:
 
