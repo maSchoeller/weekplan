@@ -39,11 +39,12 @@
   vom Muster der anderen Slices, in `design.md` festgehalten. **Ausloeser:** der
   naechste Slice, dessen Name auch ein Typname sein soll — dann ist es eine Regel
   und gehoert in die Vorlage.
-- 2026-08-29 Die Cosmos-Verbindung steht ab jetzt **zweimal** in der
-  Konfiguration: `Tagebuch:Cosmos:Verbindung` und `Stammdaten:Cosmos:Verbindung`,
-  mit demselben Wert. Bewusst so, weil das Muster je Slice sonst bricht und ein
-  gemeinsamer Schluessel beide Slices koppeln wuerde. Preis: beim Rotieren des
-  Schluessels muessen beide Secrets mit. **Ausloeser:** der dritte Slice mit
+- 2026-08-29 Die Cosmos-Verbindung steht **zweimal in der Konfiguration**
+  (`Tagebuch:Cosmos:Verbindung` und `Stammdaten:Cosmos:Verbindung`), aber nur
+  **einmal als Secret**: in Azure zeigen beide Umgebungsvariablen auf dasselbe
+  `cosmos-verbindung`. Das Muster je Slice bleibt damit erhalten, und beim
+  Rotieren gibt es trotzdem nur eine Stelle. Preis: wer die Container App
+  aufsetzt, muss die Verknuepfung kennen. **Ausloeser:** der dritte Slice mit
   Cosmos-Bedarf — dann lohnt ein gemeinsamer `Cosmos:Verbindung`.
 - 2026-08-29 **Im Browser gefunden, nicht im Test:** das ETag kam im Client nie
   an. Ueber eine Herkunftsgrenze gibt der Browser nur eine kleine Liste von
@@ -106,3 +107,14 @@
   Behoben mit `ServerNichtErreichbarException` an allen drei Stellen (holen,
   schreiben, anmelden). **Lehre:** eine Meldung ist erst gut, wenn sie auf jedem
   Weg dorthin gut ist.
+- 2026-08-29 **Werkzeugfalle, im Ausrollen gestolpert:** `az` aus Git Bash
+  heraus zerlegt Argumente, die wie Unix-Pfade aussehen. `--partition-key-path
+  "/art"` kam in Azure als `C:/Program Files/Git/art` an und der Aufruf schlug
+  fehl. Fuer `az` gilt in diesem Projekt: PowerShell, nicht Bash — oder
+  `MSYS_NO_PATHCONV=1`. **Ausloeser:** der naechste az-Aufruf mit einem
+  Argument, das mit einem Schraegstrich beginnt.
+- 2026-08-29 Der Smoketest lief **erneut nicht durch frische Augen** — die
+  Sitzung darf keine Unteragenten starten, dieselbe Schuld wie am 26. und
+  27.08. Geprueft hat dieselbe Hand, die umgesetzt hat. **Ausloeser:** der
+  naechste Lauf ohne diese Einschraenkung; bis dahin ist jeder Smoketest dieses
+  Projekts nur so gut wie die Voreingenommenheit dessen, der ihn schreibt.

@@ -135,3 +135,80 @@ Neu, und ueber den Lauf hinaus:
   ausliefert; geprueft wurde ueber den Zugaenglichkeitsbaum und gemessene
   Kastenmasse statt ueber ein Bild. **Ausloeser:** naechster Lauf mit
   verbundenem Chrome.
+
+## 2026-08-29 — Rezepte aus der Datenbank
+
+Erledigt aus frueheren Laeufen:
+
+- 2026-08-29 **Erledigt:** „Eigene Rezepte anlegen ist ein eigener Lauf danach"
+  (26.08.). Rezepte, Training und Grundstock liegen in Cosmos, gepflegt wird
+  ueber `/mcp` mit Claude Code.
+- 2026-08-29 **Erledigt:** „Die statische App und die neue Form koennen
+  auseinanderlaufen" (26.08.). Die statische App ist abgeschaltet und entfernt;
+  `docs/plan.md` bleibt als Rechengrundlage.
+
+Lehren aus diesem Lauf — drei Fehler, die **kein Test von selbst** gezeigt hat:
+
+- 2026-08-29 **Eine Bibliothek, die „HTML abschaltet", schaltet nicht ab, was
+  ihre eigene Sprache kann.** Markdigs `DisableHtml` entschaerfte eingebettetes
+  Markup, liess aber `[klick](javascript:…)` als lebendigen Verweis und
+  `![bild](fremd)` als nachladendes Bild durch — gegen ein Abnahmekriterium und
+  gegen die Datenschutz-Zusage der README. **Regel:** bei jedem Renderer fremden
+  Textes die *eigene* Syntax der Sprache durchspielen, nicht nur den offenkundig
+  gefaehrlichen Nachbarn.
+- 2026-08-29 **Ueber Herkunftsgrenzen ist jede Kopfzeile eine eigene Freigabe.**
+  Das ETag kam im Client nie an, weil `Access-Control-Expose-Headers` fehlte —
+  der Zwischenspeicher waere wirkungslos geblieben, lautlos und gruen.
+- 2026-08-29 **Werkzeuge fuer Agenten ueber ihr Protokoll testen, nie als
+  Methoden.** Das MCP-SDK ersetzte die Absage einer Pruefung durch „An error
+  occurred invoking …"; ein Methodentest haette das nie gesehen. `McpException`
+  reicht die Meldung durch.
+- 2026-08-29 **Eine Methode ohne Aufrufer ist kein gebauter Mechanismus.**
+  `Stammdatenausgabe.Verwerfen()` existierte von Anfang an, wurde aber nirgends
+  gerufen; ein neu angelegtes Rezept waere erst nach einem Serverneustart
+  sichtbar geworden.
+- 2026-08-29 **Eine Meldung ist erst gut, wenn sie auf jedem Weg dorthin gut
+  ist.** Die Fehlerkarte zeigte „TypeError: Failed to fetch", weil der deutsche
+  Satz nur im Stammdaten-Weg lag und Profil und Woche ueber einen anderen Weg
+  gehen.
+
+Neu, und ueber den Lauf hinaus:
+
+- 2026-08-29 **Die Einkaufsliste steht ohne Netz weiterhin nicht zur
+  Verfuegung.** Rezepte und Trainingsphasen kommen aus dem Browserspeicher, der
+  Wochenplan aber aus dem Tagebuch auf dem Server. Abnahmekriterium 7 war zu
+  weit formuliert und widersprach dem eigenen Nicht-Ziel; es ist berichtigt.
+  **Ausloeser:** der naechste Einkauf mit schlechtem Empfang — dann braucht es
+  einen Zwischenspeicher fuer Profil und Woche und die Aufloesung, wenn zwei
+  Geraete denselben Posten gegensaetzlich haken.
+- 2026-08-29 Typnamen weichen vom Slice-Muster ab: der Sammeltyp heisst
+  `Stammdatensatz`, die Umsetzung `Stammdatendienst`, die Kochseite als
+  Komponente `Kochseite`. Grund ist jedes Mal derselbe Namensschatten — ein Typ,
+  der wie sein Namensraum oder wie ein Vertragstyp heisst, verdeckt diesen in
+  jeder Datei. **Ausloeser:** der naechste Slice, dessen Name auch ein Typname
+  sein soll; dann ist es eine Regel und gehoert in die Vorlage.
+- 2026-08-29 Die erlaubten Kategorien stehen zweimal — in
+  `Stammdaten.Contracts` fuer die Pruefung, in `Woche.Mahlzeiten` fuer
+  Beschriftung und Anteil. Ein Ringschluss zwischen den Slices waere teurer, ein
+  Test haelt beide zusammen. **Ausloeser:** eine vierte Mahlzeit.
+- 2026-08-29 Die alten JSON-Dateien liegen eingefroren unter
+  `tools/Weekplan.Stammdaten/altbestand/` und dienen dem Umzugsnachweis.
+  **Ausloeser:** sobald das erste Rezept ueber Claude Code angelegt oder
+  geaendert wurde, ist der Vergleich erledigt und die Dateien koennen weg.
+- 2026-08-29 Die Cosmos-Verbindung steht zweimal in der Konfiguration
+  (`Tagebuch:` und `Stammdaten:`), aber nur einmal als Secret — beide
+  Umgebungsvariablen zeigen auf `cosmos-verbindung`. **Ausloeser:** der dritte
+  Slice mit Cosmos-Bedarf.
+- 2026-08-29 `docs/architecture.md` wurde nicht in Phase 2 fortgeschrieben,
+  sondern am Ende jedes Schnitts — die Datei beschreibt, was **ist**, und ein
+  Entwurf ist das noch nicht. Bewusste Abweichung von der Pipeline.
+  **Ausloeser:** wenn ein Lauf abbricht, bevor ein Schnitt merged; dann steht
+  der Entwurf nur im Laufordner.
+- 2026-08-29 **Dritter Lauf in Folge ohne Bildschirmfotos:** der eingebaute
+  Browser-Bereich liefert eine Viewport-Breite von 0 px, `list_connected_browsers`
+  ist leer. Geprueft wurde ueber Zugaenglichkeitsbaum und gemessene Kastenmasse.
+  Die Mobil-Emulation liefert immerhin echte 375 px — Abstaende und Treffer sind
+  damit messbar, das Aussehen nicht. **Ausloeser:** ein verbundenes Chrome.
+- 2026-08-29 **Dritter Lauf in Folge ohne frische Augen im Smoketest:** die
+  Sitzung darf keine Unteragenten starten. Geprueft hat dieselbe Hand, die
+  umgesetzt hat. **Ausloeser:** der naechste Lauf ohne diese Einschraenkung.

@@ -6,7 +6,8 @@
   `src/Weekplan.Core.<Feature>` + `.Contracts`, Tests unter `tests/`.
 - **Client und Server sind getrennte Deployables.** Client statisch auf Azure
   Static Web Apps (Free), Server als Container-Image auf Azure Container Apps
-  (Consumption, scale-to-zero), Daten in Cosmos DB (Free Tier). Steht seit dem
+  (Consumption, scale-to-zero), Daten in Cosmos DB (Free Tier), zwei Behaelter:
+  `tagebuch` (je Nutzer) und `stammdaten` (Rezepte, Training, Grundstock). Steht seit dem
   27.08.2026 in der Subscription „Weekplan Production", `rg-weekplan-prod`,
   westeurope. Preis:
   CORS, und die Anmeldung muss selbst gebaut werden — SWAs eingebaute Auth gilt
@@ -22,7 +23,13 @@
   `docs/architecture.md`.
 - Startbefehl: `./run-local.ps1` — Server `http://localhost:5080`, Client
   `http://localhost:5180`. Feste Ports, also kein paralleler zweiter Worktree
-  (steht in `debt.md`).
+  (steht in `debt.md`). Beim ersten Start befuellt es
+  `src/Weekplan.Server/stammdaten/` aus `tools/Weekplan.Stammdaten/altbestand/`;
+  ohne diesen Ordner liefert der Server keine Rezepte. Der MCP-Pflegeweg ist
+  lokal **aus**, solange `Mcp__Schluessel` nicht in der Umgebung steht.
+- **`az` niemals aus Git Bash.** Die Pfadumsetzung von MSYS macht aus
+  `--partition-key-path "/art"` ein `C:/Program Files/Git/art`. Fuer `az` das
+  PowerShell-Werkzeug nehmen (oder `MSYS_NO_PATHCONV=1`).
 - Smoketest: Browser gegen den laufenden Client, mobil (375 px) und Desktop.
   Zuerst der eingebaute Browser-Bereich; rendert er keine Bilder — wie im
   Schwesterprojekt weddination — auf das installierte Chrome ausweichen.
@@ -35,5 +42,5 @@
 - Sprache: Oberflaeche und Laufdokumente deutsch, Harness-Dateien englisch.
 - **Abweichung vom Bootstrap:** kein `user-docs/`. Die README ist die Nutzerdoku
   und wird bei nutzersichtbaren Aenderungen vor dem Tor aktualisiert.
-- Uebergang: die alte statische App (`index.html`, `css/`, `js/`, `data/`) bleibt
-  im Wurzelverzeichnis und auf GitHub Pages, bis die Migration durch ist.
+- Die alte statische App ist seit dem 29.08.2026 abgeschaltet und entfernt. Es
+  gibt genau eine Form von weekplan.
