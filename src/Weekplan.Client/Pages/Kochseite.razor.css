@@ -1,0 +1,150 @@
+/* Am Handy ist das der einzige sichtbare Weg zurueck — die Browsertaste liegt
+   je nach Geraet ganz woanders. */
+.zurueck {
+  display: inline-block;
+  min-height: 44px;
+  padding: var(--sp-3) 0;
+  color: var(--text-dim);
+  font-size: .9375rem;
+  text-decoration: none;
+}
+
+.zurueck:hover {
+  color: var(--accent);
+}
+
+h1 {
+  margin: 0 0 var(--sp-2);
+  font-size: 1.5rem;
+  letter-spacing: -.01em;
+}
+
+.meta {
+  margin: 0;
+  color: var(--text-dim);
+  font-size: .9375rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.hinweis {
+  margin: var(--sp-3) 0 0;
+  max-width: 62ch;
+  color: var(--text-dim);
+  font-size: .9375rem;
+}
+
+/* Die Hauptaktion der Seite, und sie steht ohne Scrollen da. */
+.portionen {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin: var(--sp-6) 0 var(--sp-8);
+}
+
+.portionen label {
+  color: var(--text-dim);
+  font-size: .9375rem;
+}
+
+.portionen input {
+  width: 4.5rem;
+  min-height: 44px;
+  padding: var(--sp-2);
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  font: inherit;
+  text-align: center;
+}
+
+h2 {
+  margin: var(--sp-8) 0 var(--sp-3);
+  font-size: 1.125rem;
+}
+
+.zutaten {
+  /* Dieselbe Lesebreite wie die Anleitung darunter — sonst stehen Menge und
+     Zutat auf dem Desktop weit auseinander. */
+  max-width: 42rem;
+  margin: 0;
+  padding: 0 var(--sp-4);
+  list-style: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+}
+
+.zutaten li {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  padding: var(--sp-3) 0;
+  border-bottom: 1px solid var(--border);
+  font-size: .9375rem;
+}
+
+.zutaten li:last-child { border-bottom: none; }
+
+.menge {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* Der Grund, warum es diese Seite gibt: laengerer Fliesstext, in lesbarer
+   Breite. */
+.anleitung {
+  max-width: 62ch;
+  font-size: 1rem;
+}
+
+.anleitung :first-child { margin-top: 0; }
+.anleitung :last-child { margin-bottom: 0; }
+
+.anleitung p {
+  margin: 0 0 var(--sp-4);
+}
+
+/* Zwischenueberschriften der Anleitung stehen unter dem h2 „Zubereitung" —
+   sie duerfen nicht groesser wirken als es. */
+.anleitung h1,
+.anleitung h2,
+.anleitung h3,
+.anleitung h4 {
+  margin: var(--sp-6) 0 var(--sp-2);
+  font-size: 1rem;
+  font-weight: 650;
+}
+
+.anleitung ol,
+.anleitung ul {
+  margin: 0 0 var(--sp-4);
+  padding-left: var(--sp-6);
+}
+
+.anleitung li {
+  margin-bottom: var(--sp-3);
+}
+
+/* Breite Tabellen scrollen in sich, nie der Seitenkoerper. */
+.anleitung table {
+  display: block;
+  overflow-x: auto;
+  max-width: 100%;
+  margin: 0 0 var(--sp-4);
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+.anleitung th,
+.anleitung td {
+  padding: var(--sp-2) var(--sp-3);
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.anleitung a {
+  color: var(--accent);
+}

@@ -71,3 +71,7 @@
   Bibliothek, die „HTML abschaltet", schaltet nicht ab, was ihre eigene Sprache
   kann. **Ausloeser:** jede weitere Markdig-Erweiterung — sie kann neue
   Ausgabeformen mitbringen.
+- 2026-08-29 Schnitt B: die Kochseite heisst als Komponente `Kochseite`, nicht
+  `Rezept` — eine Razor-Komponente `Rezept` verdeckt den gleichnamigen
+  Vertragstyp in **jeder** Razor-Datei des Clients. Derselbe Namensschatten wie
+  bei `Stammdaten`, nur eine Ebene tiefer. `design.md` nachgezogen.

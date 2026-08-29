@@ -52,6 +52,10 @@ Cosmos DB         zwei Behaelter: tagebuch (je Nutzer), stammdaten (fuer alle)
     bleibt ohne Netz benutzbar.
   - Befuellt wird einmalig mit `tools/Weekplan.Stammdaten`, das danach jedes
     Dokument zurueckliest und Feld fuer Feld vergleicht.
+  - **Zwei Seiten** statt einer Kartenwand: `/rezepte` ist eine nach Mahlzeit
+    gruppierte Liste, `/rezepte/{id}` die Kochseite mit Portionsrechner,
+    Zutaten und Anleitung. Die Komponente heisst `Kochseite`, nicht `Rezept` —
+    eine Komponente dieses Namens verdeckte sonst den Vertragstyp.
 - **Datenhaltung.** Zwei Umsetzungen hinter einer Naht (`IAblage`): `DateiAblage`
   fuer lokal und die Tests, `CosmosAblage` fuer Azure. Welche gilt, entscheidet
   allein die Anwesenheit von `Tagebuch:Cosmos:Verbindung` — kein Schalter.

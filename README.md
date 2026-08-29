@@ -13,9 +13,10 @@ gewichtsabhängiger Verbrauchsrechnung.
   automatisch und wählt die Portionen so, dass jeder Tag nah am Kalorienziel landet.
 - **Einkauf** — Wochenliste (Frischware, aus dem Wochenplan aggregiert, nach
   Supermarkt-Abteilungen sortiert, abhakbar) und Grundstock (einmaliger Vorratseinkauf).
-- **Rezepte** — 24 Gerichte mit Grammangaben pro Portion und ausführlicher
-  Zubereitung, skalierbar über die Portionsanzahl. Die Rezepte liegen in der
-  Datenbank, nicht im Quellcode.
+- **Rezepte** — 24 Gerichte. Die Übersicht ist nach Mahlzeit gruppiert; ein
+  Tippen öffnet die Kochseite mit Portionsrechner, Zutaten in Gramm und einer
+  ausführlichen Anleitung. Die Rezepte liegen in der Datenbank, nicht im
+  Quellcode.
 - **Training** — Fünf Phasen mit Wochenplan, Verbrauchstabelle beim aktuellen Gewicht,
   Kraftplan A/B und Regelwerk.
 - **Ich** — Gewicht, Zielgewicht, Größe, Alter, Zieltermin, Proteinfaktor und wahlweise ein

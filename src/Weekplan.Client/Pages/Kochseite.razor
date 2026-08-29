@@ -1,0 +1,76 @@
+@page "/rezepte/{Id}"
+@inject Zustand Z
+
+@* Die Komponente heisst Kochseite und nicht Rezept: eine Komponente dieses
+   Namens wuerde den Vertragstyp Rezept in jeder Razor-Datei verdecken. *@
+
+<PageTitle>weekplan — @(_rezept?.Name ?? "Rezept")</PageTitle>
+
+<a class="zurueck" href="rezepte">‹ Rezepte</a>
+
+@if (_rezept is null)
+{
+    <h1>Dieses Rezept gibt es nicht</h1>
+    <p class="hinweis">
+        Es wurde entfernt, oder die Adresse stimmt nicht.
+        <a href="rezepte">Zurück zur Übersicht</a>
+    </p>
+}
+else
+{
+    <h1>@_rezept.Name</h1>
+    <p class="meta">
+        @Zahl.Kcal(_rezept.Kcal * _portionen) kcal
+        · @(_rezept.Protein * _portionen) g Protein
+        · @_rezept.ZeitMin min
+        @(_rezept.Kalt ? "· kalt zu essen" : null)
+    </p>
+
+    <div class="portionen">
+        <label for="portionen">Portionen</label>
+        <input id="portionen" type="number" min="1" max="9" inputmode="numeric"
+               value="@_portionen"
+               @onchange="PortionenSetzen" />
+    </div>
+
+    <h2>Zutaten</h2>
+    <ul class="zutaten">
+        @foreach (var zutat in _rezept.Zutaten)
+        {
+            <li>
+                <span>@zutat.Name</span>
+                <span class="menge">
+                    @(zutat.Stk > 0
+                        ? $"{zutat.Stk * _portionen:0.#} Stück"
+                        : Zahl.Gramm(zutat.G * _portionen))
+                </span>
+            </li>
+        }
+    </ul>
+
+    <h2>Zubereitung</h2>
+    <div class="anleitung">@Markdowntext.AlsHtml(_rezept.Anleitung)</div>
+}
+
+@code {
+    [Parameter] public string Id { get; set; } = "";
+
+    private Rezept? _rezept;
+
+    // Nur Anzeige: die Portionszahl hier gehoert zum Ansehen des Rezepts, nicht
+    // zum Wochenplan. Dort wird sie gespeichert, hier bewusst nicht — sonst
+    // gaebe es zwei Orte fuer dieselbe Zahl.
+    private int _portionen = 1;
+
+    protected override void OnParametersSet()
+    {
+        _rezept = Z.RezeptMit(Id);
+        _portionen = 1;
+    }
+
+    private void PortionenSetzen(ChangeEventArgs e)
+    {
+        if (Zahl.Aus(e.Value?.ToString()) is not { } wert) return;
+        _portionen = Math.Clamp((int)wert, 1, 9);
+    }
+}

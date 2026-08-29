@@ -106,7 +106,7 @@ Der Name eines geloeschten Rezepts kommt aus seiner sprechenden Id
 | Kein Speicher, Server antwortet | „Wird geladen …" wie heute; beim Kaltstart einige Sekunden. |
 | Kein Speicher, Server stumm | Die vorhandene Fehlerkarte des `MainLayout`: „Die Daten konnten nicht geladen werden" mit „Erneut versuchen". Nichts Halbes. |
 | Kein Rezept in einer Kategorie | Die Gruppe entfaellt, wie heute. |
-| Unbekannte Rezept-Id in der Adresse | `NotFound`-Seite des Routers, ergaenzt um einen Weg zurueck zur Uebersicht. |
+| Unbekannte Rezept-Id in der Adresse | Die Kochseite selbst meldet „Dieses Rezept gibt es nicht" samt Weg zurueck. Nicht der Router: die Route `/rezepte/{id}` trifft ja, er kommt gar nicht zum Zug. |
 
 ## Teil 2 — Architektur
 
