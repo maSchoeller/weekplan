@@ -15,7 +15,7 @@ gewichtsabhängiger Verbrauchsrechnung.
   gesperrt ist nichts — mittags darf auch ein Abendgericht stehen.
 - **Einkauf** — Wochenliste (Frischware, aus dem Wochenplan aggregiert, nach
   Supermarkt-Abteilungen sortiert, abhakbar) und Grundstock (einmaliger Vorratseinkauf).
-- **Rezepte** — 24 Gerichte. Die Übersicht ist nach Mahlzeit gruppiert und nennt
+- **Rezepte** — 18 Gerichte. Die Übersicht ist nach Mahlzeit gruppiert und nennt
   je Gericht kcal, Protein, Zeit sowie, ob es kalt schmeckt und ob es sich
   vorkochen lässt; ein Tippen öffnet die Kochseite mit Portionsrechner, Zutaten
   in Gramm und einer ausführlichen Anleitung. Die Rezepte liegen in der
@@ -116,11 +116,38 @@ dotnet run --project tools/Weekplan.Stammdaten
 
 Der Plan wird nicht in der App bearbeitet, sondern im Gespraech mit Claude Code.
 Der ausgerollte Server bietet dafuer einen MCP-Endpunkt; `.mcp.json` im Repo
-kennt die Adresse, der Schluessel kommt aus der Umgebung:
+kennt die Adresse, der Schluessel kommt aus der Umgebung.
+
+**Einmal einrichten, dann nie wieder.** MCP-Server verbinden sich genau einmal,
+beim Sitzungsstart. Eine Variable, die man spaeter in der laufenden Sitzung
+setzt, kommt zu spaet — deshalb steht der Schluessel nicht in einem Befehl,
+sondern in `.claude/settings.local.json`:
+
+```json
+{
+  "env": { "WEEKPLAN_MCP_SCHLUESSEL": "<der Schluessel>" },
+  "enableAllProjectMcpServers": true
+}
+```
+
+Claude Code liest diese Datei vor dem Start der MCP-Server, `.mcp.json` loest
+`${WEEKPLAN_MCP_SCHLUESSEL}` daraus auf, und der Server haengt in jeder neuen
+Sitzung von selbst dran. Die Datei steht in `.gitignore` und gehoert nie ins
+Repo. Den Schluessel holt man sich so (PowerShell, **nicht** Git Bash — MSYS
+zerlegt die Azure-Ressourcenpfade):
 
 ```powershell
-$env:WEEKPLAN_MCP_SCHLUESSEL = "<der Schluessel aus dem Container-App-Secret>"
+az containerapp secret show -n weekplan-prod-api -g rg-weekplan-prod --subscription 36f5bb87-134c-4aad-ac07-9be4b0453ef2 --secret-name mcp-schluessel --query value -o tsv
 ```
+
+Haengt der Server einmal nicht dran und ein Neustart ist gerade unpassend, geht
+es auch ohne: JSON-RPC per HTTP direkt gegen `/mcp`, Header
+`Authorization: Bearer <schluessel>` und
+`Accept: application/json, text/event-stream`. Der Server ist zustandslos und
+antwortet als Ereignisstrom; die Nutzlast steht hinter `data: `. Die Nutzlast
+dabei in einem Skript bauen, nicht auf der Kommandozeile — Umlaute in Zutaten
+ueberleben den Weg ueber die Shell nicht, und die Abteilungspruefung lehnt
+`Gem?se` dann zu Recht ab.
 
 Danach genuegt eine Ansage wie „leg mir was Warmes fuer den Abend an, um 700 kcal,
 mindestens 45 g Protein, unter 30 Minuten" — oder „nimm das Laufband am Montag

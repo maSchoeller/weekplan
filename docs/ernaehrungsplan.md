@@ -8,6 +8,10 @@ Erhoben am 29.08.2026 im Gespräch, umgesetzt im Lauf
 `runs/2026-08-29-stammdaten-ueber-mcp`. Der Pool wird über MCP gepflegt, nicht
 in der App — siehe README, Abschnitt „Den Plan pflegen".
 
+Am **29.08.2026** im Gespräch mit dem Ernährungscoach überarbeitet: vier
+Gerichte ersetzt, eine Mengenänderung, und alle achtzehn Gerichte auf Geschmack
+durchgegangen. Was dabei entschieden wurde, steht in §8.
+
 ---
 
 ## 1. Die Zahlen, aus denen alles folgt
@@ -70,6 +74,12 @@ zum Abendessen tragen muss.
 - *Lachspfanne* (8,4) — der Fettgehalt ist beim Lachs der Zweck, nicht der
   Fehler. Omega-3 wird hier gegen Proteindichte eingetauscht.
 
+**Die Wochenendgerichte messen sich gar nicht an diesen Grenzen.** Große Pasta
+(5,7), Burger (7,0) und Ofen-Schnitzel (8,9) stehen für den Refeed-Tag im Pool.
+Dort ist die Kalorienmenge der Zweck — der Refeed-Tag liegt ohnehin über dem
+Gesamtumsatz, und Protein ist an einem Tag, an dem 3.332 kcal geplant sind, kein
+knappes Gut. Wer diese drei an der Werktagsgrenze misst, misst das Falsche.
+
 **Die stärksten Bausteine**, wenn ein Gericht Protein braucht:
 
 | Zutat | Protein je 100 kcal |
@@ -120,6 +130,10 @@ Deshalb stehen Pasta, Burger, Ofenhähnchen und Ofen-Schnitzel im Pool.
 - **Rohe Paprika** (Paprikapulver ist ausdrücklich erwünscht)
 - **Rohe Zwiebeln** — gekocht, gebraten oder geschmort sind sie in Ordnung
 - **Rohe Oliven** (Olivenöl ist ausdrücklich erwünscht)
+- **Radieschen** — seit dem 29.08.2026. Ihr Job im Pool war ein einziger: etwas
+  Rohes, das knackt. **Kohlrabi** macht das besser, ist milder, hält im
+  Kühlschrank eine Woche und kostet 25 kcal auf 100 g. Er steht jetzt im
+  Kräuterquark (feine Würfel) und im Vesper (Stifte).
 
 Keine Allergien, keine Unverträglichkeiten.
 
@@ -136,8 +150,8 @@ bekommt einen Nachbau statt eines Verbots:
 
 | Anker | Nachbau im Pool |
 |---|---|
-| Knusprigkeit (Panade, Frittiertes) | Ofen-Schnitzel in Cornflakes-Panade; geröstete Kichererbsen; Röstaromen aus dem Ofen beim Tikka |
-| Salzige Bequemlichkeit (Wurstbrot) | Vesper nach `plan.md` §4; Eier-Muffins; Harzer |
+| Knusprigkeit (Panade, Frittiertes) | Ofen-Schnitzel in Cornflakes-Panade; geröstete Kichererbsen im Bulgursalat und im Ofen-Feta; Grillfunktion in den letzten drei Minuten bei Tikka, Gyros und Schnitzel |
+| Salzige Bequemlichkeit (Wurstbrot) | Vesper nach `plan.md` §4; Blech-Omelett; Harzer |
 | Kein-Bock-Abende (Lieferdienst) | Zwei Abendgerichte unter fünf Minuten, die immer im Kühlschrank stehen |
 | Mittags Lieferdienst | Die Box gewinnt gegen die Bestellung nicht über Willenskraft, sondern über die Uhr: zwei Minuten Mikrowelle gegen 35 Minuten Wartezeit |
 
@@ -165,8 +179,9 @@ und `abend` mit — in der App erscheinen sie als 3 / 8 / 7. Die Kategorie ist
 seit dem Lauf ohnehin nur noch eine Vorsortierung im Wochenplan und keine
 Sperre: jedes Gericht ist in jedem Slot wählbar.
 
-Ein Beispiel-Werktag: **2.170 kcal bei 180 g Protein** — genau die
-Phase-3-Zielaufnahme, am oberen Ende des Proteinkorridors.
+Ein Beispiel-Werktag — Overnight Oats, Linsen mit Spätzle, Rührei mit Hüttenkäse:
+**2.190 kcal bei 189 g Protein.** Das sind 25 kcal über der Phase-3-Zielaufnahme
+und liegt am oberen Ende des Proteinkorridors.
 
 **Drei süße gegen herzhafte Frühstücke: zwei zu eins.** Bei drei Gerichten
 wiederholt sich nichts innerhalb einer Arbeitswoche, wenn man mag, und bei
@@ -196,11 +211,88 @@ Bevor ein Gericht in den Pool geht:
    bevor das Paprikapulver hineinkommt" ist eine Anweisung; „sonst wird es
    bitter" macht sie merkbar.
 9. **Braucht es neue Vorratszutaten?** Dann gehört der Grundstock im selben
-   Zug mitgepflegt — er ist über MCP schreibbar.
+   Zug mitgepflegt — er ist über MCP schreibbar. Und was durch die Änderung
+   verwaist, fliegt im selben Zug raus.
+10. **Ist es bis an die Grenze gewürzt?** Säure zum Schluss, eine Umami-Schicht,
+    Röstaromen, ein Textur-Kontrast, Zitronenabrieb. Kostet die Würzung zusammen
+    weniger als 20 kcal je Portion? Wenn nicht, muss an anderer Stelle etwas
+    weichen — die Hebel und die Regel stehen in §8.
 
 ---
 
-## 8. Was hier bewusst nicht steht
+## 8. Würzen bis an die Grenze
+
+Am 29.08.2026 wurde jedes Gericht im Pool ein zweites Mal angefasst — nicht an
+den Mengen, sondern am Geschmack. Der Anlass ist einfach: Ein Plan, der achtzehn
+Wochen tragen soll, scheitert selten an der Rechnung und oft daran, dass das
+Essen langweilig wird. Ein Gericht, das nicht schmeckt, wird nicht gekocht, und
+ein Gericht, das nicht gekocht wird, hat keine Nährwerte.
+
+**Vier Gerichte sind ausgetauscht worden:**
+
+| Raus | Rein | Grund |
+|---|---|---|
+| Eier-Muffins mit Spinat und Feta | Blech-Omelett mit Spinat und Feta | Nicht das Vorbacken war die Hürde, sondern die zwölf Mulden. Eine Form, einmal gießen, einmal schneiden — und der Feta kommt jetzt obenauf statt untergehoben, damit er bräunt. |
+| Linsen-Dal mit Reis | Linsen mit Spätzle | Gut bürgerlich statt orientalisch. Der Pool hat mit Tikka und Chili genug Gewürzküche, und schwäbische Linsen halten drei Tage. |
+| Ofenhähnchen mit Kartoffeln und Wurzelgemüse | Hähnchen-Gyros vom Blech | Gleiche Blech-Logik, gleiche Zeit, gleiche Kalorien — aber eine Joghurtmarinade und geröstete ganze Gewürze statt Salz und Pfeffer auf nacktem Fleisch. |
+| Radieschen (Kräuterquark, Vesper) | Kohlrabi | Mag der Nutzer nicht. Siehe §4. |
+
+Dazu eine Mengenänderung: **die Zwiebel in der großen Pasta von 60 auf 20 g.**
+Der Verlust ist echt — sie hat die Süße und den Körper der Sauce getragen.
+Bezahlt wird er mit drei statt zwei Minuten geröstetem Tomatenmark, doppelt so
+viel Knoblauch in Scheiben und vier Gramm Ahornsirup.
+
+### Die Regel
+
+**Bei jedem Konflikt zwischen Geschmack und Kalorien gewinnen die Kalorien.**
+Praktisch heißt das: Was ein Gericht an Würzung dazubekommt, darf zusammen keine
+20 kcal je Portion kosten. Wo es mehr wurde — Senf, Harissa, ein Löffel
+Ahornsirup —, ist an anderer Stelle ein Gramm Öl weggefallen. Neun Kalorien je
+Gramm machen Öl zur billigsten Stellschraube, die es gibt, und niemand schmeckt
+das eine Gramm.
+
+### Die sieben Hebel, in dieser Reihenfolge
+
+| Hebel | kcal je Portion | Wo er jetzt im Pool steht |
+|---|---|---|
+| Salz zum richtigen Zeitpunkt | 0 | Linsen erst am Ende, Rührei erst vom Herd, Kartoffeln schon im Kochwasser, Ofenkartoffeln noch einmal heiß aus dem Ofen |
+| Säure zum Schluss | 0–3 | Apfelessig in Gulasch, Chili und Linsen; Balsamico in der Bolognese; Zitrone über allem, was aus dem Ofen kommt |
+| Zitronenabrieb | 0 | Tikka, Ofen-Feta, Bulgursalat, Panade, beide Frühstücke, jede Skyr-Sauce |
+| Röstaromen | 0 | Blech leer vorheizen, Soja dunkelbraun statt braun braten, Grillfunktion in den letzten drei Minuten |
+| Umami | 5–15 | Steinpilzpulver in Gulasch und Bolognese, Sojasauce statt Salz, Tomatenmark zwei Minuten dunkel rösten, Parmesanrinde mitkochen |
+| Textur-Kontrast | 0 | Geröstete Kichererbsen, geröstete Nüsse, geröstete Haferflocken |
+| Schärfe und Rauch | 9–15 | Geräuchertes Paprikapulver, Harissa, Chiliflocken |
+
+### Zwei Dinge, die nichts kosten und am meisten bringen
+
+**Ganze Gewürze rösten und mörsern.** Koriandersaat und Kreuzkümmel eine Minute
+in der trockenen Pfanne, dann im Mörser. Der Unterschied zum Streuer ist größer
+als der zwischen zwei Rezepten. Steht jetzt im Tikka und im Gyros, der Kümmel
+angedrückt im Gulasch.
+
+**Kalt gegessen braucht ein Fünftel mehr.** Kälte dämpft Salz und Säure. Chili,
+Bulgursalat und Kräuterquark tragen den Hinweis darum ausdrücklich im Rezept —
+sie werden warm abgeschmeckt und kalt gegessen, und genau dort ging der
+Geschmack bisher verloren.
+
+### Was der Grundstock dafür trägt
+
+Neu: geräuchertes Paprikapulver, gemahlene Steinpilze, Apfelessig, Dijon-Senf,
+Harissa, Ahornsirup, Vanilleextrakt sowie Koriander- und Fenchelsaat ganz.
+Zusammen rund 15 € auf vier Wochen — der billigste Teil der Einkaufsliste und
+der, der den größten Teil des Geschmacks trägt.
+
+Weggefallen, weil vom gestrichenen Dal verwaist: rote Linsen, Kurkuma,
+Senfsamen. Und das Muffinblech, das jetzt eine Auflaufform ist.
+
+**Noch offen:** Belugalinsen, Erdnussmus und Currypulver stehen im Grundstock,
+werden aber von keinem Gericht im Pool gebraucht — schon vor dieser
+Überarbeitung nicht. Entweder es kommt ein Gericht dazu, das sie nutzt, oder sie
+gehören von der Liste.
+
+---
+
+## 9. Was hier bewusst nicht steht
 
 - **Kein medizinischer Rat.** Es gilt derselbe Vorbehalt wie in `plan.md` §7:
   ein Defizit von 1.000 kcal neben sechs Trainingseinheiten ist ambitioniert

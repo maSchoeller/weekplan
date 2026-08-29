@@ -40,3 +40,8 @@ Thumbs.db
 # Die oertliche Stammdatenablage. Sie entsteht aus tools/Weekplan.Stammdaten,
 # ist also jederzeit wiederherstellbar und gehoert nicht ins Repo.
 /src/Weekplan.Server/stammdaten/
+
+# Oertliche Claude-Einstellungen. Hier steht der MCP-Schluessel des Servers als
+# Umgebungsvariable, damit sich der weekplan-MCP aus `.mcp.json` bei jedem
+# Sitzungsstart von selbst verbindet. Gehoert deshalb nie ins Repo.
+.claude/settings.local.json
