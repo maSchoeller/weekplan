@@ -14,7 +14,7 @@ namespace Weekplan.Server.Tests;
 /// Kein Attrappen-Server: geprueft wird die Verdrahtung, und die faellt in
 /// Attrappen nicht auf.
 /// </summary>
-public sealed class ServerFixture : WebApplicationFactory<Program>
+public class ServerFixture : WebApplicationFactory<Program>
 {
     public const string Schluessel = "test-signaturschluessel-mindestens-32!";
     /// <summary>Die Herkunft des Clients — Anmeldung und Stammdaten kommen von dort.</summary>

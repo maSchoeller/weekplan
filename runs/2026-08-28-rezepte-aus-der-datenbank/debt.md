@@ -75,3 +75,17 @@
   `Rezept` — eine Razor-Komponente `Rezept` verdeckt den gleichnamigen
   Vertragstyp in **jeder** Razor-Datei des Clients. Derselbe Namensschatten wie
   bei `Stammdaten`, nur eine Ebene tiefer. `design.md` nachgezogen.
+- 2026-08-29 Schnitt C: **das MCP-SDK verschluckt Ausnahmemeldungen.** Ein
+  `RezeptUngueltigException` kam beim Aufrufer nur als „An error occurred
+  invoking 'rezept_anlegen'" an — Abnahmekriterium 2 („die Absage nennt die
+  erlaubten Abteilungen") waere damit tot gewesen, ohne dass ein Test es
+  gezeigt haette, wenn er die Werkzeuge als C#-Methoden statt ueber das
+  Protokoll gerufen haette. Behoben mit `McpException`, das seine Meldung
+  ausdruecklich weiterreicht. **Lehre:** Werkzeuge immer ueber das Protokoll
+  testen, nie als Methoden. **Ausloeser:** jedes weitere MCP-Werkzeug mit einer
+  Fehlermeldung, die ankommen soll.
+- 2026-08-29 Der zwischengespeicherte `/stammdaten`-Stand veraltete nach einem
+  Schreibvorgang: ein neu angelegtes Rezept waere erst nach einem Serverneustart
+  sichtbar gewesen. `Stammdatenausgabe.Verwerfen()` gab es schon, nur rief es
+  niemand. **Lehre:** eine Methode ohne Aufrufer ist kein gebauter Mechanismus.
+  Jetzt durch zwei Servertests gedeckt.

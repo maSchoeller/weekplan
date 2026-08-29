@@ -52,6 +52,20 @@ Cosmos DB         zwei Behaelter: tagebuch (je Nutzer), stammdaten (fuer alle)
     bleibt ohne Netz benutzbar.
   - Befuellt wird einmalig mit `tools/Weekplan.Stammdaten`, das danach jedes
     Dokument zurueckliest und Feld fuer Feld vergleicht.
+  - **Gepflegt wird ueber `/mcp`**, nicht in der App: ein MCP-Endpunkt im
+    selben Server, gesichert durch einen eigenen langlebigen Schluessel
+    (`Mcp:Schluessel`, Container-App-Secret), mengenbegrenzt, jede Schreib-
+    operation eine Logzeile. Fehlt der Schluessel in der Konfiguration, wird der
+    Endpunkt **gar nicht eingehaengt** — lokal ist er damit standardmaessig aus.
+    Acht Werkzeuge, deutsch benannt; schreibbar sind nur Rezepte. Eine Absage
+    zaehlt alle Verstoesse auf und nennt die erlaubten Werte — sie reist als
+    `McpException`, sonst verschluckt das SDK die Meldung.
+  - **Ein Planeintrag merkt sich die Naehrwerte**, mit denen geplant wurde
+    (`KcalBeimPlanen`, `ProteinBeimPlanen`, beide optional). Gerechnet wird
+    weiter mit dem aktuellen Rezept; die gemerkten Zahlen tragen allein den
+    Hinweis „geaendert — vorher …" im Wochenplan. Ein geloeschtes Rezept zeigt
+    der Tag als Namen aus seiner sprechenden Kennung, mit dem Vermerk
+    „entfernt".
   - **Zwei Seiten** statt einer Kartenwand: `/rezepte` ist eine nach Mahlzeit
     gruppierte Liste, `/rezepte/{id}` die Kochseite mit Portionsrechner,
     Zutaten und Anleitung. Die Komponente heisst `Kochseite`, nicht `Rezept` —

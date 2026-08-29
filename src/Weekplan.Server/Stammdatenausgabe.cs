@@ -12,19 +12,19 @@ namespace Weekplan.Server;
 /// Datenbank, und im Alltag die ganze Uebertragung.
 ///
 /// <para>
-/// <see cref="Verwerfen"/> gibt es fuer den Tag, an dem ein Rezept geschrieben
-/// wird. Heute ruft es niemand: geschrieben wird nur von aussen, durch das
-/// Erstbefuellungswerkzeug, und danach startet der Server ohnehin neu.
+/// <see cref="Verwerfen"/> ruft jedes schreibende MCP-Werkzeug. Ohne das saehe
+/// die App ein neu angelegtes Rezept erst nach einem Neustart des Servers — und
+/// niemand verstuende, warum es nicht da ist.
 /// </para>
 /// </summary>
-internal sealed class Stammdatenausgabe(IStammdaten quelle)
+public sealed class Stammdatenausgabe(IStammdaten quelle)
 {
     private static readonly JsonSerializerOptions Format = new(JsonSerializerDefaults.Web);
 
     private readonly SemaphoreSlim _tor = new(1, 1);
     private Stand? _stand;
 
-    internal sealed record Stand(string ETag, byte[] Json);
+    public sealed record Stand(string ETag, byte[] Json);
 
     public async Task<Stand> StandAsync(CancellationToken ct)
     {

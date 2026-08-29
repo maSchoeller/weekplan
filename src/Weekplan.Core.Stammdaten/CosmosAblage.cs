@@ -68,6 +68,22 @@ internal sealed class CosmosAblage : IAblage, IDisposable
             new Huelle<T>(id, art, inhalt), new PartitionKey(art), cancellationToken: ct);
     }
 
+    public async Task<bool> LoeschenAsync(string art, string id, CancellationToken ct)
+    {
+        Pruefen(art, id);
+
+        try
+        {
+            await _behaelter.DeleteItemAsync<object>(id, new PartitionKey(art), cancellationToken: ct);
+            return true;
+        }
+        catch (CosmosException fehler) when (fehler.StatusCode == HttpStatusCode.NotFound)
+        {
+            // Nichts da ist kein Fehler — die Naht verspricht dafuer false.
+            return false;
+        }
+    }
+
     public void Dispose() => _kunde.Dispose();
 
     // Cosmos verbietet in einer id die Zeichen Schraegstrich, Rueckstrich,

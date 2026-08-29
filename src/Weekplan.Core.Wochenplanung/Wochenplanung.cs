@@ -97,9 +97,11 @@ internal sealed class Wochenplanung : IWochenplanung
 
             plan[tag.Kuerzel] = new Dictionary<string, IReadOnlyList<PlanEintrag>>
             {
-                ["fruehstueck"] = [new PlanEintrag(f.Id, beste.PortionenF)],
-                ["mittag"] = [new PlanEintrag(beste.Mittag.Id, beste.PortionenM)],
-                ["abend"] = [new PlanEintrag(beste.Abend.Id, beste.PortionenA)]
+                // Die Naehrwerte werden mitgeschrieben, damit ein spaeter
+                // geaendertes Rezept am betroffenen Tag auffaellt.
+                ["fruehstueck"] = [Eintrag(f, beste.PortionenF)],
+                ["mittag"] = [Eintrag(beste.Mittag, beste.PortionenM)],
+                ["abend"] = [Eintrag(beste.Abend, beste.PortionenA)]
             };
         }
 
@@ -165,6 +167,10 @@ internal sealed class Wochenplanung : IWochenplanung
             }
         }
     }
+
+    /// <summary>Ein Planeintrag, der sich merkt, mit welchen Zahlen geplant wurde.</summary>
+    private static PlanEintrag Eintrag(Rezept rezept, int portionen)
+        => new(rezept.Id, portionen, rezept.Kcal, rezept.Protein);
 
     private static IReadOnlyList<PlanEintrag> Eintraege(WochenStand woche, string tag, string mahlzeit)
         => woche.Plan.TryGetValue(tag, out var mahlzeiten)

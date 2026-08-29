@@ -62,6 +62,7 @@ src/Weekplan.Core.*      Slices: Rechnen, Anmeldung, Tagebuch, Wochenplanung,
 tools/Weekplan.Konto     Legt das eine Konto an — es gibt keine Registrierung
 tools/Weekplan.Stammdaten  Bringt Rezepte, Training und Grundstock einmalig in
                          die Datenbank und prueft danach jedes Feld nach
+.mcp.json                Der Pflegeweg fuer Rezepte ueber Claude Code
 tests/                   xUnit: Rechenkern, Ablagen, Endpunkte, Umzug
 
 .github/workflows/    ci.yml testet jeden Push, deploy.yml rollt main nach Azure
@@ -105,6 +106,21 @@ ausgerollte App einmalig von Hand, mit derselben `WEEKPLAN_COSMOS` wie oben:
 ```bash
 dotnet run --project tools/Weekplan.Stammdaten
 ```
+
+### Rezepte pflegen
+
+Rezepte werden nicht in der App bearbeitet, sondern im Gespraech mit Claude Code.
+Der ausgerollte Server bietet dafuer einen MCP-Endpunkt; `.mcp.json` im Repo
+kennt die Adresse, der Schluessel kommt aus der Umgebung:
+
+```powershell
+$env:WEEKPLAN_MCP_SCHLUESSEL = "<der Schluessel aus dem Container-App-Secret>"
+```
+
+Danach genuegt eine Ansage wie „leg mir was Warmes fuer den Abend an, um 700 kcal,
+mindestens 45 g Protein, unter 30 Minuten". Schreibbar sind **nur Rezepte**;
+Trainingsphasen, MET-Werte, Grundstock und die Abteilungsliste sind
+Rechengrundlage und aendern sich nur durch einen Commit.
 
 Tests:
 

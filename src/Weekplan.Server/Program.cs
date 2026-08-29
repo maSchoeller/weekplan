@@ -60,6 +60,16 @@ else
 }
 builder.Services.AddSingleton<Stammdatenausgabe>();
 
+// Der Pflegeweg fuer die Rezepte. Ohne Schluessel in der Konfiguration entsteht
+// er gar nicht — lokal ist er damit standardmaessig aus, und es gibt keinen
+// Zustand, in dem er ungesichert offen steht.
+var mcpSchluessel = builder.Configuration["Mcp:Schluessel"];
+if (!string.IsNullOrWhiteSpace(mcpSchluessel))
+{
+    builder.Services.AddSingleton<Rezeptwerkzeuge>();
+    builder.Services.AddMcpServer().WithHttpTransport().WithTools<Rezeptwerkzeuge>();
+}
+
 // Die Adresse ist oeffentlich, also darf niemand Passwoerter durchprobieren.
 builder.Services.AddRateLimiter(options =>
 {
@@ -80,6 +90,16 @@ builder.Services.AddRateLimiter(options =>
         grenze.Window = TimeSpan.FromMinutes(1);
         grenze.QueueLimit = 0;
     });
+
+    // Der Pflegeweg. Weit genug fuer ein Gespraech mit vielen Werkzeugrufen,
+    // eng genug, dass ein durchgesickerter Schluessel nicht in Minuten alle
+    // Rezepte umschreibt.
+    options.AddFixedWindowLimiter(Endpunkte.McpGrenze, grenze =>
+    {
+        grenze.PermitLimit = 60;
+        grenze.Window = TimeSpan.FromMinutes(1);
+        grenze.QueueLimit = 0;
+    });
 });
 
 var app = builder.Build();
@@ -87,10 +107,19 @@ var app = builder.Build();
 app.UseCors(ClientPolicy);
 app.UseRateLimiter();
 
+// Vor allem anderen: wer keinen gueltigen Schluessel mitbringt, kommt an /mcp
+// gar nicht erst bis zu einem Endpunkt.
+if (!string.IsNullOrWhiteSpace(mcpSchluessel)) app.UseMcpSchluessel(mcpSchluessel);
+
 app.MapGet("/health", () => Results.Ok(new HealthAntwort("ok", "weekplan-server")));
 app.MapStammdaten();
 app.MapAnmeldung();
 app.MapTagebuch();
+
+if (!string.IsNullOrWhiteSpace(mcpSchluessel))
+{
+    app.MapMcp("/mcp").RequireRateLimiting(Endpunkte.McpGrenze);
+}
 
 app.Run();
 

@@ -18,4 +18,7 @@ internal interface IAblage
     Task<IReadOnlyList<T>> AlleAsync<T>(string art, CancellationToken ct) where T : class;
 
     Task SchreibenAsync<T>(string art, string id, T inhalt, CancellationToken ct) where T : class;
+
+    /// <returns><c>false</c>, wenn es nichts zu loeschen gab.</returns>
+    Task<bool> LoeschenAsync(string art, string id, CancellationToken ct);
 }

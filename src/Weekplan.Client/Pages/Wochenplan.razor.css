@@ -185,3 +185,64 @@
   color: var(--text-dim);
   font-size: .8125rem;
 }
+
+/* Ein Rezept hat sich seit dem Planen geaendert, oder es gibt es nicht mehr.
+   Beides traegt ein Wort und nicht nur eine Farbe — die Regel des
+   Design-Systems, und hier besonders wichtig: es geht um Zahlen. */
+.tagvermerk {
+  padding: var(--sp-1) var(--sp-2);
+  background: var(--warn-soft);
+  color: var(--warn);
+  border-radius: var(--radius-control);
+  font-size: .75rem;
+  font-weight: 600;
+}
+
+.entfernt {
+  margin-left: var(--sp-2);
+  padding: var(--sp-1) var(--sp-2);
+  background: var(--warn-soft);
+  color: var(--warn);
+  border-radius: var(--radius-control);
+  font-size: .6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+.fehlt {
+  margin: var(--sp-1) 0 var(--sp-3);
+  color: var(--text-dim);
+  font-size: .8125rem;
+}
+
+.abweichung {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  margin: var(--sp-1) 0 var(--sp-3);
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--warn-soft);
+  border-radius: var(--radius-control);
+  color: var(--warn);
+  font-size: .8125rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.abweichung button {
+  min-height: 44px;
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  font: inherit;
+  cursor: pointer;
+}
+
+.abweichung button:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}

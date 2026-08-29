@@ -32,9 +32,22 @@
         var amZiel = Math.Abs(summe.Kcal - ziel) <= 100 && summe.Protein >= _bilanz.Protein;
 
         <section class="tag @(tag.Kuerzel == Z.Woche.RefeedTag ? "refeed" : null)">
+            @{
+                var geaendert = Geaendert(tag.Kuerzel);
+                var entfernt = Entfernt(tag.Kuerzel);
+            }
+
             <header>
                 <h2>@tag.Name @(tag.Kuerzel == Z.Woche.RefeedTag ? "· Refeed" : null)</h2>
                 <span class="ort">@tag.Ort</span>
+                @if (geaendert > 0)
+                {
+                    <span class="tagvermerk">@geaendert @(geaendert == 1 ? "Rezept" : "Rezepte") geändert</span>
+                }
+                @if (entfernt > 0)
+                {
+                    <span class="tagvermerk">@entfernt @(entfernt == 1 ? "Rezept" : "Rezepte") entfernt</span>
+                }
             </header>
 
             <p class="summe @(amZiel ? "erreicht" : null)">
@@ -56,7 +69,13 @@
                         var rezept = Z.RezeptMit(eintrag.RezeptId);
 
                         <div class="gericht">
-                            <span class="name">@(rezept?.Name ?? eintrag.RezeptId)</span>
+                            <span class="name">
+                                @(rezept?.Name ?? Namensform(eintrag.RezeptId))
+                                @if (rezept is null)
+                                {
+                                    <span class="entfernt">entfernt</span>
+                                }
+                            </span>
                             <input type="number" min="1" max="9" inputmode="numeric"
                                    aria-label="Portionen"
                                    value="@eintrag.Portionen"
@@ -67,12 +86,32 @@
                             </button>
                         </div>
 
-                        @if (rezept is not null)
+                        @if (rezept is null)
+                        {
+                            <p class="fehlt">
+                                Dieses Rezept gibt es nicht mehr. Wähle unten ein anderes Gericht.
+                            </p>
+                        }
+                        else
                         {
                             <p class="werte">
                                 @Zahl.Kcal(rezept.Kcal * eintrag.Portionen) kcal
                                 · @(rezept.Protein * eintrag.Portionen) g Protein
                             </p>
+
+                            @if (Z.AbweichungFuer(eintrag) is { } abweichung)
+                            {
+                                <p class="abweichung">
+                                    <span>
+                                        <strong>Geändert</strong> — vorher
+                                        @Zahl.Kcal(abweichung.AltKcal * eintrag.Portionen) kcal,
+                                        @(abweichung.AltProtein * eintrag.Portionen) g Protein
+                                    </span>
+                                    <button @onclick="() => ZurKenntnis(tag.Kuerzel, mahlzeit.Schluessel, i)">
+                                        Zur Kenntnis
+                                    </button>
+                                </p>
+                            }
                         }
                     }
 
@@ -125,6 +164,29 @@
     {
         if (string.IsNullOrEmpty(rezeptId)) return;
         Z.GerichtLegen(tag, mahlzeit, rezeptId);
+        OnParametersSet();
+    }
+
+    private int Geaendert(string tag) => Woche.Mahlzeiten
+        .SelectMany(m => Z.Geplant(tag, m.Schluessel))
+        .Count(e => Z.AbweichungFuer(e) is not null);
+
+    private int Entfernt(string tag) => Woche.Mahlzeiten
+        .SelectMany(m => Z.Geplant(tag, m.Schluessel))
+        .Count(e => Z.RezeptMit(e.RezeptId) is null);
+
+    /// <summary>
+    /// Ein geloeschtes Rezept hat keinen Namen mehr — aber seine Kennung ist
+    /// sprechend. „linsen-bolognese" wird wieder zu „Linsen Bolognese", damit
+    /// der Tag sagt, was dort stand, statt eine Leerstelle zu zeigen.
+    /// </summary>
+    private static string Namensform(string kennung)
+        => string.Join(' ', kennung.Split('-', StringSplitOptions.RemoveEmptyEntries)
+            .Select(teil => char.ToUpperInvariant(teil[0]) + teil[1..]));
+
+    private void ZurKenntnis(string tag, string mahlzeit, int stelle)
+    {
+        Z.ZurKenntnis(tag, mahlzeit, stelle);
         OnParametersSet();
     }
 

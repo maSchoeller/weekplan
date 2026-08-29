@@ -53,6 +53,15 @@ internal sealed class DateiAblage(string wurzel) : IAblage
         File.Move(vorlaeufig, pfad, overwrite: true);
     }
 
+    public Task<bool> LoeschenAsync(string art, string id, CancellationToken ct)
+    {
+        var pfad = Pfad(art, id);
+        if (!File.Exists(pfad)) return Task.FromResult(false);
+
+        File.Delete(pfad);
+        return Task.FromResult(true);
+    }
+
     private string Pfad(string art, string id)
         => Path.Combine(wurzel, Sicher(art), Sicher(id) + ".json");
 

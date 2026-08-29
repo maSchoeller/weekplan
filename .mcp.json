@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "weekplan": {
+      "type": "http",
+      "url": "https://weekplan-prod-api.redpebble-2b37be10.westeurope.azurecontainerapps.io/mcp",
+      "headers": {
+        "Authorization": "Bearer ${WEEKPLAN_MCP_SCHLUESSEL}"
+      }
+    }
+  }
+}

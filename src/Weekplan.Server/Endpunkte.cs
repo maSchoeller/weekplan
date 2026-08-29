@@ -11,6 +11,7 @@ public static class Endpunkte
 {
     internal const string AnmeldeGrenze = "anmeldung";
     internal const string StammdatenGrenze = "stammdaten";
+    internal const string McpGrenze = "mcp";
 
     /// <summary>
     /// Die festen Daten: Rezepte, Trainingsphasen, Grundstock. Bewusst ohne

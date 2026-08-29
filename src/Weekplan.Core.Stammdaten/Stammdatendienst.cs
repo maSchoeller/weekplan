@@ -49,4 +49,63 @@ internal sealed class Stammdatendienst(IAblage ablage) : IStammdaten
             await ablage.SchreibenAsync(Namen.Rezept, rezept.Id, rezept, ct);
         }
     }
+
+    public async Task<Rezept> AnlegenAsync(Rezeptentwurf entwurf, CancellationToken ct = default)
+    {
+        ArgumentNullException.ThrowIfNull(entwurf);
+
+        await PruefenAsync(entwurf, ct);
+        var id = Pruefung.KennungAus(entwurf.Name);
+
+        // Nicht upsert: ein zweites Rezept gleichen Namens wuerde das erste
+        // stillschweigend ueberschreiben, und niemand saehe es.
+        if (await ablage.LesenAsync<Rezept>(Namen.Rezept, id, ct) is not null)
+        {
+            throw new RezeptUngueltigException(
+                $"Es gibt schon ein Rezept mit der Kennung '{id}'. Zum Ersetzen aendern statt anlegen.");
+        }
+
+        return await SchreibenAsync(id, entwurf, ct);
+    }
+
+    public async Task<Rezept> AendernAsync(string id, Rezeptentwurf entwurf, CancellationToken ct = default)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(id);
+        ArgumentNullException.ThrowIfNull(entwurf);
+
+        await PruefenAsync(entwurf, ct);
+
+        // Aendern legt nicht an: sonst entstuende bei einem Tippfehler in der
+        // Kennung ein zweites Rezept statt einer Fehlermeldung.
+        if (await ablage.LesenAsync<Rezept>(Namen.Rezept, id, ct) is null)
+        {
+            throw new RezeptUngueltigException($"Es gibt kein Rezept mit der Kennung '{id}'.");
+        }
+
+        return await SchreibenAsync(id, entwurf, ct);
+    }
+
+    public Task<bool> LoeschenAsync(string id, CancellationToken ct = default)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(id);
+        return ablage.LoeschenAsync(Namen.Rezept, id, ct);
+    }
+
+    private async Task PruefenAsync(Rezeptentwurf entwurf, CancellationToken ct)
+    {
+        var kopf = await ablage.LesenAsync<Abteilungsdaten>(Namen.Liste, Namen.Abteilungen, ct)
+                   ?? throw StammdatenFehlenException.Fuer(Namen.Abteilungen);
+
+        Pruefung.Pruefen(entwurf, kopf.Abteilungen);
+    }
+
+    private async Task<Rezept> SchreibenAsync(string id, Rezeptentwurf entwurf, CancellationToken ct)
+    {
+        var rezept = new Rezept(
+            id, entwurf.Name.Trim(), entwurf.Kategorie, entwurf.ZeitMin, entwurf.Kalt,
+            entwurf.Kcal, entwurf.Protein, entwurf.Zutaten, entwurf.Anleitung);
+
+        await ablage.SchreibenAsync(Namen.Rezept, id, rezept, ct);
+        return rezept;
+    }
 }

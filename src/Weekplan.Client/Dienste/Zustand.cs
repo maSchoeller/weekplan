@@ -9,6 +9,25 @@ namespace Weekplan.Client.Dienste;
 
 public enum Speicherlage { Ruhe, Schreibt, Fehler }
 
+/// <summary>Ein Rezept hat sich seit dem Planen geaendert: alte und neue Zahlen je Portion.</summary>
+public sealed record Abweichung(int AltKcal, int AltProtein, int NeuKcal, int NeuProtein)
+{
+    /// <summary>
+    /// Was sich seit dem Planen geaendert hat — <c>null</c>, wenn nichts, wenn
+    /// das Rezept fehlt (das ist der Fall „entfernt", nicht „geaendert"), oder
+    /// wenn der Eintrag aus der Zeit vor den gemerkten Zahlen stammt.
+    /// </summary>
+    public static Abweichung? Zwischen(PlanEintrag eintrag, Rezept? rezept)
+    {
+        if (rezept is null) return null;
+        if (eintrag.KcalBeimPlanen is not { } altKcal) return null;
+        if (eintrag.ProteinBeimPlanen is not { } altProtein) return null;
+        if (altKcal == rezept.Kcal && altProtein == rezept.Protein) return null;
+
+        return new Abweichung(altKcal, altProtein, rezept.Kcal, rezept.Protein);
+    }
+}
+
 /// <summary>
 /// Der Stand des Nutzers im Browser, und der Weg zum Server. Eingaben wirken
 /// sofort in der Oberflaeche; geschrieben wird gebuendelt nach kurzer Ruhe.
@@ -102,8 +121,35 @@ public sealed class Zustand(
 
     // ── Aendern: Woche ──────────────────────────────────
 
+    /// <summary>
+    /// Legt ein Gericht und merkt sich, mit welchen Naehrwerten geplant wurde.
+    /// Aendert jemand das Rezept spaeter, faellt das am Tag auf, statt die
+    /// Wochenbilanz still zu verschieben.
+    /// </summary>
     public void GerichtLegen(string tag, string mahlzeit, string rezeptId)
-        => PlanAendern(tag, mahlzeit, eintraege => [.. eintraege, new PlanEintrag(rezeptId, 1)]);
+        => PlanAendern(tag, mahlzeit, eintraege =>
+        {
+            var rezept = RezeptMit(rezeptId);
+            return [.. eintraege, new PlanEintrag(rezeptId, 1, rezept?.Kcal, rezept?.Protein)];
+        });
+
+    /// <summary>
+    /// Was sich seit dem Planen an einem Gericht geaendert hat — <c>null</c>,
+    /// wenn nichts, wenn das Rezept fehlt, oder wenn der Eintrag aus der Zeit
+    /// vor den gemerkten Zahlen stammt.
+    /// </summary>
+    public Abweichung? AbweichungFuer(PlanEintrag eintrag)
+        => Abweichung.Zwischen(eintrag, RezeptMit(eintrag.RezeptId));
+
+    /// <summary>Nimmt die neuen Zahlen zur Kenntnis — der Hinweis verschwindet, gerechnet wurde ohnehin damit.</summary>
+    public void ZurKenntnis(string tag, string mahlzeit, int stelle)
+        => PlanAendern(tag, mahlzeit, eintraege =>
+        [
+            .. eintraege.Select((e, i) =>
+                i == stelle && RezeptMit(e.RezeptId) is { } r
+                    ? e with { KcalBeimPlanen = r.Kcal, ProteinBeimPlanen = r.Protein }
+                    : e)
+        ]);
 
     public void GerichtEntfernen(string tag, string mahlzeit, int stelle)
         => PlanAendern(tag, mahlzeit, eintraege => [.. eintraege.Where((_, i) => i != stelle)]);
