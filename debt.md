@@ -237,3 +237,71 @@ Neu, und ueber den Lauf hinaus:
   keinen automatischen Test, weil es fuer den Client kein Testprojekt gibt.
   **Ausloeser:** sobald eine zweite Sache im Client eine Zusicherung braucht,
   lohnt das Testprojekt.
+
+## 2026-08-29 — Gaeste und Fuellregeln
+
+Erledigt aus frueheren Laeufen:
+
+- 2026-08-29 **Erledigt:** „Die Tastatur-Aktivierung selbstgebauter Bedienelemente
+  ist mit den vorhandenen Browser-Werkzeugen nicht pruefbar" (26.08.). Das
+  installierte Chrome war diesmal verbunden. Echte Enter-Druecke aktivieren die
+  Knoepfe: „+ Gäste" gesetzt, dann zweimal Enter auf „+" — 2 → 4, Fokus blieb
+  stehen. Die Harness-Regel „Tab/Enter/Esc, jeweils zweimal" ist damit
+  ausfuehrbar, solange Chrome verbunden ist.
+- 2026-08-29 **Erledigt:** „Dritter Lauf in Folge ohne Bildschirmfotos" (27. und
+  29.08.). Mit verbundenem Chrome kommen Bilder. Der eingebaute Bereich liefert
+  weiterhin keine (Viewport 0 px, „pane is not displayed"), traegt aber die
+  echte 375-px-Emulation und damit die Messung von Kastenmassen. Beides zusammen
+  deckt Aussehen und Masse ab.
+- 2026-08-29 **Erledigt:** „Dritter Lauf in Folge ohne frische Augen im
+  Smoketest" (27. und 29.08.). Der Nutzer hat den Unteragenten freigegeben; er
+  hat die elf Abnahmekriterien gegen requirements.md und design.md geprueft,
+  ohne das Umsetzungsgespraech zu kennen. **Die Einschraenkung war nie technisch,
+  sondern eine Freigabe** — danach fragen genuegt.
+
+Im Retro behoben statt getragen (Entscheidung des Nutzers):
+
+- 2026-08-29 **Behoben, hier als Lehre:** Ein Bedienelement, das seinen Zustand
+  wechselt, verliert den Tastaturfokus, wenn zwei Elemente einander abloesen.
+  „+ Gäste" war ein `<button>`, der Stepper ein `<span>` — Blazor ersetzte das
+  DOM-Element, der Fokus fiel auf den Seitenkoerper. Die Loesung ist kein
+  Nachfassen mit `FocusAsync`, sondern **ein Element behalten**: der Plus-Knopf
+  steht in beiden Zustaenden an derselben Stelle der Vorlage, traegt dieselbe
+  Folgenummer und wird nur anders beschriftet. Blazor behaelt ihn, der Fokus
+  bleibt. **Regel:** beim Zustandswechsel eines Bedienelements zuerst fragen,
+  welches Element beide Zustaende tragen kann — Fokusverwaltung ist die zweite
+  Wahl. **Ausloeser:** das zweite Vorkommen macht daraus eine Zeile in
+  `presets/dotnet-cloud.md`; bis dahin steht sie hier. Gilt weiterhin fuer
+  „Entfernen" im Wochenplan, das denselben Fehler hat.
+- 2026-08-29 **Behoben:** Der Rueckfall beim Fuellen ist nicht mehr still.
+  `IWochenplanung.Fuellhinweise` prueft den **Pool** (nicht das Ergebnis) und
+  nennt jede Regel, die er nicht bedienen kann; der Wochenplan zeigt es nach dem
+  Fuellen mit „Zur Kenntnis". Geprueft wird der Pool und nicht die gefuellte
+  Woche, weil der Nutzer sie jederzeit von Hand umbauen darf — ein Hinweis, der
+  dann weiter mahnt, waere Bevormundung.
+- 2026-08-29 **Behoben:** Die Bloecke wissen jetzt, was Wochenende und Refeed
+  schon bekommen haben. Ein Gericht, das zugleich `prep` und `wochenende`
+  traegt, stand sonst zweimal in derselben Woche.
+
+Getragen, mit Ausloeser:
+
+- 2026-08-29 Die Kochseite bekommt die Portionszahl als Adressparameter
+  (`?portionen=3`), nicht Tag und Mahlzeit. Ein gemerkter Verweis traegt darum
+  eine veraltete Zahl. **Ausloeser:** wenn die Kochseite eine zweite Angabe aus
+  dem Wochenplan braucht — dann lohnt der Bezug auf Tag und Mahlzeit.
+- 2026-08-29 Kein Client-Testprojekt, deshalb sind die Abnahmekriterien 1, 2, 5
+  und 6 (Gaeste-Bedienung, zwei Beruehrungen, Kochmenge ablesbar, Kochseite aus
+  dem Plan) **nur durch den Smoketest gedeckt**, nicht durch einen Test.
+  Dieselbe Schuld wie am 29.08. beim Starthinweis — jetzt sind es fuenf Sachen
+  im Client, die eine Zusicherung braeuchten. **Ausloeser:** ist gerissen; das
+  bUnit-Projekt lohnt beim naechsten Client-Lauf.
+- 2026-08-29 Die Worktree-Pflege aus Kickstart-Schritt 0 lief nicht: der
+  Klassifizierer lehnte `git worktree remove` ab. Zwei saubere, leere Worktrees
+  (`recipes-postgres-migration-ab1c2f`, `weekplan-mpc-gerichte-874239`) liegen
+  weiter auf der Platte. **Ausloeser:** eine Bash-Erlaubnisregel fuer
+  `git worktree` in den Einstellungen — sonst scheitert jeder Kickstart hier.
+- 2026-08-29 Die neuen Merkmale `wochenende` und `refeed` sind an keinem Rezept
+  gesetzt, bis der Pool nach dem Ausrollen gepflegt ist. Solange greift ueberall
+  der Rueckfall — jetzt immerhin sichtbar. **Ausloeser:** erledigt sich mit der
+  Pflege; bleibt hier, falls sie ausfaellt.
+

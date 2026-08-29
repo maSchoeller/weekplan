@@ -6,7 +6,7 @@
 <h1 class="verborgen">Woche</h1>
 
 <div class="leiste">
-    <button class="haupt" @onclick="Z.WocheFuellen">Woche automatisch füllen</button>
+    <button class="haupt" @onclick="Fuellen">Woche automatisch füllen</button>
     <button class="neben" @onclick="Z.WocheLeeren">Woche leeren</button>
 
     <label for="refeed">Refeed-Tag</label>
@@ -17,6 +17,25 @@
         }
     </select>
 </div>
+
+@* Der Rueckfall beim Fuellen ist noetig — aber er soll nicht stumm sein. Was
+   der Pool nicht bedienen konnte, steht hier, mit dem Ort der Behebung. *@
+@if (Z.Fuellhinweise.Count > 0)
+{
+    <div class="fuellhinweis" role="status">
+        <div>
+            <strong>Nicht jede Regel konnte greifen.</strong>
+            <ul>
+                @foreach (var hinweis in Z.Fuellhinweise)
+                {
+                    <li>@hinweis</li>
+                }
+            </ul>
+            <p>Die Merkmale werden über Claude Code am Rezept gepflegt.</p>
+        </div>
+        <button @onclick="HinweiseZurKenntnis">Zur Kenntnis</button>
+    </div>
+}
 
 <p class="hinweis">
     Ziel an Normaltagen: @Zahl.Kcal(_bilanz.Normal) kcal und @_bilanz.Protein g Protein.
@@ -44,24 +63,28 @@
 
                 @* Ohne Besuch bleibt der Tag ruhig: nur ein stiller Knopf. Ein
                    Tipp darauf setzt den ersten Gast — zwei Tipps genuegen fuer
-                   den haeufigen Fall „+2". *@
-                @if (gaesteAmTag == 0)
-                {
-                    <button class="gaeste-an" @onclick="() => GaesteAmTag(tag.Kuerzel, 1)">
-                        + Gäste
-                    </button>
-                }
-                else
-                {
-                    <span class="gaeste" role="group" aria-label="Zusätzliche Esser am @tag.Name">
+                   den haeufigen Fall „+2".
+
+                   Der Plus-Knopf steht in beiden Zustaenden an derselben Stelle
+                   der Vorlage und traegt darum dieselbe Folgenummer. Blazor
+                   behaelt das DOM-Element und mit ihm den Tastaturfokus: wer
+                   „+ Gäste" mit Enter drueckt, steht danach auf „+" und kann
+                   weiterzaehlen. Zwei Elemente uebereinander waeren bequemer zu
+                   schreiben und wuerden den Fokus auf den Seitenkoerper werfen. *@
+                <span class="gaeste" role="group" aria-label="Zusätzliche Esser am @tag.Name">
+                    @if (gaesteAmTag > 0)
+                    {
                         <span class="wort">Gäste</span>
                         <button class="schritt" aria-label="Ein Gast weniger am @tag.Name"
                                 @onclick="() => GaesteAmTag(tag.Kuerzel, gaesteAmTag - 1)">−</button>
                         <span class="zahl">@gaesteAmTag</span>
-                        <button class="schritt" aria-label="Ein Gast mehr am @tag.Name"
-                                @onclick="() => GaesteAmTag(tag.Kuerzel, gaesteAmTag + 1)">+</button>
-                    </span>
-                }
+                    }
+                    <button class="schritt @(gaesteAmTag == 0 ? "gaeste-an" : null)"
+                            aria-label="Ein Gast mehr am @tag.Name"
+                            @onclick="() => GaesteAmTag(tag.Kuerzel, gaesteAmTag + 1)">
+                        @(gaesteAmTag == 0 ? "+ Gäste" : "+")
+                    </button>
+                </span>
 
                 @if (geaendert > 0)
                 {
@@ -247,6 +270,18 @@
         var tag = e.Value?.ToString();
         if (string.IsNullOrEmpty(tag)) return;
         Z.RefeedTagSetzen(tag);
+        OnParametersSet();
+    }
+
+    private void Fuellen()
+    {
+        Z.WocheFuellen();
+        OnParametersSet();
+    }
+
+    private void HinweiseZurKenntnis()
+    {
+        Z.FuellhinweiseZurKenntnis();
         OnParametersSet();
     }
 

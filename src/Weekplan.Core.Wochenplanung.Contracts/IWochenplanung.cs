@@ -15,6 +15,14 @@ public interface IWochenplanung
     /// </summary>
     WochenStand AutomatischFuellen(WochenStand woche, IReadOnlyList<Rezept> rezepte, Bilanz bilanz);
 
+    /// <summary>
+    /// Welche Regel dieser Rezeptpool nicht bedienen kann. Jede Vorauswahl beim
+    /// Fuellen hat einen Rueckfall auf die volle Auswahl — der ist noetig, damit
+    /// kein Tag leer bleibt, aber er ist still: die Woche saehe regelwidrig aus
+    /// und wuesste nicht zu sagen warum. Diese Saetze sagen es.
+    /// </summary>
+    IReadOnlyList<string> Fuellhinweise(IReadOnlyList<Rezept> rezepte);
+
     /// <summary>Kalorien und Protein eines Tages nach Plan.</summary>
     (int Kcal, int Protein) Tagessumme(WochenStand woche, string tag, IReadOnlyList<Rezept> rezepte);
 }

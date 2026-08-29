@@ -254,25 +254,6 @@
    weiss, steht die Kochmenge in Akzentfarbe *und* mit dem Wort „kochen" —
    Status nie allein ueber Farbe. */
 
-.gaeste-an {
-  min-height: 44px;
-  padding: 0 var(--sp-2);
-  background: transparent;
-  color: var(--text-dim);
-  border: 1px dashed var(--border);
-  border-radius: var(--radius-control);
-  font: inherit;
-  font-size: .8125rem;
-  white-space: nowrap;
-  cursor: pointer;
-}
-
-.gaeste-an:hover {
-  color: var(--accent);
-  border-color: var(--accent);
-  border-style: solid;
-}
-
 .gaeste {
   display: inline-flex;
   align-items: center;
@@ -308,6 +289,26 @@
 }
 
 .schritt:hover { color: var(--accent); border-color: var(--accent); }
+
+/* Derselbe Knopf, zwei Kleider. Ohne Gaeste traegt er das leise, gestrichelte
+   „+ Gäste"; sobald welche da sind, wird er das quadratische „+" des Steppers.
+   Ein Element, damit der Tastaturfokus den Wechsel ueberlebt — darum die
+   hoehere Spezifitaet statt einer eigenen Klasse. */
+.schritt.gaeste-an {
+  min-width: 0;
+  padding: 0 var(--sp-2);
+  background: transparent;
+  color: var(--text-dim);
+  border-style: dashed;
+  font-size: .8125rem;
+  white-space: nowrap;
+}
+
+.schritt.gaeste-an:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  border-style: solid;
+}
 
 .mahlzeit-gaeste {
   display: flex;
@@ -357,3 +358,45 @@
 }
 
 .gericht .name a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+
+/* Was der Rezeptpool nicht bedienen konnte. Warnfarbe und das Wort dazu — die
+   Regel des Design-Systems, dass Status nie allein ueber Farbe spricht. */
+.fuellhinweis {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-4);
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--warn-soft);
+  border: 1px solid var(--warn);
+  border-radius: var(--radius-card);
+  color: var(--text);
+  font-size: .875rem;
+}
+
+.fuellhinweis ul {
+  margin: var(--sp-2) 0;
+  padding-left: var(--sp-4);
+}
+
+.fuellhinweis li { margin-bottom: var(--sp-1); }
+
+.fuellhinweis p {
+  margin: 0;
+  color: var(--text-dim);
+}
+
+.fuellhinweis button {
+  flex: 0 0 auto;
+  min-height: 44px;
+  padding: 0 var(--sp-3);
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--warn);
+  border-radius: var(--radius-control);
+  font: inherit;
+  font-size: .8125rem;
+  cursor: pointer;
+}

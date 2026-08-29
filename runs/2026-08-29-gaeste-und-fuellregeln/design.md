@@ -333,3 +333,28 @@ Wochenplanung, Merkmale sind Stammdaten.
 | 9 | Test: Pool ohne ein einziges Wochenendgericht füllt trotzdem |
 | 10 | Test: zweimal füllen ergibt andere Gerichte, 8a–e halten weiter |
 | 11 | Pflege der 18 Rezepte über MCP, danach eine echte Füllung im Smoketest |
+
+---
+
+## 8. Nachtrag aus dem Retro (29.08.2026)
+
+Drei Stellen sind nach dem Retro anders als oben beschrieben:
+
+- **§2.1 — der Knopf wird nicht ersetzt, er wechselt das Kleid.** „+ Gäste" und
+  das „+" des Steppers sind **dasselbe** `<button>` an derselben Stelle der
+  Vorlage; nur `class` und Beschriftung wechseln. Damit behält Blazor das
+  DOM-Element und mit ihm den Tastaturfokus — wer „+ Gäste" mit Enter drückt,
+  steht danach auf „+" und zählt weiter. Zwei Elemente übereinander wären
+  bequemer zu schreiben und würfen den Fokus auf den Seitenkörper.
+- **§4.4 — der Rückfall ist nicht mehr still.** `IWochenplanung.Fuellhinweise`
+  prüft den **Pool** und nennt jede Regel, die er nicht bedienen kann. Der
+  Wochenplan zeigt sie nach dem Füllen als Warnkarte **unter** der Leiste, mit
+  „Zur Kenntnis". Unter der Leiste und nicht darüber, weil die Karte bei 375 px
+  366 px hoch ist und die Hauptaktion sonst unter die Falz rutscht.
+  Geprüft wird der Pool und nicht die gefüllte Woche: die darf der Nutzer
+  jederzeit von Hand umbauen, und ein Hinweis, der dann weiter mahnt, wäre
+  Bevormundung.
+- **§4.3 — die Blöcke kennen die Einzeltage.** Was Refeed und Wochenende
+  bekommen haben, ist für die Blöcke vergeben. Ein Gericht, das zugleich `prep`
+  und `wochenende` trägt, stünde sonst zweimal in derselben Woche.
+
