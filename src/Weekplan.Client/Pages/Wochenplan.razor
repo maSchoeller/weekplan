@@ -72,18 +72,22 @@
                    weiterzaehlen. Zwei Elemente uebereinander waeren bequemer zu
                    schreiben und wuerden den Fokus auf den Seitenkoerper werfen. *@
                 <span class="gaeste" role="group" aria-label="Zusätzliche Esser am @tag.Name">
+                    <span class="wort">Gäste</span>
                     @if (gaesteAmTag > 0)
                     {
-                        <span class="wort">Gäste</span>
                         <button class="schritt" aria-label="Ein Gast weniger am @tag.Name"
                                 @onclick="() => GaesteAmTag(tag.Kuerzel, gaesteAmTag - 1)">−</button>
                         <span class="zahl">@gaesteAmTag</span>
                     }
+                    @* Beschriftung und Groesse bleiben in beiden Zustaenden
+                       gleich — nur der Rahmen wechselt von gestrichelt zu voll.
+                       Stand hier vorher „+ Gäste", wanderte das Pluszeichen beim
+                       ersten Tipp zehn Pixel nach rechts, und der zweite Tipp auf
+                       dieselbe Stelle traf die Zahl statt den Knopf. *@
                     <button class="schritt @(gaesteAmTag == 0 ? "gaeste-an" : null)"
+                            disabled="@(gaesteAmTag >= 8)"
                             aria-label="Ein Gast mehr am @tag.Name"
-                            @onclick="() => GaesteAmTag(tag.Kuerzel, gaesteAmTag + 1)">
-                        @(gaesteAmTag == 0 ? "+ Gäste" : "+")
-                    </button>
+                            @onclick="() => GaesteAmTag(tag.Kuerzel, gaesteAmTag + 1)">+</button>
                 </span>
 
                 @if (geaendert > 0)
@@ -123,21 +127,19 @@
                        Gaeste hat — ohne Besuch sieht die Woche aus wie immer. *@
                     @if (gaesteAmTag > 0 || eigeneGaeste)
                     {
+                        @* Die Reihenfolge ist kein Geschmack, sondern ein
+                           behobener Bedienfehler: „wie am Tag" erscheint erst
+                           beim Setzen einer Ausnahme. Stand es rechts, schob es
+                           beim Erscheinen die ganze Gruppe 81 px nach links und
+                           lag danach genau dort, wo eben „+" war — der zweite
+                           Tipp auf dieselbe Stelle loeschte die eben gesetzte
+                           Ausnahme wieder. Links im dehnbaren Bereich waechst es
+                           nach innen, und das Knopfpaar bleibt verankert. *@
                         <p class="mahlzeit-gaeste @(eigeneGaeste ? "eigen" : null)">
                             <span class="wort">
                                 @gaeste @(gaeste == 1 ? "Gast" : "Gäste")
                                 @(eigeneGaeste ? "hier" : null)
                             </span>
-                            <button class="schritt"
-                                    aria-label="Ein Gast weniger beim @mahlzeit.Beschriftung am @tag.Name"
-                                    @onclick="() => GaesteAnDerMahlzeit(tag.Kuerzel, mahlzeit.Schluessel, gaeste - 1)">
-                                −
-                            </button>
-                            <button class="schritt"
-                                    aria-label="Ein Gast mehr beim @mahlzeit.Beschriftung am @tag.Name"
-                                    @onclick="() => GaesteAnDerMahlzeit(tag.Kuerzel, mahlzeit.Schluessel, gaeste + 1)">
-                                +
-                            </button>
                             @if (eigeneGaeste)
                             {
                                 <button class="zurueck-an-den-tag"
@@ -146,6 +148,18 @@
                                     wie am Tag
                                 </button>
                             }
+                            <span class="paar">
+                                <button class="schritt" disabled="@(gaeste <= 0)"
+                                        aria-label="Ein Gast weniger beim @mahlzeit.Beschriftung am @tag.Name"
+                                        @onclick="() => GaesteAnDerMahlzeit(tag.Kuerzel, mahlzeit.Schluessel, gaeste - 1)">
+                                    −
+                                </button>
+                                <button class="schritt" disabled="@(gaeste >= 8)"
+                                        aria-label="Ein Gast mehr beim @mahlzeit.Beschriftung am @tag.Name"
+                                        @onclick="() => GaesteAnDerMahlzeit(tag.Kuerzel, mahlzeit.Schluessel, gaeste + 1)">
+                                    +
+                                </button>
+                            </span>
                         </p>
                     }
 

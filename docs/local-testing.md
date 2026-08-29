@@ -48,14 +48,23 @@ Zeile stuetzt, macht vorher die Stichprobe.
 
 | | eingebauter Bereich | installiertes Chrome |
 |---|---|---|
-| Screenshot | ja — **nur wenn der Bereich sichtbar ist** | ja |
+| Screenshot | **nein** — auch sichtbar nur „pane is not displayed" | ja — selten erst im zweiten Anlauf |
 | Text und Baum lesen | ja | ja |
 | JavaScript, auch `await` | ja | ja |
 | `requestAnimationFrame` | **nur wenn der Bereich sichtbar ist** | ja |
-| Klick auf einen Knopf | ja — **ueber `ref`**, nicht ueber Koordinaten | ja |
-| Formular per Klick absenden | ja (ueber `ref`) | ja |
-| Enter/Leertaste aktivieren | **nein** (Fokus bleibt, nichts loest aus) | ja |
+| Klick auf einen Knopf | **nein** — `ref` laeuft nach 30 s in „pane is hidden"; Ersatz: `element.click()` per JavaScript | ja, auch zweimal auf dieselbe Koordinate |
+| Formular per Klick absenden | **nein** (siehe Zeile darueber) | ja |
+| Enter/Leertaste aktivieren | **nein** (Fokus bleibt, nichts loest aus) | **ja** — am 29.08.2026 belegt, je zweimal hintereinander |
 | Fensterbreite aendern | ja (Viewport-Emulation) | **nein** (Fenster bleibt, wie es ist) |
+
+**Nachgemessen am 29.08.2026** im Lauf `2026-08-29-gaeste-und-fuellregeln`, von
+einem Pruefer mit frischen Augen: vier Zeilen stimmten nicht mehr. Der
+eingebaute Bereich liefert **weder Bildschirmfotos noch Klicks** — beides laeuft
+in „the Browser pane is not displayed/hidden", auch wenn der Bereich vorne
+steht. Was er weiterhin gut kann: Zugaenglichkeitsbaum, JavaScript, Messen und
+**echte 375-px-Emulation**. Klicks ersetzt man dort durch `element.click()` per
+JavaScript — Blazor hoert auf das gewoehnliche Klickereignis. Das installierte
+Chrome kann dafuer alles ausser Fensterbreite.
 
 **Die eine Regel hinter drei Zeilen:** Was das Kompositieren von Bildern
 braucht — Screenshots, `requestAnimationFrame` —, geht nur, solange der

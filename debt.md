@@ -305,3 +305,49 @@ Getragen, mit Ausloeser:
   der Rueckfall — jetzt immerhin sichtbar. **Ausloeser:** erledigt sich mit der
   Pflege; bleibt hier, falls sie ausfaellt.
 
+### Nachtrag 2026-08-29 — was der Pruefer mit frischen Augen fand
+
+Er meldete **nicht gruen**. Durchgefallen war kein Kriterium; ungeprueft blieben
+8b/8c/8d (unmarkierter oertlicher Pool) sowie Kontrast und Hellmodus (der
+Entwicklungsserver fiel aus). Beides ist inzwischen nachgeholt: die Fuellregeln
+gegen den **Produktionspool** mit dem echten Algorithmus, drei Runden; Kontrast
+in beiden Modi gemessen, alles ueber 4,5:1.
+
+Drei echte Befunde, alle behoben:
+
+- 2026-08-29 **Behoben, und die teuerste Lehre dieses Laufs:** Ein Bedienelement
+  darf sich beim Druecken nicht unter dem Finger wegbewegen. „wie am Tag"
+  erschien rechts, sobald eine Mahlzeit-Ausnahme gesetzt war, schob die Gruppe
+  81 px nach links und lag danach **genau dort, wo eben „+" war** — der zweite
+  Tipp auf dieselbe Stelle loeschte die eben gesetzte Ausnahme wieder. Dasselbe
+  im Kleinen am Tageskopf: „+ Gäste" wurde zu „+", das Pluszeichen wanderte zehn
+  Pixel. **Regel:** was beim Betaetigen dazukommt, waechst nach innen; das
+  Knopfpaar bleibt am Rand verankert, und die Beschriftung eines Knopfes aendert
+  seine Masse nicht. **Und die Pruefregel dazu:** „jedes Bedienelement zweimal
+  hintereinander" heisst mit der Maus **auf dieselbe Koordinate**, nicht zweimal
+  auf die Mitte — ich hatte nur die Tastatur zweimal geprueft und den Fehler
+  darum nicht gesehen. **Ausloeser:** beim zweiten Vorkommen wird daraus eine
+  Zeile im Harness; bis dahin steht sie hier.
+- 2026-08-29 **Behoben:** Die neuen Gerichtlinks im Wochenplan waren 21 px hoch
+  statt der geforderten 44. Die Zeile ist ohnehin so hoch — der Verweis fuellt
+  sie jetzt aus.
+- 2026-08-29 **Behoben:** Die Stepper schalten an ihren Anschlaegen (0 und 8) ab,
+  statt still nichts zu tun.
+
+Aelter als dieser Lauf, darum nur notiert:
+
+- 2026-08-29 **Die Gruen-Markierung der Tagessumme spricht allein ueber Farbe.**
+  `<p class="summe erreicht">` enthaelt nur Zahlen — kein Wort, kein Icon, kein
+  `aria-label`. `design-system.md` verlangt ausdruecklich: „Gruen, Warn und
+  Fehler tragen immer ein Wort". Nicht in diesem Lauf entstanden und darum nicht
+  angefasst. **Ausloeser:** der naechste Lauf, der den Wochenplan-Kopf oeffnet —
+  es ist ein Wort.
+- 2026-08-29 Das Feld „+ Gericht wählen" behaelt nach dem Hinzufuegen den
+  gewaehlten Namen als Beschriftung, statt zum Platzhalter zurueckzukehren — es
+  zeigte noch ein Gericht an, das laengst entfernt war. **Ausloeser:** derselbe
+  Lauf wie oben.
+- 2026-08-29 Der Client-Entwicklungsserver lieferte nach laengerer Laufzeit
+  `/_framework/dotnet.<hash>.js` mit 404, obwohl die Datei auf der Platte liegt;
+  beide Browser blieben bei „weekplan wird geladen". Ein Neustart heilt es.
+  **Ausloeser:** wenn es haeufiger als einmal je Lauf auftritt.
+
