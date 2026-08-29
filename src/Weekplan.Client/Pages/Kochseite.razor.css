@@ -148,3 +148,14 @@ h2 {
 .anleitung a {
   color: var(--accent);
 }
+
+/* Woher die vorbelegte Portionszahl kommt. Ohne diesen Satz stuende dort eine
+   Drei, die niemand erklaert. */
+.herkunft {
+  margin: 0 0 var(--sp-4);
+  padding: var(--sp-3);
+  background: var(--accent-soft);
+  border-radius: var(--radius-control);
+  color: var(--text);
+  font-size: .875rem;
+}

@@ -15,7 +15,9 @@ public sealed record Rezeptentwurf(
     int Kcal,
     int Protein,
     IReadOnlyList<Zutat> Zutaten,
-    string Anleitung);
+    string Anleitung,
+    bool Wochenende = false,
+    bool Refeed = false);
 
 /// <summary>
 /// Der Trainingsplan, wie er hereinkommt — dieselben Felder wie

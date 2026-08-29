@@ -10,11 +10,21 @@ gewichtsabhängiger Verbrauchsrechnung.
 
 - **Woche** — Gerichte auf Wochentage und Mahlzeiten legen. Tagessumme kcal und Protein
   läuft mit und färbt sich, wenn das Ziel getroffen ist. Ein Knopf füllt die Woche
-  automatisch und wählt die Portionen so, dass jeder Tag nah am Kalorienziel landet;
-  werktags nimmt er die vorkochbaren Gerichte. Vorgeschlagen wird nach Mahlzeit,
+  automatisch: werktags zwei vorkochbare Sorten in zusammenhängenden Blöcken von
+  zwei bis drei Tagen (Meal Prep ist die Betriebsart, nicht die Ausnahme), am
+  Wochenende frisch gekochte Gerichte, am Refeed-Tag solche, die dessen höhere
+  Aufnahme tragen; das Frühstück wechselt täglich. Nochmal drücken gibt eine
+  andere, genauso regelkonforme Woche. Vorgeschlagen wird nach Mahlzeit,
   gesperrt ist nichts — mittags darf auch ein Abendgericht stehen.
+- **Gäste** — Am Tageskopf steht, wie viele zusätzlich mitessen; einzelne
+  Mahlzeiten lassen sich abweichend setzen („freitags frühstücken sie nicht
+  mit"). Die Zahl wächst Einkaufsliste und Kochmenge, **die eigene Bilanz bleibt
+  unberührt** — Tagessumme und Zielabgleich zählen nur die eigene Portion. Ein
+  Tippen auf den Gerichtnamen öffnet die Kochseite mit den Zutatenmengen für
+  alle Esser. Gäste bleiben stehen, wenn die Woche geleert oder neu gefüllt wird.
 - **Einkauf** — Wochenliste (Frischware, aus dem Wochenplan aggregiert, nach
   Supermarkt-Abteilungen sortiert, abhakbar) und Grundstock (einmaliger Vorratseinkauf).
+  Stecken Gästeportionen darin, steht es über der Liste.
 - **Rezepte** — 18 Gerichte. Die Übersicht ist nach Mahlzeit gruppiert und nennt
   je Gericht kcal, Protein, Zeit sowie, ob es kalt schmeckt und ob es sich
   vorkochen lässt; ein Tippen öffnet die Kochseite mit Portionsrechner, Zutaten

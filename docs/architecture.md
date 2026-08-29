@@ -79,10 +79,32 @@ Cosmos DB         zwei Behaelter: tagebuch (je Nutzer), stammdaten (fuer alle)
       Der Vorgang schreibt Rezepte mit und ist nicht atomar.
     - Das **Tagebuch bleibt fuer MCP unerreichbar**, auch lesend. Ein
       durchgesickerter MCP-Schluessel oeffnet keine Nutzerdaten.
-  - **Ein Rezept traegt `Prep`** neben `Kalt`: haelt es drei Tage im Kuehlschrank
-    und waermt gut auf. Das automatische Fuellen der Woche waehlt an Werktagen
-    nur aus den vorkochbaren; gibt es keine, bleibt die volle Auswahl. Ein
-    Filter und keine Strafpunkte — gegen den Aufschlag fuer Wiederholung
+  - **Ein Rezept traegt drei Merkmale, die sagen wann es passt:** `Prep` (haelt
+    drei Tage, waermt auf — der Werktag), `Wochenende` (frisch gekocht, meist
+    mit Fleisch — Samstag und Sonntag) und `Refeed` (traegt die hoehere Aufnahme
+    des Refeed-Tags). Seit dem 29.08.2026 alle drei, und sie schliessen einander
+    nicht aus. Sie sind Vorauswahlen mit Rueckfall, keine Sperren: von Hand ist
+    jedes Gericht ueberall einplanbar.
+  - **Das automatische Fuellen filtert erst und bewertet dann**, seit dem
+    29.08.2026 nach den Regeln aus `docs/ernaehrungsplan.md` §3:
+    - Werktags stehen **zwei vorkochbare Sorten in zusammenhaengenden Bloecken**
+      von zwei bis drei Tagen — bei fuenf Werktagen `3+2` oder `2+3`, je nach
+      Rotation. Meal Prep ist die Betriebsart, Wiederholung darum Struktur und
+      nicht Makel: der frueher vorhandene Aufschlag fuer Wiederholung ist weg.
+    - Samstag und Sonntag bekommen **Wochenendgerichte**, der **Refeed-Tag**
+      refeed-taugliche. Der Refeed gewinnt gegen alles — liegt er auf einem
+      Werktag, ueberspringen ihn die Bloecke.
+    - Das **Fruehstueck rotiert taeglich**, unveraendert.
+    - **Jede Vorauswahl hat einen Rueckfall:** bleibt nach dem Filter nichts
+      uebrig, gilt die volle Auswahl. Kein Tag bleibt leer, und ein noch nicht
+      gepflegter Pool traegt trotzdem. Der Preis: der Rueckfall ist still, die
+      Woche sieht dann regelwidrig aus ohne zu sagen warum.
+    - **Nochmal druecken** liefert eine andere, gleich regelkonforme Woche. Die
+      bisherige Woche wird dabei **ueberbuegelt, nicht ausgewertet**; die ganze
+      Abwechslung traegt `Rotation` — sie verschiebt Fruehstueck,
+      Blockaufteilung und den Rang der gewaehlten Zusammenstellung
+      (`rotation % 3`-beste statt beste).
+    Ein Filter und keine Strafpunkte — gegen den Aufschlag fuer Wiederholung
     tariert, waere das Ergebnis nicht mehr vorhersagbar gewesen.
   - **Der Wochenplan sperrt nicht mehr, er sortiert.** Im Mahlzeiten-Slot stehen
     die passenden Gerichte in einer `optgroup` oben, alle anderen darunter —
@@ -96,6 +118,29 @@ Cosmos DB         zwei Behaelter: tagebuch (je Nutzer), stammdaten (fuer alle)
     Phasenname auch nicht. Gerechnet wird beim Anzeigen und nicht beim
     Auffrischen — sonst gewinnt das Nachladen gegen das Profil, und ohne Gewicht
     gibt es keine Zielaufnahme.
+  - **Zusaetzliche Esser trennen die Portionszahl in zwei**, seit dem
+    29.08.2026. `PlanEintrag.Portionen` bleibt allein die eigene Portion und
+    traegt die Bilanz; `WochenStand.GaesteTag` (Tag → Zahl) und
+    `WochenStand.GaesteMahlzeit` („Tag|Mahlzeit" → Zahl) tragen Einkauf und
+    Kochmenge. **Was die Bilanz rechnet, kennt die Gaestezahl gar nicht** — sie
+    kann sie darum nicht verfaelschen; das ist gebaut und nicht geprueft.
+    - Kochportionen = eigene Portionen + Gaeste, eine Formel an einer Stelle.
+      Stehen mehrere Gerichte auf einer Mahlzeit, gilt die Zahl fuer jedes: die
+      Gaeste essen, was der Nutzer isst.
+    - **Zwei Sammlungen statt einer** mit gemischten Schluesseln, weil eine
+      gesetzte 0 an der Mahlzeit („die Gaeste fruehstuecken nicht mit") etwas
+      anderes ist als keine Angabe. Beide sind `null` in Dokumenten aus der Zeit
+      davor; gelesen wird das wie leer.
+    - Die Oberflaeche: ohne Besuch nur ein stiller Knopf „+ Gaeste" im
+      Tageskopf, ein Tipp macht daraus einen Stepper. Erst wenn der Tag Gaeste
+      hat, tragen die Mahlzeiten ihren eigenen Stepper und den Weg zurueck
+      („wie am Tag"). Auf 0 zurueck loescht die Ausnahmen des Tages mit.
+    - **Gaeste ueberleben „Woche leeren" und „automatisch fuellen".** Der Besuch
+      ist eine Tatsache und haengt nicht am Plan.
+    - Der Gerichtname im Wochenplan ist seither ein Verweis auf die Kochseite und
+      traegt die Kochportionen als `?portionen=` mit. Die Kochseite bekommt nur
+      diese Zahl, nicht Tag und Mahlzeit — sie soll das Wochenplan-Modell nicht
+      kennen muessen. Preis: ein gemerkter Verweis traegt eine veraltete Zahl.
   - **Ein Planeintrag merkt sich die Naehrwerte**, mit denen geplant wurde
     (`KcalBeimPlanen`, `ProteinBeimPlanen`, beide optional). Gerechnet wird
     weiter mit dem aktuellen Rezept; die gemerkten Zahlen tragen allein den

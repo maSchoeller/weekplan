@@ -15,6 +15,16 @@ public sealed record Zutat(string Name, double G, string Abt, bool Vorrat = fals
 /// Einzelschritte abgeloest: eine Anleitung, nach der man ein Gericht auch beim
 /// ersten Mal kocht, braucht Zwischenueberschriften und Fliesstext, keine Liste
 /// aus fuenf Saetzen.
+///
+/// <para>
+/// Drei Merkmale sagen, <b>wann</b> ein Gericht passt, und das automatische
+/// Fuellen der Woche waehlt danach vor: <paramref name="Prep"/> traegt den
+/// Werktag (haelt drei Tage, waermt gut auf), <paramref name="Wochenende"/> den
+/// Samstag und Sonntag (frisch gekocht, meist mit Fleisch),
+/// <paramref name="Refeed"/> den Refeed-Tag (traegt dessen deutlich hoehere
+/// Aufnahme). Sie schliessen einander nicht aus. Alle drei sind Vorauswahlen mit
+/// Rueckfall, keine Sperren — von Hand ist jedes Gericht ueberall einplanbar.
+/// </para>
 /// </summary>
 public sealed record Rezept(
     string Id,
@@ -26,7 +36,9 @@ public sealed record Rezept(
     int Kcal,
     int Protein,
     IReadOnlyList<Zutat> Zutaten,
-    string Anleitung);
+    string Anleitung,
+    bool Wochenende = false,
+    bool Refeed = false);
 
 /// <summary>
 /// Die erlaubten Kategorien eines Rezepts. Sie stehen hier und nicht bei der

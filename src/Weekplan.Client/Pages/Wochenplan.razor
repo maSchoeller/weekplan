@@ -35,11 +35,34 @@
             @{
                 var geaendert = Geaendert(tag.Kuerzel);
                 var entfernt = Entfernt(tag.Kuerzel);
+                var gaesteAmTag = Z.Woche.GaesteAmTag(tag.Kuerzel);
             }
 
             <header>
                 <h2>@tag.Name @(tag.Kuerzel == Z.Woche.RefeedTag ? "· Refeed" : null)</h2>
                 <span class="ort">@tag.Ort</span>
+
+                @* Ohne Besuch bleibt der Tag ruhig: nur ein stiller Knopf. Ein
+                   Tipp darauf setzt den ersten Gast — zwei Tipps genuegen fuer
+                   den haeufigen Fall „+2". *@
+                @if (gaesteAmTag == 0)
+                {
+                    <button class="gaeste-an" @onclick="() => GaesteAmTag(tag.Kuerzel, 1)">
+                        + Gäste
+                    </button>
+                }
+                else
+                {
+                    <span class="gaeste" role="group" aria-label="Zusätzliche Esser am @tag.Name">
+                        <span class="wort">Gäste</span>
+                        <button class="schritt" aria-label="Ein Gast weniger am @tag.Name"
+                                @onclick="() => GaesteAmTag(tag.Kuerzel, gaesteAmTag - 1)">−</button>
+                        <span class="zahl">@gaesteAmTag</span>
+                        <button class="schritt" aria-label="Ein Gast mehr am @tag.Name"
+                                @onclick="() => GaesteAmTag(tag.Kuerzel, gaesteAmTag + 1)">+</button>
+                    </span>
+                }
+
                 @if (geaendert > 0)
                 {
                     <span class="tagvermerk">@geaendert @(geaendert == 1 ? "Rezept" : "Rezepte") geändert</span>
@@ -58,9 +81,50 @@
             @foreach (var mahlzeit in Woche.Mahlzeiten)
             {
                 var eintraege = Z.Geplant(tag.Kuerzel, mahlzeit.Schluessel);
+                var gaeste = Z.Woche.Gaeste(tag.Kuerzel, mahlzeit.Schluessel);
+                var eigeneGaeste = Z.Woche.HatEigeneGaeste(tag.Kuerzel, mahlzeit.Schluessel);
 
                 <div class="mahlzeit">
-                    <h3>@mahlzeit.Beschriftung</h3>
+                    <h3>
+                        @mahlzeit.Beschriftung
+                        @if (gaeste > 0)
+                        {
+                            @* Der Abstand steht hier ausgeschrieben: Razor
+                               schluckt den Zeilenumbruch zwischen Text und
+                               Ausdruck, und „FRÜHSTÜCK· 2 kochen" klebt. *@
+                            <span class="kochen">&#160;· @Kochtext(eintraege, gaeste)</span>
+                        }
+                    </h3>
+
+                    @* Die Ausnahme je Mahlzeit erscheint erst, wenn der Tag
+                       Gaeste hat — ohne Besuch sieht die Woche aus wie immer. *@
+                    @if (gaesteAmTag > 0 || eigeneGaeste)
+                    {
+                        <p class="mahlzeit-gaeste @(eigeneGaeste ? "eigen" : null)">
+                            <span class="wort">
+                                @gaeste @(gaeste == 1 ? "Gast" : "Gäste")
+                                @(eigeneGaeste ? "hier" : null)
+                            </span>
+                            <button class="schritt"
+                                    aria-label="Ein Gast weniger beim @mahlzeit.Beschriftung am @tag.Name"
+                                    @onclick="() => GaesteAnDerMahlzeit(tag.Kuerzel, mahlzeit.Schluessel, gaeste - 1)">
+                                −
+                            </button>
+                            <button class="schritt"
+                                    aria-label="Ein Gast mehr beim @mahlzeit.Beschriftung am @tag.Name"
+                                    @onclick="() => GaesteAnDerMahlzeit(tag.Kuerzel, mahlzeit.Schluessel, gaeste + 1)">
+                                +
+                            </button>
+                            @if (eigeneGaeste)
+                            {
+                                <button class="zurueck-an-den-tag"
+                                        aria-label="@mahlzeit.Beschriftung wieder wie am @tag.Name"
+                                        @onclick="() => GaesteWieAmTag(tag.Kuerzel, mahlzeit.Schluessel)">
+                                    wie am Tag
+                                </button>
+                            }
+                        </p>
+                    }
 
                     @for (var stelle = 0; stelle < eintraege.Count; stelle++)
                     {
@@ -68,12 +132,21 @@
                         var eintrag = eintraege[i];
                         var rezept = Z.RezeptMit(eintrag.RezeptId);
 
+                        var kochen = eintrag.Portionen + gaeste;
+
                         <div class="gericht">
                             <span class="name">
-                                @(rezept?.Name ?? Namensform(eintrag.RezeptId))
                                 @if (rezept is null)
                                 {
+                                    @Namensform(eintrag.RezeptId)
                                     <span class="entfernt">entfernt</span>
+                                }
+                                else
+                                {
+                                    @* Der Weg von der Planung zum Kochen: die
+                                       Kochseite bekommt die Portionszahl gleich
+                                       mit, damit die Zutatenmengen stimmen. *@
+                                    <a href="rezepte/@rezept.Id?portionen=@kochen">@rezept.Name</a>
                                 }
                             </span>
                             <input type="number" min="1" max="9" inputmode="numeric"
@@ -94,9 +167,15 @@
                         }
                         else
                         {
+                            @* Gerechnet wird mit der eigenen Portion — die
+                               Gaeste stehen daneben und nicht darin. *@
                             <p class="werte">
                                 @Zahl.Kcal(rezept.Kcal * eintrag.Portionen) kcal
                                 · @(rezept.Protein * eintrag.Portionen) g Protein
+                                @if (gaeste > 0)
+                                {
+                                    <span class="kochen">· @kochen kochen</span>
+                                }
                             </p>
 
                             @if (Z.AbweichungFuer(eintrag) is { } abweichung)
@@ -170,6 +249,34 @@
         Z.RefeedTagSetzen(tag);
         OnParametersSet();
     }
+
+    private void GaesteAmTag(string tag, int zahl)
+    {
+        Z.GaesteAmTagSetzen(tag, zahl);
+        OnParametersSet();
+    }
+
+    private void GaesteAnDerMahlzeit(string tag, string mahlzeit, int zahl)
+    {
+        Z.GaesteAnDerMahlzeitSetzen(tag, mahlzeit, zahl);
+        OnParametersSet();
+    }
+
+    private void GaesteWieAmTag(string tag, string mahlzeit)
+    {
+        Z.GaesteAnDerMahlzeitZuruecksetzen(tag, mahlzeit);
+        OnParametersSet();
+    }
+
+    /// <summary>
+    /// Steht ein Gericht auf der Mahlzeit, ist die Kochmenge eindeutig und wird
+    /// genannt. Stehen mehrere, waere eine einzelne Zahl gelogen — dann steht
+    /// dort der Grund, und die Zahl je Gericht sagt den Rest.
+    /// </summary>
+    private static string Kochtext(IReadOnlyList<PlanEintrag> eintraege, int gaeste)
+        => eintraege.Count == 1
+            ? $"{eintraege[0].Portionen + gaeste} kochen"
+            : $"+{gaeste} {(gaeste == 1 ? "Gast" : "Gäste")}";
 
     private void Legen(string tag, string mahlzeit, string? rezeptId)
     {

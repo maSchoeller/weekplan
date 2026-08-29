@@ -246,3 +246,114 @@
   border-color: var(--accent);
   color: var(--accent);
 }
+
+/* ── Zusaetzliche Esser ─────────────────────────────────
+
+   Zwei Zahlen, zwei Orte: die Portionen am Gericht tragen die Bilanz, die
+   Gaeste hier tragen Einkauf und Kochmenge. Damit man das sieht und nicht nur
+   weiss, steht die Kochmenge in Akzentfarbe *und* mit dem Wort „kochen" —
+   Status nie allein ueber Farbe. */
+
+.gaeste-an {
+  min-height: 44px;
+  padding: 0 var(--sp-2);
+  background: transparent;
+  color: var(--text-dim);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-control);
+  font: inherit;
+  font-size: .8125rem;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.gaeste-an:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  border-style: solid;
+}
+
+.gaeste {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+}
+
+.gaeste .wort {
+  color: var(--text-dim);
+  font-size: .8125rem;
+}
+
+.gaeste .zahl {
+  min-width: 1.25rem;
+  color: var(--text);
+  font-size: .9375rem;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.schritt {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  font: inherit;
+  font-size: 1.125rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.schritt:hover { color: var(--accent); border-color: var(--accent); }
+
+.mahlzeit-gaeste {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+  margin: 0 0 var(--sp-2);
+}
+
+.mahlzeit-gaeste .wort {
+  flex: 1 1 auto;
+  color: var(--text-dim);
+  font-size: .8125rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Eine Mahlzeit, die vom Tag abweicht, sagt es mit dem Wort „hier" und traegt
+   zusaetzlich den Weg zurueck. */
+.mahlzeit-gaeste.eigen .wort { color: var(--text); font-weight: 600; }
+
+.zurueck-an-den-tag {
+  min-height: 44px;
+  padding: 0 var(--sp-2);
+  background: transparent;
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  font: inherit;
+  font-size: .75rem;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.zurueck-an-den-tag:hover { color: var(--accent); border-color: var(--accent); }
+
+.kochen {
+  color: var(--accent);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.gericht .name a {
+  color: inherit;
+  text-decoration-color: var(--border);
+  text-underline-offset: 3px;
+}
+
+.gericht .name a:hover { color: var(--accent); text-decoration-color: var(--accent); }
