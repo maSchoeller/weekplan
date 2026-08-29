@@ -128,3 +128,12 @@
   `CosmosAblage.LoeschenAsync`** — das wird nach dem Ausrollen ueber den echten
   MCP-Endpunkt an einem Probe-Rezept nachgeholt. **Ausloeser:** jede weitere
   Aenderung an `Stammdaten/CosmosAblage.cs`.
+- 2026-08-29 **Beim Ausrollen gestolpert:** der neue Schritt „Stammdaten
+  pruefen" landete vor dem Aktualisieren des Servers und prueft damit den alten
+  Stand. Ursache: `deploy.yml` hat **zwei** Schritte namens „Client
+  veroeffentlichen" — einmal bauen, einmal hochladen —, und ein Einfuegen „vor
+  Client veroeffentlichen" traf den falschen. Der erste Deploy blieb daran
+  haengen; in Azure war zu dem Zeitpunkt nichts veraendert. **Lehre:** einen
+  Schritt nie relativ zu einem Namen einhaengen, der zweimal vorkommt — die
+  Schrittliste vorher lesen. **Ausloeser:** die naechste Aenderung an einem
+  Workflow mit wiederholten Schrittnamen.

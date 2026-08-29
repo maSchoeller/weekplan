@@ -112,7 +112,17 @@ Region `westeurope`. Erwartete Kosten: 0 EUR.
 |---|---|---|
 | Client | `weekplan-prod-web` (Static Web App, Free) | https://gentle-moss-035769303.7.azurestaticapps.net |
 | Server | `weekplan-prod-api` (Container App, 0.25 CPU, min 0 / max 1) | https://weekplan-prod-api.redpebble-2b37be10.westeurope.azurecontainerapps.io |
-| Daten | `cosmos-weekplan-prod` (Free Tier), db `weekplan`, Container `tagebuch` und `stammdaten` | — |
+| Daten | `cosmos-weekplan-prod` (Free Tier), db `weekplan`, Container `tagebuch` (400 RU/s) und `stammdaten` (400 RU/s) | — |
+| Pflege | MCP am Server, `/mcp`, Schluessel als Container-App-Secret `mcp-schluessel` | siehe `.mcp.json` |
+
+**GitHub Pages ist seit dem 29.08.2026 abgeschaltet.** Die alte Adresse
+`maschoeller.github.io/weekplan` antwortet noch eine Weile aus dem
+CDN-Zwischenspeicher und faellt dann weg.
+
+Die Umgebungsvariablen der Container App: `Anmeldung__Schluessel`,
+`Tagebuch__Cosmos__Verbindung` und `Stammdaten__Cosmos__Verbindung` — die
+letzten beiden zeigen auf **dasselbe** Secret `cosmos-verbindung` —,
+`Mcp__Schluessel` und `Cors__Origins__0`.
 
 - **Der Weg dorthin** ist `.github/workflows/deploy.yml` und nur der: Push auf
   `main` testet, baut das Image nach `ghcr.io`, tauscht es in der Container App
